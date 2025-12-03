@@ -185,7 +185,7 @@ namespace Microsoft.PowerToys.Settings.UI.Views
             // need to save the values
             this.ViewModel.Latitude = latitude.ToString(CultureInfo.InvariantCulture);
             this.ViewModel.Longitude = longitude.ToString(CultureInfo.InvariantCulture);
-            this.ViewModel.SyncButtonInformation = $"{this.ViewModel.Latitude}°, {this.ViewModel.Longitude}°";
+            this.ViewModel.SyncButtonInformation = $"{this.ViewModel.Latitude}?{this.ViewModel.Longitude}?";
 
             var result = SunCalc.CalculateSunriseSunset(latitude, longitude, DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
