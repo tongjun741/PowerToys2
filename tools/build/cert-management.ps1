@@ -52,14 +52,16 @@ function ImportAndVerifyCertificate {
 
     $thumbprint = (Get-PfxCertificate -FilePath $cerPath).Thumbprint
 
-    $existingCert = Get-ChildItem -Path $storePath | Where-Object { $_.Thumbprint -eq $thumbprint }
+    #改之前 $existingCert = Get-ChildItem -Path $storePath | Where-Object { $_.Thumbprint -eq $thumbprint }
+    $existingCert = Get-ChildItem -Path $storePath -ErrorAction SilentlyContinue | Where-Object { $_.Thumbprint -eq $thumbprint }
     if ($existingCert) {
         Write-Host "Certificate already exists in $storePath"
         return $true
     }
 
     try {
-        $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -ErrorAction Stop
+        #改之前 $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -ErrorAction Stop
+        $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -Force -Confirm:$false -ErrorAction Stop
     } catch {
         Write-Warning "Failed to import certificate to $storePath : $_"
         return $false
