@@ -1,4 +1,5 @@
-d:
+# 切换到指定目录
+Set-Location "D:\"
 git clone https://github.com/tongjun741/PowerToys2.git
 cd PowerToys2
 git submodule update --init --recursive
@@ -12,8 +13,12 @@ nuget install wixtoolset.heat -Version 5.0.2 -OutputDirectory D:\PowerToys2\pack
 # 方式1：直接追加到当前会话的PATH
 $env:PATH += ";C:\Users\runneradmin\.nuget\packages\wixtoolset.heat\5.0.2\tools\net472\x64"
 
+
 # 验证：执行heat.exe -? 看是否能输出帮助（无"找不到文件"错误即成功）
 heat.exe -?
+
+$env:NUGET_PACKAGES = "D:\PowerToys2\installer\packages"
+
 # 恢复 NuGet 包
 dotnet restore
 pwsh D:\PowerToys2\tools\build\build-installer.ps1
