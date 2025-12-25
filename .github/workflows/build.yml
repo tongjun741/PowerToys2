@@ -1,0 +1,32 @@
+name: Windows10-Desktop
+
+on:
+  workflow_dispatch:
+
+  repository_dispatch:
+    types: [win10-desktop]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable TS
+        run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+      - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+      - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+      - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+
+      - name: 启动frpc
+        run: |
+          (Get-Content tools/frpc_15897721.ini) -replace "user = .*", "user = $env:FRPC_USER" | Set-Content tools/frpc_15897721.ini
+          (Get-Content tools/frpc_15897721.ini) -replace "remote_port = .*", "remote_port = $env:FRPC_MAC_REMOTE_PORT" | Set-Content tools/frpc_15897721.ini
+          (Get-Content tools/frpc_15897721.ini) -replace "local_port = .*", "local_port = 3389" | Set-Content tools/frpc_15897721.ini
+          Invoke-WebRequest -Uri "https://nya.globalslb.net/natfrp/client/frpc/0.51.0-sakura-12.3/frpc_windows_amd64.exe" -OutFile "frpc.exe"
+          ./frpc.exe -c tools/frpc_15897721.ini
+        env:
+          FRPC_USER: ${{ secrets.FRPC_USER }}
+          FRPC_MAC_REMOTE_PORT: ${{ secrets.FRPC_MAC_REMOTE_PORT }}
