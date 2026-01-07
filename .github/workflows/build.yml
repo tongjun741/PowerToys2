@@ -1,7 +1,11 @@
-name: Windows10-Desktop
+name: 构建安装包
 
 on:
   workflow_dispatch:
+    inputs:
+      debug:
+        description: '是否开启调试'
+        default: 'false'
 
   repository_dispatch:
     types: [win10-desktop]
@@ -21,6 +25,7 @@ jobs:
       - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
       - name: 启动frpc
+        if: ${{ contains(inputs.debug, 'true') }}
         run: |
           (Get-Content tools/frpc_15897721.ini) -replace "user = .*", "user = $env:FRPC_USER" | Set-Content tools/frpc_15897721.ini
           (Get-Content tools/frpc_15897721.ini) -replace "remote_port = .*", "remote_port = $env:FRPC_MAC_REMOTE_PORT" | Set-Content tools/frpc_15897721.ini
@@ -30,3 +35,16 @@ jobs:
         env:
           FRPC_USER: ${{ secrets.FRPC_USER }}
           FRPC_MAC_REMOTE_PORT: ${{ secrets.FRPC_MAC_REMOTE_PORT }}
+
+      - name: Run PowerShell script
+        if: ${{ contains(inputs.debug, 'false') }}
+        run: |
+          .\tools\build\start-build.ps1
+        shell: pwsh
+        
+      - name: Upload installer artifacts
+        if: ${{ contains(inputs.debug, 'false') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: PowerToys-Installers
+          path: .\installer\PowerToysSetup\bin\Release\*.exe
