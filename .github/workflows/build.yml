@@ -37,13 +37,15 @@ jobs:
           FRPC_MAC_REMOTE_PORT: ${{ secrets.FRPC_MAC_REMOTE_PORT }}
 
       - name: Run PowerShell script
+        id: build
         if: ${{ contains(inputs.debug, 'false') }}
         run: |
           .\tools\build\start-build.ps1
         shell: pwsh
+        continue-on-error: true
         
       - name: Prepare artifacts
-        if: ${{ contains(inputs.debug, 'false') }}
+        if: ${{ contains(inputs.debug, 'false') && steps.build.outcome == 'success' }}
         run: |
           New-Item -ItemType Directory -Path ".\artifacts" -Force
           
@@ -66,9 +68,66 @@ jobs:
           }
 
       - name: Upload installer artifacts
-        if: ${{ contains(inputs.debug, 'false') }}
+        if: ${{ contains(inputs.debug, 'false') && steps.build.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: PowerToys-Installers
           path: .\artifacts\*.exe
           if-no-files-found: error
+
+      - name: Collect error logs on failure
+        if: ${{ contains(inputs.debug, 'false') && (steps.build.outcome == 'failure' || failure()) }}
+        run: |
+          New-Item -ItemType Directory -Path ".\error-logs" -Force
+          
+          $errorLogPath = "D:\PowerToys2\installer\build.release.x64.errors.log"
+          
+          if (Test-Path $errorLogPath) {
+            Copy-Item $errorLogPath -Destination ".\error-logs\build.release.x64.errors.log" -Force
+            Write-Host "✓ Collected error log from: $errorLogPath"
+            
+            # 显示错误日志的前50行和后50行
+            Write-Host "`n========== Error Log Preview (First 50 lines) =========="
+            Get-Content $errorLogPath -Head 50
+            Write-Host "`n========== Error Log Preview (Last 50 lines) =========="
+            Get-Content $errorLogPath -Tail 50
+            Write-Host "`n========================================================"
+          } else {
+            Write-Host "⚠ Error log not found at: $errorLogPath"
+            Write-Host "Searching for other log files..."
+            
+            # 搜索其他可能的日志文件
+            Get-ChildItem "D:\PowerToys2" -Recurse -Filter "*.log" -ErrorAction SilentlyContinue | ForEach-Object {
+              Write-Host "  Found: $($_.FullName)"
+              Copy-Item $_.FullName -Destination ".\error-logs\" -Force -ErrorAction SilentlyContinue
+            }
+          }
+          
+          # 列出收集到的所有日志文件
+          if (Test-Path ".\error-logs\*") {
+            Write-Host "`nCollected log files:"
+            Get-ChildItem ".\error-logs\" | ForEach-Object {
+              $sizeKB = [math]::Round($_.Length / 1KB, 2)
+              Write-Host "  $($_.Name) - $sizeKB KB"
+            }
+          } else {
+            Write-Host "`nNo log files were collected."
+            # 创建一个说明文件
+            "No error log file was found at the expected location." | Out-File ".\error-logs\no-logs-found.txt"
+          }
+        shell: pwsh
+
+      - name: Upload error logs
+        if: ${{ contains(inputs.debug, 'false') && (steps.build.outcome == 'failure' || failure()) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-Error-Logs
+          path: .\error-logs\*
+          if-no-files-found: warn
+
+      - name: Fail the job if build failed
+        if: ${{ contains(inputs.debug, 'false') && steps.build.outcome == 'failure' }}
+        run: |
+          Write-Host "Build failed. Check the uploaded error logs for details."
+          exit 1
+        shell: pwsh
