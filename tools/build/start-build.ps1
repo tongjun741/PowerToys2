@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    PowerToys2 自动化构建脚本 - 最终版
+    PowerToys2 自动化构建脚本 - 最终增强版
 .DESCRIPTION
     自动化克隆、配置依赖并构建 PowerToys2 项目
-    解决所有已知问题：文件锁定、Runtime Pack 缺失、git clean 冲突等
+    解决所有已知问题：文件锁定、Runtime Pack 缺失、git clean 冲突、wcautil.lib 缺失等
 .PARAMETER CleanBuild
     是否清理现有目录重新开始
 .PARAMETER SkipClone
@@ -85,35 +85,6 @@ function Stop-BuildProcesses {
     Start-Sleep -Seconds 3
 }
 
-function Invoke-SafeCommand {
-    param(
-        [string]$Command,
-        [string]$Description,
-        [bool]$IgnoreErrors = $false
-    )
-    
-    Write-Info $Description
-    
-    try {
-        Invoke-Expression $Command | Out-Null
-        if ($LASTEXITCODE -eq 0 -or $IgnoreErrors) {
-            return $true
-        } else {
-            if ($IgnoreErrors) {
-                Write-Info "命令执行有警告，但继续（退出代码: $LASTEXITCODE）"
-                return $true
-            }
-            return $false
-        }
-    } catch {
-        if ($IgnoreErrors) {
-            Write-Info "命令执行失败，但继续"
-            return $true
-        }
-        throw
-    }
-}
-
 function Repair-BuildScript {
     param([string]$ScriptPath)
     
@@ -132,7 +103,7 @@ function Repair-BuildScript {
     $modified = $false
     
     # 禁用 git clean 命令（这是文件锁定的根源）
-    if ($content -match "git clean -xfd") {
+    if ($content -match "git clean -xfd" -and $content -notmatch "# DISABLED.*git clean") {
         $content = $content -replace "(\s+)(git clean -xfd -e '\*\.exe' -- \.\\installer\\ \| Out-Null)", '$1# DISABLED (file locking): $2'
         $modified = $true
         Write-Success "已禁用 git clean 命令"
@@ -163,6 +134,110 @@ function Remove-OldBackups {
     }
 }
 
+function Ensure-WixPackages {
+    param([string]$InstallerPath)
+    
+    Write-Info "确保 WiX 包在正确位置..."
+    
+    # 从所有可能的位置查找 wcautil
+    $possibleWcaUtilLocations = @(
+        "$env:USERPROFILE\.nuget\packages\wixtoolset.wcautil\$($Config.WixVersion)",
+        "C:\Users\runneradmin\.nuget\packages\wixtoolset.wcautil\$($Config.WixVersion)",
+        "$env:ProgramFiles\dotnet\sdk\NuGetFallbackFolder\wixtoolset.wcautil\$($Config.WixVersion)"
+    )
+    
+    $possibleDutilLocations = @(
+        "$env:USERPROFILE\.nuget\packages\wixtoolset.dutil\$($Config.WixVersion)",
+        "C:\Users\runneradmin\.nuget\packages\wixtoolset.dutil\$($Config.WixVersion)"
+    )
+    
+    $sourceWcaUtil = $null
+    $sourceDutil = $null
+    
+    # 查找 WcaUtil
+    foreach ($loc in $possibleWcaUtilLocations) {
+        if (Test-Path $loc) {
+            $sourceWcaUtil = $loc
+            Write-Info "找到 WcaUtil: $loc"
+            break
+        }
+    }
+    
+    # 查找 Dutil
+    foreach ($loc in $possibleDutilLocations) {
+        if (Test-Path $loc) {
+            $sourceDutil = $loc
+            Write-Info "找到 Dutil: $loc"
+            break
+        }
+    }
+    
+    # 如果没找到，重新安装到用户目录
+    if (-not $sourceWcaUtil) {
+        Write-Info "在用户目录未找到 WcaUtil，重新安装..."
+        nuget install WixToolset.WcaUtil -Version $Config.WixVersion -OutputDirectory "$env:USERPROFILE\.nuget\packages" -NonInteractive 2>&1 | Out-Null
+        $sourceWcaUtil = "$env:USERPROFILE\.nuget\packages\wixtoolset.wcautil\$($Config.WixVersion)"
+    }
+    
+    if (-not $sourceDutil) {
+        Write-Info "在用户目录未找到 Dutil，重新安装..."
+        nuget install WixToolset.Dutil -Version $Config.WixVersion -OutputDirectory "$env:USERPROFILE\.nuget\packages" -NonInteractive 2>&1 | Out-Null
+        $sourceDutil = "$env:USERPROFILE\.nuget\packages\wixtoolset.dutil\$($Config.WixVersion)"
+    }
+    
+    # 复制到项目 packages 目录
+    $destWcaUtil = "$InstallerPath\packages\WixToolset.WcaUtil.$($Config.WixVersion)"
+    $destDutil = "$InstallerPath\packages\WixToolset.Dutil.$($Config.WixVersion)"
+    
+    # 强制重新复制以确保文件完整
+    if (Test-Path $sourceWcaUtil) {
+        if (Test-Path $destWcaUtil) {
+            Remove-Item $destWcaUtil -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        Copy-Item $sourceWcaUtil -Destination $destWcaUtil -Recurse -Force
+        Write-Success "WcaUtil 已复制到项目目录"
+    }
+    
+    if (Test-Path $sourceDutil) {
+        if (Test-Path $destDutil) {
+            Remove-Item $destDutil -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        Copy-Item $sourceDutil -Destination $destDutil -Recurse -Force
+        Write-Success "Dutil 已复制到项目目录"
+    }
+    
+    # 验证关键文件
+    $criticalFiles = @{
+        "wcautil.lib (x64)" = "$destWcaUtil\build\native\v14\x64\wcautil.lib"
+        "wcautil.lib (x86)" = "$destWcaUtil\build\native\v14\x86\wcautil.lib"
+        "dutil.lib (x64)" = "$destDutil\build\native\v14\x64\dutil.lib"
+        "WcaUtil.props" = "$destWcaUtil\build\WixToolset.WcaUtil.props"
+    }
+    
+    $allFound = $true
+    foreach ($file in $criticalFiles.GetEnumerator()) {
+        if (Test-Path $file.Value) {
+            $size = (Get-Item $file.Value).Length
+            $sizeKB = [math]::Round($size / 1KB, 2)
+            Write-Info "$($file.Key): $sizeKB KB"
+        } else {
+            Write-Error "$($file.Key): 缺失!"
+            $allFound = $false
+        }
+    }
+    
+    if (-not $allFound) {
+        throw "关键 WiX 文件缺失，无法继续构建"
+    }
+    
+    # 设置库路径环境变量
+    $libPath = "$destWcaUtil\build\native\v14\x64;$destDutil\build\native\v14\x64"
+    $env:LIB = "$libPath;$env:LIB"
+    $env:LIBPATH = "$libPath;$env:LIBPATH"
+    
+    Write-Success "WiX 库路径已配置到环境变量"
+}
+
 # ==================== 主构建流程 ====================
 try {
     $startTime = Get-Date
@@ -171,8 +246,8 @@ try {
     Write-Host ""
     Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
     Write-Host "║                                                            ║" -ForegroundColor Cyan
-    Write-Host "║          PowerToys2 自动化构建脚本 v3.0                    ║" -ForegroundColor Cyan
-    Write-Host "║          解决所有已知构建问题                              ║" -ForegroundColor Cyan
+    Write-Host "║          PowerToys2 自动化构建脚本 v3.1                    ║" -ForegroundColor Cyan
+    Write-Host "║          解决所有已知构建问题（含 wcautil.lib）            ║" -ForegroundColor Cyan
     Write-Host "║                                                            ║" -ForegroundColor Cyan
     Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
     Write-Host ""
@@ -181,7 +256,7 @@ try {
     
     # ==================== 步骤 1: 准备项目 ====================
     if (-not $SkipClone) {
-        Write-StepHeader "步骤 1/9: 准备项目目录"
+        Write-StepHeader "步骤 1/10: 准备项目目录"
         
         Set-Location "D:\"
         
@@ -214,18 +289,18 @@ try {
         }
         
     } else {
-        Write-StepHeader "步骤 1/9: 使用现有代码"
+        Write-StepHeader "步骤 1/10: 使用现有代码"
         Set-Location $Config.BaseDir
         Write-Info "当前目录: $($Config.BaseDir)"
     }
     
     # ==================== 步骤 2: 停止构建进程 ====================
-    Write-StepHeader "步骤 2/9: 清理构建进程"
+    Write-StepHeader "步骤 2/10: 清理构建进程"
     Stop-BuildProcesses
     Write-Success "构建进程已清理"
     
     # ==================== 步骤 3: 安装构建工具 ====================
-    Write-StepHeader "步骤 3/9: 安装构建工具"
+    Write-StepHeader "步骤 3/10: 安装构建工具"
     
     # WiX Toolset
     Write-Info "检查 WiX Toolset $($Config.WixVersion)..."
@@ -242,7 +317,7 @@ try {
     Write-Success "Windows SDK 已就绪"
     
     # ==================== 步骤 4: 配置 WiX Heat ====================
-    Write-StepHeader "步骤 4/9: 配置 WiX Heat 工具"
+    Write-StepHeader "步骤 4/10: 配置 WiX Heat 工具"
     
     $PackagesDir = "$($Config.BaseDir)\packages"
     New-Item -ItemType Directory -Path $PackagesDir -Force | Out-Null
@@ -271,35 +346,29 @@ try {
         Write-Info "Heat 工具路径未找到，但继续"
     }
     
-    # ==================== 步骤 5: 安装 WiX 依赖 ====================
-    Write-StepHeader "步骤 5/9: 安装 WiX 构建依赖"
+    # ==================== 步骤 5: 安装并验证 WiX 依赖 ====================
+    Write-StepHeader "步骤 5/10: 安装并验证 WiX 构建依赖"
     
     Set-Location "$($Config.BaseDir)\installer"
     
-    Write-Info "安装 WixToolset.WcaUtil..."
+    # 先尝试常规安装
+    Write-Info "常规安装 WiX 包..."
     nuget install WixToolset.WcaUtil -Version $Config.WixVersion -OutputDirectory packages -NonInteractive 2>&1 | Out-Null
-    
-    Write-Info "安装 WixToolset.Dutil..."
     nuget install WixToolset.Dutil -Version $Config.WixVersion -OutputDirectory packages -NonInteractive 2>&1 | Out-Null
     
-    # 验证关键文件
-    $wcautilLib = "packages\WixToolset.WcaUtil.$($Config.WixVersion)\build\native\v14\x64\wcautil.lib"
-    if (Test-Path $wcautilLib) {
-        Write-Success "WiX 依赖包已安装"
-    } else {
-        Write-Info "部分 WiX 文件可能缺失，但继续"
-    }
+    # 使用新函数确保包完整
+    Ensure-WixPackages -InstallerPath "$($Config.BaseDir)\installer"
     
     Set-Location $Config.BaseDir
     
     # ==================== 步骤 6: 配置环境变量 ====================
-    Write-StepHeader "步骤 6/9: 配置环境变量"
+    Write-StepHeader "步骤 6/10: 配置环境变量"
     
     $env:NUGET_PACKAGES = "$($Config.BaseDir)\installer\packages"
-    Write-Success "环境变量已配置"
+    Write-Success "NUGET_PACKAGES 已配置"
     
     # ==================== 步骤 7: 恢复 NuGet 包 ====================
-    Write-StepHeader "步骤 7/9: 恢复依赖包"
+    Write-StepHeader "步骤 7/10: 恢复依赖包"
     
     if (-not $NoCacheClean) {
         Write-Info "清理 NuGet 缓存..."
@@ -317,7 +386,7 @@ try {
     Write-Success "依赖包恢复完成"
     
     # ==================== 步骤 8: 修复构建脚本 ====================
-    Write-StepHeader "步骤 8/9: 优化构建脚本"
+    Write-StepHeader "步骤 8/10: 优化构建脚本"
     
     $buildScript = "$($Config.BaseDir)\tools\build\build-installer.ps1"
     Repair-BuildScript -ScriptPath $buildScript
@@ -327,8 +396,30 @@ try {
     
     Write-Success "构建环境已优化"
     
-    # ==================== 步骤 9: 执行构建 ====================
-    Write-StepHeader "步骤 9/9: 开始构建"
+    # ==================== 步骤 9: 最后验证 ====================
+    Write-StepHeader "步骤 9/10: 最后验证"
+    
+    # 验证 wcautil.lib
+    $wcautilLib = "$($Config.BaseDir)\installer\packages\WixToolset.WcaUtil.$($Config.WixVersion)\build\native\v14\x64\wcautil.lib"
+    if (Test-Path $wcautilLib) {
+        Write-Success "wcautil.lib 已就绪"
+    } else {
+        Write-Error "wcautil.lib 仍然缺失!"
+        throw "关键库文件缺失"
+    }
+    
+    # 验证构建脚本
+    $scriptContent = Get-Content $buildScript -Raw
+    if ($scriptContent -match "# DISABLED.*git clean") {
+        Write-Success "构建脚本已优化（git clean 已禁用）"
+    } else {
+        Write-Info "构建脚本可能需要优化"
+    }
+    
+    Write-Success "所有验证通过"
+    
+    # ==================== 步骤 10: 执行构建 ====================
+    Write-StepHeader "步骤 10/10: 开始构建"
     
     Stop-BuildProcesses -Verbose $false
     Start-Sleep -Seconds 2
