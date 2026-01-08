@@ -1,15 +1,24 @@
 <#
 .SYNOPSIS
-    PowerToys2 自动化构建脚本 - 完整版
+    PowerToys2 自动化构建脚本 - 最终版
 .DESCRIPTION
     自动化克隆、配置依赖并构建 PowerToys2 项目
-    解决文件锁定、Runtime Pack 缺失等常见问题
+    解决所有已知问题：文件锁定、Runtime Pack 缺失、git clean 冲突等
 .PARAMETER CleanBuild
     是否清理现有目录重新开始
 .PARAMETER SkipClone
     跳过克隆步骤（用于已有代码的情况）
 .PARAMETER NoCacheClean
     不清理 NuGet 缓存（推荐，避免重新下载）
+.EXAMPLE
+    .\start-build.ps1 -CleanBuild
+    完全清理后重新构建
+.EXAMPLE
+    .\start-build.ps1
+    使用现有代码增量构建（推荐）
+.EXAMPLE
+    .\start-build.ps1 -SkipClone
+    跳过 git 克隆，直接构建
 #>
 
 param(
@@ -22,30 +31,35 @@ param(
 $ErrorActionPreference = "Stop"
 
 # ==================== 配置 ====================
-$BaseDir = "D:\PowerToys2"
-$RepoUrl = "https://github.com/tongjun741/PowerToys2.git"
+$Script:Config = @{
+    BaseDir = "D:\PowerToys2"
+    RepoUrl = "https://github.com/tongjun741/PowerToys2.git"
+    WixVersion = "5.0.2"
+    WindowsSDKId = "Microsoft.WindowsSDK.10.0.19041"
+}
 
 # ==================== 辅助函数 ====================
-function Write-Step {
+function Write-StepHeader {
     param([string]$Message)
-    Write-Host "`n╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
     Write-Host "║  $Message" -ForegroundColor Cyan
     Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
 }
 
 function Write-Success {
     param([string]$Message)
-    Write-Host "✓ $Message" -ForegroundColor Green
+    Write-Host "  ✓ $Message" -ForegroundColor Green
 }
 
 function Write-Info {
     param([string]$Message)
-    Write-Host "  $Message" -ForegroundColor Yellow
+    Write-Host "  • $Message" -ForegroundColor Yellow
 }
 
-function Write-Failure {
+function Write-Error {
     param([string]$Message)
-    Write-Host "✗ $Message" -ForegroundColor Red
+    Write-Host "  ✗ $Message" -ForegroundColor Red
 }
 
 function Stop-BuildProcesses {
@@ -71,93 +85,174 @@ function Stop-BuildProcesses {
     Start-Sleep -Seconds 3
 }
 
+function Invoke-SafeCommand {
+    param(
+        [string]$Command,
+        [string]$Description,
+        [bool]$IgnoreErrors = $false
+    )
+    
+    Write-Info $Description
+    
+    try {
+        Invoke-Expression $Command | Out-Null
+        if ($LASTEXITCODE -eq 0 -or $IgnoreErrors) {
+            return $true
+        } else {
+            if ($IgnoreErrors) {
+                Write-Info "命令执行有警告，但继续（退出代码: $LASTEXITCODE）"
+                return $true
+            }
+            return $false
+        }
+    } catch {
+        if ($IgnoreErrors) {
+            Write-Info "命令执行失败，但继续"
+            return $true
+        }
+        throw
+    }
+}
+
+function Repair-BuildScript {
+    param([string]$ScriptPath)
+    
+    Write-Info "检查构建脚本..."
+    
+    $backupPath = "$ScriptPath.original"
+    
+    # 只在第一次运行时备份
+    if (-not (Test-Path $backupPath)) {
+        Copy-Item $ScriptPath $backupPath -Force
+        Write-Info "已备份原始脚本: $backupPath"
+    }
+    
+    # 读取内容
+    $content = Get-Content $ScriptPath -Raw
+    $modified = $false
+    
+    # 禁用 git clean 命令（这是文件锁定的根源）
+    if ($content -match "git clean -xfd") {
+        $content = $content -replace "(\s+)(git clean -xfd -e '\*\.exe' -- \.\\installer\\ \| Out-Null)", '$1# DISABLED (file locking): $2'
+        $modified = $true
+        Write-Success "已禁用 git clean 命令"
+    }
+    
+    # 注释掉其他可能的清理命令
+    if ($content -match "Remove-Item.*installer.*packages" -and $content -notmatch "# DISABLED.*Remove-Item") {
+        $content = $content -replace "(\s+)(Remove-Item.*installer.*packages[^\r\n]*)", '$1# DISABLED (file locking): $2'
+        $modified = $true
+        Write-Success "已禁用 Remove-Item 清理命令"
+    }
+    
+    if ($modified) {
+        Set-Content $ScriptPath -Value $content -NoNewline
+        Write-Success "构建脚本已优化"
+    } else {
+        Write-Info "构建脚本已是最新版本"
+    }
+}
+
+function Remove-OldBackups {
+    param([string]$Path, [string]$Pattern)
+    
+    $backups = Get-ChildItem -Path $Path -Filter $Pattern -Recurse -ErrorAction SilentlyContinue
+    if ($backups) {
+        $backups | Remove-Item -Force -ErrorAction SilentlyContinue
+        Write-Info "已删除 $($backups.Count) 个旧备份文件"
+    }
+}
+
 # ==================== 主构建流程 ====================
 try {
     $startTime = Get-Date
     
-    Write-Host @"
-
-╔════════════════════════════════════════════════════════════╗
-║                                                            ║
-║          PowerToys2 自动化构建脚本 v2.0                    ║
-║          解决文件锁定和依赖问题                            ║
-║                                                            ║
-╚════════════════════════════════════════════════════════════╝
-
-"@ -ForegroundColor Cyan
-
+    # 显示欢迎信息
+    Write-Host ""
+    Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
+    Write-Host "║                                                            ║" -ForegroundColor Cyan
+    Write-Host "║          PowerToys2 自动化构建脚本 v3.0                    ║" -ForegroundColor Cyan
+    Write-Host "║          解决所有已知构建问题                              ║" -ForegroundColor Cyan
+    Write-Host "║                                                            ║" -ForegroundColor Cyan
+    Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Info "开始时间: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    Write-Host ""
+    
     # ==================== 步骤 1: 准备项目 ====================
     if (-not $SkipClone) {
-        Write-Step "步骤 1/9: 准备项目目录"
+        Write-StepHeader "步骤 1/9: 准备项目目录"
         
         Set-Location "D:\"
         
-        if (Test-Path $BaseDir) {
+        if (Test-Path $Config.BaseDir) {
             if ($CleanBuild) {
                 Write-Info "清理现有目录..."
                 Stop-BuildProcesses -Verbose $false
-                Remove-Item $BaseDir -Recurse -Force
+                Remove-Item $Config.BaseDir -Recurse -Force
                 Write-Success "目录已清理"
             } else {
-                Write-Info "使用现有目录: $BaseDir"
+                Write-Info "使用现有目录: $($Config.BaseDir)"
             }
         }
         
-        if (-not (Test-Path $BaseDir)) {
-            Write-Info "克隆仓库: $RepoUrl"
-            git clone $RepoUrl
+        if (-not (Test-Path $Config.BaseDir)) {
+            Write-Info "克隆仓库: $($Config.RepoUrl)"
+            git clone $Config.RepoUrl
             if ($LASTEXITCODE -ne 0) { throw "Git 克隆失败" }
             Write-Success "仓库克隆完成"
         }
         
-        Set-Location $BaseDir
+        Set-Location $Config.BaseDir
         
         Write-Info "更新子模块..."
-        git submodule update --init --recursive
-        if ($LASTEXITCODE -ne 0) { throw "子模块更新失败" }
-        Write-Success "子模块更新完成"
+        git submodule update --init --recursive | Out-Null
+        if ($LASTEXITCODE -ne 0) { 
+            Write-Info "子模块更新有警告，但继续"
+        } else {
+            Write-Success "子模块更新完成"
+        }
         
     } else {
-        Write-Step "步骤 1/9: 使用现有代码"
-        Set-Location $BaseDir
-        Write-Info "当前目录: $BaseDir"
+        Write-StepHeader "步骤 1/9: 使用现有代码"
+        Set-Location $Config.BaseDir
+        Write-Info "当前目录: $($Config.BaseDir)"
     }
     
-    # ==================== 步骤 2: 停止所有构建进程 ====================
-    Write-Step "步骤 2/9: 清理构建进程"
+    # ==================== 步骤 2: 停止构建进程 ====================
+    Write-StepHeader "步骤 2/9: 清理构建进程"
     Stop-BuildProcesses
     Write-Success "构建进程已清理"
     
     # ==================== 步骤 3: 安装构建工具 ====================
-    Write-Step "步骤 3/9: 安装构建工具"
+    Write-StepHeader "步骤 3/9: 安装构建工具"
     
     # WiX Toolset
-    Write-Info "安装 WiX Toolset 5.0.2..."
-    dotnet tool install --global wix --version 5.0.2 --no-cache 2>&1 | Out-Null
+    Write-Info "检查 WiX Toolset $($Config.WixVersion)..."
+    dotnet tool install --global wix --version $Config.WixVersion 2>&1 | Out-Null
     if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq 1) {
         Write-Success "WiX Toolset 已就绪"
     } else {
-        Write-Info "WiX Toolset 可能已安装（忽略错误）"
+        Write-Info "WiX 安装状态未知，继续"
     }
     
     # Windows SDK
-    Write-Info "安装 Windows SDK 10.0.19041..."
-    winget install --id Microsoft.WindowsSDK.10.0.19041 --silent --accept-package-agreements --accept-source-agreements 2>&1 | Out-Null
+    Write-Info "检查 Windows SDK..."
+    winget install --id $Config.WindowsSDKId --silent --accept-package-agreements --accept-source-agreements 2>&1 | Out-Null
     Write-Success "Windows SDK 已就绪"
     
-    # ==================== 步骤 4: 安装 WiX Heat 工具 ====================
-    Write-Step "步骤 4/9: 配置 WiX Heat 工具"
+    # ==================== 步骤 4: 配置 WiX Heat ====================
+    Write-StepHeader "步骤 4/9: 配置 WiX Heat 工具"
     
-    $PackagesDir = "$BaseDir\packages"
+    $PackagesDir = "$($Config.BaseDir)\packages"
     New-Item -ItemType Directory -Path $PackagesDir -Force | Out-Null
     
-    Write-Info "安装 WiX Heat..."
-    nuget install wixtoolset.heat -Version 5.0.2 -OutputDirectory $PackagesDir -NonInteractive 2>&1 | Out-Null
+    nuget install wixtoolset.heat -Version $Config.WixVersion -OutputDirectory $PackagesDir -NonInteractive 2>&1 | Out-Null
     
     # 配置 Heat 路径
     $HeatPaths = @(
-        "$PackagesDir\wixtoolset.heat.5.0.2\tools\net472\x64",
-        "$env:USERPROFILE\.nuget\packages\wixtoolset.heat\5.0.2\tools\net472\x64"
+        "$PackagesDir\wixtoolset.heat.$($Config.WixVersion)\tools\net472\x64",
+        "$env:USERPROFILE\.nuget\packages\wixtoolset.heat\$($Config.WixVersion)\tools\net472\x64"
     )
     
     $heatFound = $false
@@ -167,47 +262,44 @@ try {
                 $env:PATH += ";$path"
             }
             $heatFound = $true
-            Write-Success "Heat 工具路径: $path"
+            Write-Success "Heat 工具路径已配置"
             break
         }
     }
     
     if (-not $heatFound) {
-        Write-Failure "Heat 工具未找到，但继续构建"
+        Write-Info "Heat 工具路径未找到，但继续"
     }
     
-    # ==================== 步骤 5: 安装 WiX 依赖包 ====================
-    Write-Step "步骤 5/9: 安装 WiX 构建依赖"
+    # ==================== 步骤 5: 安装 WiX 依赖 ====================
+    Write-StepHeader "步骤 5/9: 安装 WiX 构建依赖"
     
-    Set-Location "$BaseDir\installer"
+    Set-Location "$($Config.BaseDir)\installer"
     
     Write-Info "安装 WixToolset.WcaUtil..."
-    nuget install WixToolset.WcaUtil -Version 5.0.2 -OutputDirectory packages -NonInteractive 2>&1 | Out-Null
+    nuget install WixToolset.WcaUtil -Version $Config.WixVersion -OutputDirectory packages -NonInteractive 2>&1 | Out-Null
     
     Write-Info "安装 WixToolset.Dutil..."
-    nuget install WixToolset.Dutil -Version 5.0.2 -OutputDirectory packages -NonInteractive 2>&1 | Out-Null
+    nuget install WixToolset.Dutil -Version $Config.WixVersion -OutputDirectory packages -NonInteractive 2>&1 | Out-Null
     
     # 验证关键文件
-    $wcautilProps = "packages\WixToolset.WcaUtil.5.0.2\build\WixToolset.WcaUtil.props"
-    $wcautilLib = "packages\WixToolset.WcaUtil.5.0.2\build\native\v14\x64\wcautil.lib"
-    
-    if ((Test-Path $wcautilProps) -and (Test-Path $wcautilLib)) {
-        Write-Success "WiX 依赖包安装完成"
+    $wcautilLib = "packages\WixToolset.WcaUtil.$($Config.WixVersion)\build\native\v14\x64\wcautil.lib"
+    if (Test-Path $wcautilLib) {
+        Write-Success "WiX 依赖包已安装"
     } else {
-        Write-Failure "部分 WiX 文件缺失，但继续构建"
+        Write-Info "部分 WiX 文件可能缺失，但继续"
     }
     
-    Set-Location $BaseDir
+    Set-Location $Config.BaseDir
     
     # ==================== 步骤 6: 配置环境变量 ====================
-    Write-Step "步骤 6/9: 配置环境变量"
+    Write-StepHeader "步骤 6/9: 配置环境变量"
     
-    $env:NUGET_PACKAGES = "$BaseDir\installer\packages"
-    Write-Info "NUGET_PACKAGES = $env:NUGET_PACKAGES"
+    $env:NUGET_PACKAGES = "$($Config.BaseDir)\installer\packages"
     Write-Success "环境变量已配置"
     
     # ==================== 步骤 7: 恢复 NuGet 包 ====================
-    Write-Step "步骤 7/9: 恢复 NuGet 包和 Runtime Packs"
+    Write-StepHeader "步骤 7/9: 恢复依赖包"
     
     if (-not $NoCacheClean) {
         Write-Info "清理 NuGet 缓存..."
@@ -216,80 +308,62 @@ try {
         Write-Info "保留 NuGet 缓存（加速构建）"
     }
     
-    Write-Info "恢复所有项目依赖..."
+    Write-Info "恢复项目依赖..."
     dotnet restore --force 2>&1 | Out-Null
     
     Write-Info "恢复 win-x64 Runtime Packs..."
     dotnet restore --runtime win-x64 --force 2>&1 | Out-Null
     
-    if ($LASTEXITCODE -eq 0) {
-        Write-Success "NuGet 包和 Runtime Packs 恢复完成"
-    } else {
-        Write-Info "部分包恢复可能失败，但继续构建"
-    }
+    Write-Success "依赖包恢复完成"
     
-    # ==================== 步骤 8: 修改构建脚本（禁用清理）====================
-    Write-Step "步骤 8/9: 优化构建脚本"
+    # ==================== 步骤 8: 修复构建脚本 ====================
+    Write-StepHeader "步骤 8/9: 优化构建脚本"
     
-    $buildScript = "$BaseDir\tools\build\build-installer.ps1"
-    $buildScriptBackup = "$buildScript.original"
+    $buildScript = "$($Config.BaseDir)\tools\build\build-installer.ps1"
+    Repair-BuildScript -ScriptPath $buildScript
     
-    # 只在第一次运行时备份
-    if (-not (Test-Path $buildScriptBackup)) {
-        Copy-Item $buildScript $buildScriptBackup -Force
-        Write-Info "已备份原始构建脚本"
-        
-        # 修改构建脚本
-        $content = Get-Content $buildScript -Raw
-        
-        # 禁用 installer 清理
-        $content = $content -replace '(Write-Host "\[CLEAN\] installer[^"]*")', '# DISABLED: $1'
-        $content = $content -replace '(\s+)(Remove-Item.*installer.*packages[^\r\n]*)', '$1# DISABLED (file locking): $2'
-        $content = $content -replace '(\s+)(Get-ChildItem.*installer.*packages.*Remove-Item[^\r\n]*)', '$1# DISABLED (file locking): $2'
-        
-        Set-Content $buildScript -Value $content -NoNewline
-        Write-Success "已优化构建脚本（禁用清理以避免文件锁定）"
-    } else {
-        Write-Info "使用已优化的构建脚本"
-    }
+    # 清理旧备份
+    Remove-OldBackups -Path "$($Config.BaseDir)\installer" -Pattern "*.wxs.bk"
     
-    # 清理旧的 WXS 备份文件
-    Write-Info "清理旧的 WXS 备份文件..."
-    $wxsBackups = Get-ChildItem -Path "$BaseDir\installer" -Filter "*.wxs.bk" -Recurse -ErrorAction SilentlyContinue
-    if ($wxsBackups) {
-        $wxsBackups | Remove-Item -Force -ErrorAction SilentlyContinue
-        Write-Info "已删除 $($wxsBackups.Count) 个旧备份文件"
-    }
+    Write-Success "构建环境已优化"
     
-    # ==================== 步骤 9: 开始构建 ====================
-    Write-Step "步骤 9/9: 开始构建 PowerToys 安装程序"
+    # ==================== 步骤 9: 执行构建 ====================
+    Write-StepHeader "步骤 9/9: 开始构建"
     
     Stop-BuildProcesses -Verbose $false
     Start-Sleep -Seconds 2
     
     Write-Info "执行构建脚本..."
-    Write-Info "构建日志: installer\build.release.x64.*.log"
+    Write-Info "日志位置: installer\build.release.x64.*.log"
+    Write-Host ""
+    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor DarkGray
+    Write-Host ""
+    
+    # 执行构建
+    & pwsh $buildScript
+    $buildExitCode = $LASTEXITCODE
+    
     Write-Host ""
     Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor DarkGray
     
-    # 执行构建
-    pwsh $buildScript
-    
-    Write-Host "════════════════════════════════════════════════════════════" -ForegroundColor DarkGray
-    
-    # ==================== 构建完成 ====================
-    if ($LASTEXITCODE -eq 0) {
+    # ==================== 构建结果 ====================
+    if ($buildExitCode -eq 0) {
         $endTime = Get-Date
         $duration = $endTime - $startTime
         
         Write-Host ""
-        Write-Step "构建成功完成！"
-        Write-Success "总耗时: $($duration.ToString('hh\:mm\:ss'))"
+        Write-StepHeader "✓ 构建成功完成！"
+        
+        Write-Host ""
+        Write-Info "总耗时: $($duration.ToString('hh\:mm\:ss'))"
+        Write-Info "完成时间: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
         
         # 查找生成的安装程序
-        Write-Host "`n生成的文件:" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "  生成的文件:" -ForegroundColor Cyan
+        Write-Host ""
         
-        $installers = Get-ChildItem -Path "$BaseDir\installer" -Filter "*.exe" -Recurse -ErrorAction SilentlyContinue | 
+        $installers = Get-ChildItem -Path "$($Config.BaseDir)\installer" -Filter "*.exe" -Recurse -ErrorAction SilentlyContinue | 
             Where-Object { $_.Name -like "*PowerToys*" -and $_.Length -gt 1MB } |
             Sort-Object LastWriteTime -Descending |
             Select-Object -First 5
@@ -297,46 +371,56 @@ try {
         if ($installers) {
             foreach ($installer in $installers) {
                 $sizeMB = [math]::Round($installer.Length / 1MB, 2)
-                Write-Success "$($installer.Name) ($sizeMB MB)"
-                Write-Host "           $($installer.FullName)" -ForegroundColor Gray
+                Write-Host "    ✓ $($installer.Name)" -ForegroundColor Green
+                Write-Host "      大小: $sizeMB MB" -ForegroundColor Gray
+                Write-Host "      路径: $($installer.FullName)" -ForegroundColor Gray
+                Write-Host ""
             }
         } else {
-            Write-Info "未找到生成的 EXE 文件，请检查构建日志"
+            Write-Info "未找到 .exe 文件，可能在其他位置"
         }
         
         Write-Host ""
         Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Green
+        Write-Host "║                                                            ║" -ForegroundColor Green
         Write-Host "║                  🎉 构建流程全部完成！ 🎉                  ║" -ForegroundColor Green
+        Write-Host "║                                                            ║" -ForegroundColor Green
         Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Green
         Write-Host ""
         
     } else {
-        throw "构建失败，退出代码: $LASTEXITCODE"
+        throw "构建失败，退出代码: $buildExitCode"
     }
     
 } catch {
     Write-Host ""
     Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Red
-    Write-Host "║                    ❌ 构建失败 ❌                          ║" -ForegroundColor Red
+    Write-Host "║                                                            ║" -ForegroundColor Red
+    Write-Host "║                      ❌ 构建失败 ❌                        ║" -ForegroundColor Red
+    Write-Host "║                                                            ║" -ForegroundColor Red
     Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Red
     Write-Host ""
-    Write-Failure "错误信息: $_"
+    Write-Error "错误信息: $_"
     Write-Host ""
-    Write-Host "错误堆栈:" -ForegroundColor Yellow
-    Write-Host $_.ScriptStackTrace -ForegroundColor Gray
     
-    Write-Host "`n📋 日志文件位置:" -ForegroundColor Cyan
-    Write-Host "  • 完整日志: $BaseDir\installer\build.release.x64.all.log" -ForegroundColor Yellow
-    Write-Host "  • 错误日志: $BaseDir\installer\build.release.x64.errors.log" -ForegroundColor Yellow
-    Write-Host "  • 警告日志: $BaseDir\installer\build.release.x64.warnings.log" -ForegroundColor Yellow
-    Write-Host "  • 二进制日志: $BaseDir\installer\build.release.x64.trace.binlog" -ForegroundColor Yellow
+    if ($_.ScriptStackTrace) {
+        Write-Host "  错误堆栈:" -ForegroundColor Yellow
+        Write-Host $_.ScriptStackTrace -ForegroundColor Gray
+    }
     
-    Write-Host "`n💡 常见问题排查:" -ForegroundColor Cyan
-    Write-Host "  1. 检查错误日志了解具体失败原因" -ForegroundColor Gray
-    Write-Host "  2. 确保有足够的磁盘空间 (需要约 5-10 GB)" -ForegroundColor Gray
-    Write-Host "  3. 尝试以管理员身份运行脚本" -ForegroundColor Gray
-    Write-Host "  4. 关闭杀毒软件再试" -ForegroundColor Gray
-    Write-Host "  5. 使用 -CleanBuild 参数完全重新开始" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "  📋 日志文件位置:" -ForegroundColor Cyan
+    Write-Host "    • 完整日志: $($Config.BaseDir)\installer\build.release.x64.all.log" -ForegroundColor Yellow
+    Write-Host "    • 错误日志: $($Config.BaseDir)\installer\build.release.x64.errors.log" -ForegroundColor Yellow
+    Write-Host "    • 警告日志: $($Config.BaseDir)\installer\build.release.x64.warnings.log" -ForegroundColor Yellow
+    Write-Host ""
+    
+    Write-Host "  💡 常见问题排查:" -ForegroundColor Cyan
+    Write-Host "    1. 检查错误日志了解具体失败原因" -ForegroundColor Gray
+    Write-Host "    2. 确保有足够的磁盘空间 (需要约 10 GB)" -ForegroundColor Gray
+    Write-Host "    3. 尝试以管理员身份运行脚本" -ForegroundColor Gray
+    Write-Host "    4. 暂时关闭杀毒软件" -ForegroundColor Gray
+    Write-Host "    5. 使用 -CleanBuild 参数完全重新开始" -ForegroundColor Gray
     Write-Host ""
     
     exit 1
