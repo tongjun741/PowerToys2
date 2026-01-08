@@ -241,46 +241,38 @@ function Ensure-WixPackages {
             Copy-Item $vcxproj "$vcxproj.original" -Force
         }
         
-        # 读取为 XML
-        [xml]$proj = Get-Content $vcxproj
+        # 使用文本替换方式而不是 XML 操作（更可靠）
+        $content = Get-Content $vcxproj -Raw
         
-        # 相对于项目文件的库路径（项目在 installer\PowerToysSetupCustomActionsVNext，包在 installer\packages）
+        # 相对于项目文件的库路径
         $relativeLibPath = "..\..\packages\WixToolset.WcaUtil.$($Config.WixVersion)\build\native\v14\x64;..\..\packages\WixToolset.Dutil.$($Config.WixVersion)\build\native\v14\x64"
         
         $modified = $false
         
-        # 查找所有 ItemDefinitionGroup
-        foreach ($group in $proj.Project.ItemDefinitionGroup) {
-            # 处理 x64 Release 配置或无条件的配置
-            if ($group.Condition -match "x64.*Release" -or (-not $group.Condition)) {
-                # 确保有 Link 节点
-                if (-not $group.Link) {
-                    $linkNode = $proj.CreateElement("Link", $proj.DocumentElement.NamespaceURI)
-                    $group.AppendChild($linkNode) | Out-Null
-                }
-                
-                # 处理 AdditionalLibraryDirectories
-                if ($group.Link.AdditionalLibraryDirectories) {
-                    $currentValue = $group.Link.AdditionalLibraryDirectories
-                    
-                    # 如果还没有我们的路径，添加到最前面
-                    if ($currentValue -notlike "*WixToolset.WcaUtil*") {
-                        $group.Link.AdditionalLibraryDirectories = "$relativeLibPath;$currentValue"
-                        $modified = $true
-                    }
-                } else {
-                    # 创建新的
-                    $libDirNode = $proj.CreateElement("AdditionalLibraryDirectories", $proj.DocumentElement.NamespaceURI)
-                    $libDirNode.InnerText = "$relativeLibPath;%(AdditionalLibraryDirectories)"
-                    $group.Link.AppendChild($libDirNode) | Out-Null
+        # 检查是否已经有我们的路径
+        if ($content -notmatch "WixToolset\.WcaUtil.*build.*native.*v14") {
+            # 查找 AdditionalLibraryDirectories 并在前面添加我们的路径
+            if ($content -match '<AdditionalLibraryDirectories>') {
+                # 在现有路径前添加
+                $content = $content -replace '(<AdditionalLibraryDirectories>)', "`$1$relativeLibPath;"
+                $modified = $true
+                Write-Success "已在现有库路径前添加 WiX 路径"
+            } else {
+                # 查找 <Link> 标签并添加新的 AdditionalLibraryDirectories
+                if ($content -match '<Link>') {
+                    $newLibDirs = "      <AdditionalLibraryDirectories>$relativeLibPath;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>"
+                    $content = $content -replace '(<Link>)', "`$1`r`n$newLibDirs"
                     $modified = $true
+                    Write-Success "已创建新的库路径配置"
                 }
             }
+        } else {
+            Write-Info "项目文件已包含 WiX 库路径"
         }
         
         if ($modified) {
-            $proj.Save($vcxproj)
-            Write-Success "项目文件已修改（添加库路径）"
+            Set-Content $vcxproj -Value $content -NoNewline
+            Write-Success "项目文件已保存"
         }
     }
     
