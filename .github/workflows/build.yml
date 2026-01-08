@@ -42,9 +42,33 @@ jobs:
           .\tools\build\start-build.ps1
         shell: pwsh
         
+      - name: Prepare artifacts
+        if: ${{ contains(inputs.debug, 'false') }}
+        run: |
+          New-Item -ItemType Directory -Path ".\artifacts" -Force
+          
+          # 复制 User Setup
+          if (Test-Path "D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\*.exe") {
+            Copy-Item "D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\*.exe" -Destination ".\artifacts\" -Force
+            Write-Host "✓ Copied User Setup"
+          }
+          
+          # 复制 Machine Setup
+          if (Test-Path "D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\MachineSetup\*.exe") {
+            Copy-Item "D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\MachineSetup\*.exe" -Destination ".\artifacts\" -Force
+            Write-Host "✓ Copied Machine Setup"
+          }
+          
+          # 列出所有文件
+          Get-ChildItem ".\artifacts\" | ForEach-Object {
+            $sizeMB = [math]::Round($_.Length / 1MB, 2)
+            Write-Host "  $($_.Name) - $sizeMB MB"
+          }
+
       - name: Upload installer artifacts
         if: ${{ contains(inputs.debug, 'false') }}
         uses: actions/upload-artifact@v4
         with:
           name: PowerToys-Installers
-          path: .\installer\PowerToysSetup\bin\Release\*.exe
+          path: .\artifacts\*.exe
+          if-no-files-found: error
