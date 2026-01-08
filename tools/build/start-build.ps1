@@ -230,12 +230,66 @@ function Ensure-WixPackages {
         throw "关键 WiX 文件缺失，无法继续构建"
     }
     
-    # 设置库路径环境变量
+    # 修改项目文件直接添加库路径
+    Write-Info "修改项目文件添加库路径..."
+    
+    $vcxproj = "$($Config.BaseDir)\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj"
+    
+    if (Test-Path $vcxproj) {
+        # 备份
+        if (-not (Test-Path "$vcxproj.original")) {
+            Copy-Item $vcxproj "$vcxproj.original" -Force
+        }
+        
+        # 读取为 XML
+        [xml]$proj = Get-Content $vcxproj
+        
+        # 相对于项目文件的库路径（项目在 installer\PowerToysSetupCustomActionsVNext，包在 installer\packages）
+        $relativeLibPath = "..\..\packages\WixToolset.WcaUtil.$($Config.WixVersion)\build\native\v14\x64;..\..\packages\WixToolset.Dutil.$($Config.WixVersion)\build\native\v14\x64"
+        
+        $modified = $false
+        
+        # 查找所有 ItemDefinitionGroup
+        foreach ($group in $proj.Project.ItemDefinitionGroup) {
+            # 处理 x64 Release 配置或无条件的配置
+            if ($group.Condition -match "x64.*Release" -or (-not $group.Condition)) {
+                # 确保有 Link 节点
+                if (-not $group.Link) {
+                    $linkNode = $proj.CreateElement("Link", $proj.DocumentElement.NamespaceURI)
+                    $group.AppendChild($linkNode) | Out-Null
+                }
+                
+                # 处理 AdditionalLibraryDirectories
+                if ($group.Link.AdditionalLibraryDirectories) {
+                    $currentValue = $group.Link.AdditionalLibraryDirectories
+                    
+                    # 如果还没有我们的路径，添加到最前面
+                    if ($currentValue -notlike "*WixToolset.WcaUtil*") {
+                        $group.Link.AdditionalLibraryDirectories = "$relativeLibPath;$currentValue"
+                        $modified = $true
+                    }
+                } else {
+                    # 创建新的
+                    $libDirNode = $proj.CreateElement("AdditionalLibraryDirectories", $proj.DocumentElement.NamespaceURI)
+                    $libDirNode.InnerText = "$relativeLibPath;%(AdditionalLibraryDirectories)"
+                    $group.Link.AppendChild($libDirNode) | Out-Null
+                    $modified = $true
+                }
+            }
+        }
+        
+        if ($modified) {
+            $proj.Save($vcxproj)
+            Write-Success "项目文件已修改（添加库路径）"
+        }
+    }
+    
+    # 设置库路径环境变量（作为备用）
     $libPath = "$destWcaUtil\build\native\v14\x64;$destDutil\build\native\v14\x64"
     $env:LIB = "$libPath;$env:LIB"
     $env:LIBPATH = "$libPath;$env:LIBPATH"
     
-    Write-Success "WiX 库路径已配置到环境变量"
+    Write-Success "WiX 库路径已配置到环境变量和项目文件"
 }
 
 # ==================== 主构建流程 ====================
