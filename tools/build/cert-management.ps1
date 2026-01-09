@@ -114,11 +114,17 @@ function EnsureCertificate {
 
     if (-not (ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\CurrentUser\TrustedPeople")) { return $null }
     
-    # Root store imports can trigger interactive security warnings. 
-    # For local MSIX signing, TrustedPeople is often sufficient.
-    # We attempt these but don't fail if they don't succeed (e.g. if user cancels the prompt).
-    $null = ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\CurrentUser\Root"
-    $null = ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\LocalMachine\Root"
+    # Skip Cert:\CurrentUser\Root as it almost always triggers a mandatory interactive security warning.
+    # For local MSIX signing and development, TrustedPeople is sufficient.
+
+    # Try to import to LocalMachine\Root using certutil which is silent if run as Admin.
+    try {
+        certutil -addstore "Root" $cerPath | Out-Null
+        Write-Host "Attempted to import to LocalMachine\Root via certutil."
+    }
+    catch {
+        Write-Warning "Failed to import to LocalMachine\Root: $_"
+    }
 
     return $cert
 }
