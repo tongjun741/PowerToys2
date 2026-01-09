@@ -61,7 +61,7 @@ function ImportAndVerifyCertificate {
 
     try {
         #改之前 $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -ErrorAction Stop
-        $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -Force -Confirm:$false -ErrorAction Stop
+        $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -ErrorAction Stop
     } catch {
         Write-Warning "Failed to import certificate to $storePath : $_"
         return $false
