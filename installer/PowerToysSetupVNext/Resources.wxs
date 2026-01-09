@@ -4,7 +4,7 @@
 
   <!-- Languages for localization on build farm -->
   <!-- qps-ploc;qps-ploca;qps-plocm; -->
-  <?define LocLanguageList = ar-SA;cs-CZ;de-DE;es-ES;fa-IR;fr-FR;he-IL;hu-HU;it-IT;ja-JP;ko-KR;nl-NL;pl-PL;pt-BR;pt-PT;ru-RU;sv-SE;tr-TR;uk-UA;zh-CN;zh-TW?>
+  <?define LocLanguageList = zh-CN?>
 
   <Fragment>
     <!-- Resource directories should be added only if the installer is built on the build farm -->

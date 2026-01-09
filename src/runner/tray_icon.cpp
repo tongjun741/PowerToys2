@@ -5,6 +5,7 @@
 #include "general_settings.h"
 #include "centralized_hotkeys.h"
 #include "centralized_kb_hook.h"
+#include "powertoy_module.h"
 #include <Windows.h>
 
 #include <common/utils/resources.h>
@@ -74,6 +75,31 @@ void open_quick_access_flyout_window(const POINT flyout_position)
     open_settings_window(std::nullopt, true, flyout_position);
 }
 
+void toggle_keyboard_manager()
+{
+    const std::wstring kbm_key = L"Keyboard Manager";
+    auto& all_modules = modules();
+    auto it = all_modules.find(kbm_key);
+
+    if (it != all_modules.end())
+    {
+        PowertoyModule& powertoy = it->second;
+        bool is_currently_enabled = powertoy->is_enabled();
+
+        if (is_currently_enabled)
+        {
+            Logger::info(L"Toggling Keyboard Manager: Disabling");
+            powertoy->disable();
+        }
+        else
+        {
+            Logger::info(L"Toggling Keyboard Manager: Enabling");
+            powertoy->enable();
+        }
+        powertoy.UpdateHotkeyEx();
+    }
+}
+
 void handle_tray_command(HWND window, const WPARAM command_id, LPARAM lparam)
 {
     switch (command_id)
@@ -116,6 +142,11 @@ void handle_tray_command(HWND window, const WPARAM command_id, LPARAM lparam)
         POINT mouse_pointer;
         GetCursorPos(&mouse_pointer);
         open_quick_access_flyout_window(mouse_pointer);
+        break;
+    }
+    case ID_TOGGLE_KEYBOARD_MANAGER_COMMAND:
+    {
+        toggle_keyboard_manager();
         break;
     }
     }
@@ -195,6 +226,9 @@ LRESULT __stdcall tray_icon_window_proc(HWND window, UINT message, WPARAM wparam
                     static std::wstring submit_bug_menuitem_label = GET_RESOURCE_STRING(IDS_SUBMIT_BUG_TEXT);
                     static std::wstring documentation_menuitem_label = GET_RESOURCE_STRING(IDS_DOCUMENTATION_MENU_TEXT);
                     static std::wstring quick_access_menuitem_label = GET_RESOURCE_STRING(IDS_QUICK_ACCESS_MENU_TEXT);
+                    static std::wstring kbm_enabled_label = GET_RESOURCE_STRING(IDS_TOGGLE_KBM_ENABLED_TEXT);
+                    static std::wstring kbm_disabled_label = GET_RESOURCE_STRING(IDS_TOGGLE_KBM_DISABLED_TEXT);
+
                     change_menu_item_text(ID_SETTINGS_MENU_COMMAND, settings_menuitem_label.data());
                     change_menu_item_text(ID_CLOSE_MENU_COMMAND, close_menuitem_label.data());
                     change_menu_item_text(ID_REPORT_BUG_COMMAND, submit_bug_menuitem_label.data());
@@ -202,6 +236,17 @@ LRESULT __stdcall tray_icon_window_proc(HWND window, UINT message, WPARAM wparam
                     EnableMenuItem(h_sub_menu, ID_REPORT_BUG_COMMAND, MF_BYCOMMAND | (bug_report_disabled ? MF_GRAYED : MF_ENABLED));
                     change_menu_item_text(ID_DOCUMENTATION_MENU_COMMAND, documentation_menuitem_label.data());
                     change_menu_item_text(ID_QUICK_ACCESS_MENU_COMMAND, quick_access_menuitem_label.data());
+
+                    // Update Keyboard Manager status in menu
+                    const std::wstring kbm_key = L"Keyboard Manager";
+                    auto& all_modules = modules();
+                    auto it = all_modules.find(kbm_key);
+                    if (it != all_modules.end())
+                    {
+                        bool is_enabled = it->second->is_enabled();
+                        change_menu_item_text(ID_TOGGLE_KEYBOARD_MANAGER_COMMAND,
+                            is_enabled ? kbm_enabled_label.data() : kbm_disabled_label.data());
+                    }
                 }
                 if (!h_sub_menu)
                 {

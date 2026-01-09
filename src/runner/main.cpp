@@ -147,37 +147,7 @@ int runner(bool isProcessElevated, bool openSettings, std::string settingsWindow
         // Load PowerToys DLLs
 
         std::vector<std::wstring_view> knownModules = {
-            L"PowerToys.FancyZonesModuleInterface.dll",
-            L"PowerToys.powerpreview.dll",
-            L"WinUI3Apps/PowerToys.ImageResizerExt.dll",
             L"PowerToys.KeyboardManager.dll",
-            L"PowerToys.Launcher.dll",
-            L"WinUI3Apps/PowerToys.PowerRenameExt.dll",
-            L"PowerToys.ShortcutGuideModuleInterface.dll",
-            L"PowerToys.ColorPicker.dll",
-            L"PowerToys.AwakeModuleInterface.dll",
-            L"PowerToys.MouseHighlighter.dll",
-            L"PowerToys.MouseJump.dll",
-            L"PowerToys.AlwaysOnTopModuleInterface.dll",
-            L"PowerToys.MousePointerCrosshairs.dll",
-            L"PowerToys.CursorWrap.dll",
-            L"PowerToys.PowerAccentModuleInterface.dll",
-            L"PowerToys.PowerOCRModuleInterface.dll",
-            L"PowerToys.AdvancedPasteModuleInterface.dll",
-            L"WinUI3Apps/PowerToys.FileLocksmithExt.dll",
-            L"WinUI3Apps/PowerToys.RegistryPreviewExt.dll",
-            L"WinUI3Apps/PowerToys.MeasureToolModuleInterface.dll",
-            L"WinUI3Apps/PowerToys.NewPlus.ShellExtension.dll",
-            L"WinUI3Apps/PowerToys.HostsModuleInterface.dll",
-            L"WinUI3Apps/PowerToys.Peek.dll",
-            L"WinUI3Apps/PowerToys.EnvironmentVariablesModuleInterface.dll",
-            L"PowerToys.MouseWithoutBordersModuleInterface.dll",
-            L"PowerToys.CropAndLockModuleInterface.dll",
-            L"PowerToys.CmdNotFoundModuleInterface.dll",
-            L"PowerToys.WorkspacesModuleInterface.dll",
-            L"PowerToys.CmdPalModuleInterface.dll",
-            L"PowerToys.ZoomItModuleInterface.dll",
-            L"PowerToys.LightSwitchModuleInterface.dll",
         };
 
         for (auto moduleSubdir : knownModules)

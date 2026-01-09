@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\n自定义 PowerToys：仅包含 Keyboard Manager 模块 + 简体中文 + 系统托盘控制\n\n功能说明：\n- 精简安装包：仅保留 Keyboard Manager 模块和必要的核心组件\n- 语言配置：仅包含简体中文 \\(zh-CN\\)\n- 系统托盘菜单：添加 Keyboard Manager 启用/禁用功能\n  * 菜单项动态显示当前状态（已启用/已禁用）\n  * 点击菜单项可快速切换模块状态\n\n修改的文件：\n1. 安装程序配置：Product.wxs、PowerToysInstallerVNext.wixproj\n   - 移除所有非必需模块的引用\n   \n2. 语言配置：Resources.wxs、WinAppSDK.wxs\n   - 设置仅编译简体中文语言资源\n\n3. 核心模块：main.cpp\n   - 简化模块加载列表为仅 Keyboard Manager\n\n4. UI 和菜单：resource.base.h、runner.base.rc、tray_icon.cpp\n   - 添加菜单命令 ID 和菜单项定义\n   - 实现 toggle_keyboard_manager\\(\\) 功能\n   - 动态显示 Keyboard Manager 状态\n\n5. 本地化：Resources.resx\n   - 添加中文字符串：\"Keyboard Manager: 已启用\" / \"Keyboard Manager: 已禁用\"\n\n🤖 Generated with Claude Code\nEOF\n\\)\")"
+    ]
+  }
+}

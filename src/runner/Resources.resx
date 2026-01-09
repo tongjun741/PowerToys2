@@ -193,4 +193,10 @@
     <value>Close</value>
     <comment>Close as a verb, as in Close the application</comment>
   </data>
+  <data name="TOGGLE_KBM_ENABLED_TEXT" xml:space="preserve">
+    <value>Keyboard Manager: 已启用</value>
+  </data>
+  <data name="TOGGLE_KBM_DISABLED_TEXT" xml:space="preserve">
+    <value>Keyboard Manager: 已禁用</value>
+  </data>
 </root>
