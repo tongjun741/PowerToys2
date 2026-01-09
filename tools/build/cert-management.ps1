@@ -62,7 +62,8 @@ function ImportAndVerifyCertificate {
     try {
         #改之前 $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -ErrorAction Stop
         $null = Import-Certificate -FilePath $cerPath -CertStoreLocation $storePath -ErrorAction Stop
-    } catch {
+    }
+    catch {
         Write-Warning "Failed to import certificate to $storePath : $_"
         return $false
     }
@@ -71,7 +72,8 @@ function ImportAndVerifyCertificate {
     if ($imported) {
         Write-Host "Certificate successfully imported to $storePath"
         return $true
-    } else {
+    }
+    else {
         Write-Warning "Certificate not found in $storePath after import"
         return $false
     }
@@ -83,9 +85,9 @@ function EnsureCertificate {
     )
 
     $cert = Get-ChildItem -Path Cert:\CurrentUser\My |
-        Where-Object { $_.Subject -eq $certSubject } |
-        Sort-Object NotAfter -Descending |
-        Select-Object -First 1
+    Where-Object { $_.Subject -eq $certSubject } |
+    Sort-Object NotAfter -Descending |
+    Select-Object -First 1
 
     if (-not $cert) {
         Write-Host "Certificate not found. Creating a new one..."
@@ -111,11 +113,12 @@ function EnsureCertificate {
     [void](Export-Certificate -Cert $cert -FilePath $cerPath -Force)
 
     if (-not (ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\CurrentUser\TrustedPeople")) { return $null }
-    if (-not (ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\CurrentUser\Root")) { return $null }
-    if (-not (ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\LocalMachine\Root")) {
-        Write-Warning "Failed to import to LocalMachine\Root (admin may be required)"
-        return $null
-    }
+    
+    # Root store imports can trigger interactive security warnings. 
+    # For local MSIX signing, TrustedPeople is often sufficient.
+    # We attempt these but don't fail if they don't succeed (e.g. if user cancels the prompt).
+    $null = ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\CurrentUser\Root"
+    $null = ImportAndVerifyCertificate -cerPath $cerPath -storePath "Cert:\LocalMachine\Root"
 
     return $cert
 }
@@ -137,7 +140,8 @@ function Export-CertificateFiles {
         try {
             Export-Certificate -Cert $Certificate -FilePath $CerPath -Force | Out-Null
             Write-Host "Exported CER to: $CerPath"
-        } catch {
+        }
+        catch {
             Write-Warning "Failed to export CER file: $_"
         }
     }
@@ -146,7 +150,8 @@ function Export-CertificateFiles {
         try {
             Export-PfxCertificate -Cert $Certificate -FilePath $PfxPath -Password $PfxPassword -Force | Out-Null
             Write-Host "Exported PFX to: $PfxPath"
-        } catch {
+        }
+        catch {
             Write-Warning "Failed to export PFX file: $_"
         }
     }
@@ -183,7 +188,8 @@ if ($MyInvocation.InvocationName -ne '.') {
         Write-Host "Subject: $($cert.Subject)" -ForegroundColor White
         Write-Host "Thumbprint: $($cert.Thumbprint)" -ForegroundColor White
         Write-Host "Valid Until: $($cert.NotAfter)" -ForegroundColor White
-    } else {
+    }
+    else {
         Write-Error "Failed to create or find certificate. Please check the error messages above."
         exit 1
     }
