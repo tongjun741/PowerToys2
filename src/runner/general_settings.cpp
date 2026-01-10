@@ -404,3 +404,39 @@ void start_enabled_powertoys()
         }
     }
 }
+
+void toggle_module_enabled(const std::wstring& module_name)
+{
+    auto& mods = modules();
+    if (mods.find(module_name) == mods.end())
+    {
+        Logger::warn(L"toggle_module_enabled: Module {} not found", module_name);
+        return;
+    }
+
+    PowertoyModule& powertoy = mods.at(module_name);
+    bool current_state = powertoy->is_enabled();
+    bool new_state = !current_state;
+
+    // Build JSON config to toggle the module
+    json::JsonObject enabled;
+    enabled.SetNamedValue(module_name, json::value(new_state));
+
+    json::JsonObject general_configs;
+    general_configs.SetNamedValue(L"enabled", std::move(enabled));
+
+    Logger::info(L"toggle_module_enabled: Toggling {} from {} to {}", module_name, current_state, new_state);
+    apply_general_settings(general_configs, true);
+}
+
+bool is_module_enabled(const std::wstring& module_name)
+{
+    auto& mods = modules();
+    if (mods.find(module_name) == mods.end())
+    {
+        Logger::warn(L"is_module_enabled: Module {} not found", module_name);
+        return false;
+    }
+
+    return mods.at(module_name)->is_enabled();
+}

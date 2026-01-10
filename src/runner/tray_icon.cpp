@@ -118,6 +118,11 @@ void handle_tray_command(HWND window, const WPARAM command_id, LPARAM lparam)
         open_quick_access_flyout_window(mouse_pointer);
         break;
     }
+    case ID_TOGGLE_KEYBOARD_MANAGER_COMMAND:
+    {
+        toggle_module_enabled(L"Keyboard Manager");
+        break;
+    }
     }
 }
 
@@ -202,6 +207,12 @@ LRESULT __stdcall tray_icon_window_proc(HWND window, UINT message, WPARAM wparam
                     EnableMenuItem(h_sub_menu, ID_REPORT_BUG_COMMAND, MF_BYCOMMAND | (bug_report_disabled ? MF_GRAYED : MF_ENABLED));
                     change_menu_item_text(ID_DOCUMENTATION_MENU_COMMAND, documentation_menuitem_label.data());
                     change_menu_item_text(ID_QUICK_ACCESS_MENU_COMMAND, quick_access_menuitem_label.data());
+
+                    // Update Keyboard Manager menu item text based on current state
+                    static std::wstring kbm_enabled_label = GET_RESOURCE_STRING(IDS_KBM_ENABLED_MENU_TEXT);
+                    static std::wstring kbm_disabled_label = GET_RESOURCE_STRING(IDS_KBM_DISABLED_MENU_TEXT);
+                    bool kbm_is_enabled = is_module_enabled(L"Keyboard Manager");
+                    change_menu_item_text(ID_TOGGLE_KEYBOARD_MANAGER_COMMAND, kbm_is_enabled ? kbm_enabled_label.data() : kbm_disabled_label.data());
                 }
                 if (!h_sub_menu)
                 {
