@@ -69,7 +69,7 @@ jobs:
 
       - name: Upload installer artifacts
         if: ${{ contains(inputs.debug, 'false') && steps.build.outcome == 'success' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PowerToys-Installers
           path: .\artifacts\*.exe
@@ -119,7 +119,7 @@ jobs:
 
       - name: Upload error logs
         if: ${{ contains(inputs.debug, 'false') && (steps.build.outcome == 'failure' || failure()) }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Build-Error-Logs
           path: .\error-logs\*
