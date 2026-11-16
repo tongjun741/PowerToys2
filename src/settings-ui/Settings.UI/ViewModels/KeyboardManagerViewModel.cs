@@ -34,8 +34,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
         // Default editor path. Can be removed once the new WinUI3 editor is released.
         private const string KeyboardManagerEditorPath = "KeyboardManagerEditor\\PowerToys.KeyboardManagerEditor.exe";
 
-        // New WinUI3 editor path. Still in development and do NOT use it in production.
-
         private Process editor;
 
         private enum KeyboardManagerEditorType
