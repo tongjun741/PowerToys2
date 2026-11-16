@@ -33,7 +33,7 @@ public sealed class SetAdditionalSettingsCommandLineCommand
     private struct AdditionalPropertyInfo
     {
         // A path to the property starting from the root module Settings object in the following format: "RootPropertyA.NestedPropertyB[...]"
-        public string PropertyPath;
+        public string PropertyPath = string.Empty;
 
         // Property Type hint so we know how to handle it
         public JsonValueKind PropertyType;
