@@ -107,7 +107,8 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <DesktopCompatible>true</DesktopCompatible>
-    <SpectreMitigation>Spectre</SpectreMitigation>
+    <!-- GitHub Actions runner (VS 18 image) no longer ships Spectre-mitigated libs -->
+    <SpectreMitigation>false</SpectreMitigation>
   </PropertyGroup>
 
   <!-- Debug/Release props -->
