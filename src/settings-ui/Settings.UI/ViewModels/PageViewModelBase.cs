@@ -146,36 +146,36 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             _hotkeyConflictTooltips.Clear();
 
             if (allConflicts.InAppConflicts.Count > 0)
+            {
+                foreach (var conflictGroup in allConflicts.InAppConflicts)
                 {
-                    foreach (var conflictGroup in allConflicts.InAppConflicts)
+                    foreach (var conflict in conflictGroup.Modules)
                     {
-                        foreach (var conflict in conflictGroup.Modules)
+                        if (string.Equals(conflict.ModuleName, ModuleName, StringComparison.OrdinalIgnoreCase))
                         {
-                            if (string.Equals(conflict.ModuleName, ModuleName, StringComparison.OrdinalIgnoreCase))
-                            {
-                                var keyName = $"{conflict.ModuleName.ToLowerInvariant()}_{conflict.HotkeyID}";
-                                _hotkeyConflictStatus[keyName] = true;
-                                _hotkeyConflictTooltips[keyName] = ResourceLoaderInstance.ResourceLoader.GetString("InAppHotkeyConflictTooltipText");
-                            }
+                            var keyName = $"{conflict.ModuleName.ToLowerInvariant()}_{conflict.HotkeyID}";
+                            _hotkeyConflictStatus[keyName] = true;
+                            _hotkeyConflictTooltips[keyName] = ResourceLoaderInstance.ResourceLoader.GetString("InAppHotkeyConflictTooltipText");
                         }
                     }
                 }
+            }
 
-                if (allConflicts.SystemConflicts.Count > 0)
+            if (allConflicts.SystemConflicts.Count > 0)
+            {
+                foreach (var conflictGroup in allConflicts.SystemConflicts)
                 {
-                    foreach (var conflictGroup in allConflicts.SystemConflicts)
+                    foreach (var conflict in conflictGroup.Modules)
                     {
-                        foreach (var conflict in conflictGroup.Modules)
+                        if (string.Equals(conflict.ModuleName, ModuleName, StringComparison.OrdinalIgnoreCase))
                         {
-                            if (string.Equals(conflict.ModuleName, ModuleName, StringComparison.OrdinalIgnoreCase))
-                            {
-                                var keyName = $"{conflict.ModuleName.ToLowerInvariant()}_{conflict.HotkeyID}";
-                                _hotkeyConflictStatus[keyName] = true;
-                                _hotkeyConflictTooltips[keyName] = ResourceLoaderInstance.ResourceLoader.GetString("SysHotkeyConflictTooltipText");
-                            }
+                            var keyName = $"{conflict.ModuleName.ToLowerInvariant()}_{conflict.HotkeyID}";
+                            _hotkeyConflictStatus[keyName] = true;
+                            _hotkeyConflictTooltips[keyName] = ResourceLoaderInstance.ResourceLoader.GetString("SysHotkeyConflictTooltipText");
                         }
                     }
                 }
+            }
         }
 
         protected virtual bool GetHotkeyConflictStatus(string key)
