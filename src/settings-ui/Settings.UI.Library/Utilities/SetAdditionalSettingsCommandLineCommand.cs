@@ -40,7 +40,7 @@ public sealed class SetAdditionalSettingsCommandLineCommand
         public string PropertyPath = string.Empty;
 
         // Property Type hint so we know how to handle it
-        public JsonValueKind PropertyType;
+        public JsonValueKind PropertyType = JsonValueKind.Undefined;
     }
 
     private static readonly Dictionary<string, AdditionalPropertyInfo> SupportedAdditionalPropertiesInfoForModules = new Dictionary<string, AdditionalPropertyInfo>();
