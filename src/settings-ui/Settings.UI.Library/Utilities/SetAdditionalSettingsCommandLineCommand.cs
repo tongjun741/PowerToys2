@@ -32,6 +32,10 @@ public sealed class SetAdditionalSettingsCommandLineCommand
 
     private struct AdditionalPropertyInfo
     {
+        public AdditionalPropertyInfo()
+        {
+        }
+
         // A path to the property starting from the root module Settings object in the following format: "RootPropertyA.NestedPropertyB[...]"
         public string PropertyPath = string.Empty;
 
