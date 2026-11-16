@@ -1,4 +1,4 @@
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
   <?include $(sys.CURRENTDIR)\Common.wxi?>
 
@@ -106,17 +106,11 @@
 
     <CustomAction Id="TerminateProcesses" Return="ignore" Execute="immediate" DllEntry="TerminateProcessesCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="SetCreateWinAppSDKHardlinksParam" Property="CreateWinAppSDKHardlinks" Value="[INSTALLFOLDER]" />
 
-    <CustomAction Id="SetDeleteWinAppSDKHardlinksParam" Property="DeleteWinAppSDKHardlinks" Value="[INSTALLFOLDER]" />
 
-    <CustomAction Id="SetCreatePTInteropHardlinksParam" Property="CreatePTInteropHardlinks" Value="[INSTALLFOLDER]" />
 
-    <CustomAction Id="SetDeletePTInteropHardlinksParam" Property="DeletePTInteropHardlinks" Value="[INSTALLFOLDER]" />
 
-    <CustomAction Id="SetCreateDotnetRuntimeHardlinksParam" Property="CreateDotnetRuntimeHardlinks" Value="[INSTALLFOLDER]" />
 
-    <CustomAction Id="SetDeleteDotnetRuntimeHardlinksParam" Property="DeleteDotnetRuntimeHardlinks" Value="[INSTALLFOLDER]" />
 
     <CustomAction Id="TelemetryLogInstallSuccess" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogInstallSuccessCA" BinaryRef="PTCustomActions" />
 
