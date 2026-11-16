@@ -39,36 +39,14 @@
 
     <Property Id="ARPPRODUCTICON" Value="powertoys.exe" />
 
-    <Feature Id="CoreFeature" Title="PowerToys" AllowAdvertise="no" TypicalDefault="install" Description="Contains all PowerToys features." AllowAbsent="no">
+    <Feature Id="CoreFeature" Title="PowerToys - Keyboard Manager" AllowAdvertise="no" TypicalDefault="install" Description="Keyboard Manager only installation." AllowAbsent="no">
       <ComponentGroupRef Id="CoreComponents" />
       <ComponentGroupRef Id="BaseApplicationsComponentGroup" />
       <ComponentGroupRef Id="WinUI3ApplicationsComponentGroup" />
-      <ComponentGroupRef Id="AwakeComponentGroup" />
-      <ComponentGroupRef Id="ColorPickerComponentGroup" />
-      <ComponentGroupRef Id="FileExplorerPreviewComponentGroup" />
-      <ComponentGroupRef Id="FileLocksmithComponentGroup" />
-      <ComponentGroupRef Id="HostsComponentGroup" />
-      <ComponentGroupRef Id="ImageResizerComponentGroup" />
       <ComponentGroupRef Id="KeyboardManagerComponentGroup" />
-      <ComponentGroupRef Id="LightSwitchComponentGroup" />
-      <ComponentGroupRef Id="PeekComponentGroup" />
-      <ComponentGroupRef Id="PowerRenameComponentGroup" />
-      <ComponentGroupRef Id="RegistryPreviewComponentGroup" />
-      <ComponentGroupRef Id="RunComponentGroup" />
       <ComponentGroupRef Id="SettingsComponentGroup" />
-      <ComponentGroupRef Id="ShortcutGuideComponentGroup" />
-      <ComponentGroupRef Id="MouseWithoutBordersComponentGroup" />
-      <ComponentGroupRef Id="EnvironmentVariablesComponentGroup" />
-      <ComponentGroupRef Id="AdvancedPasteComponentGroup" />
-      <ComponentGroupRef Id="NewPlusComponentGroup" />
-      <ComponentGroupRef Id="NewPlusTemplatesComponentGroup" />
       <ComponentGroupRef Id="ResourcesComponentGroup" />
-      <ComponentGroupRef Id="DscResourcesComponentGroup" />
       <ComponentGroupRef Id="WindowsAppSDKComponentGroup" />
-      <ComponentGroupRef Id="ToolComponentGroup" />
-      <ComponentGroupRef Id="MonacoSRCHeatGenerated" />
-      <ComponentGroupRef Id="WorkspacesComponentGroup" />
-      <ComponentGroupRef Id="CmdPalComponentGroup" />
     </Feature>
 
     <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" Sequence="execute" />

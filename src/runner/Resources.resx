@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -194,11 +194,11 @@
     <comment>Close as a verb, as in Close the application</comment>
   </data>
   <data name="KBM_ENABLED_MENU_TEXT" xml:space="preserve">
-    <value>Keyboard Manager: Enabled</value>
+    <value>Keyboard Manager: 已启用</value>
     <comment>Menu item text when Keyboard Manager is enabled</comment>
   </data>
   <data name="KBM_DISABLED_MENU_TEXT" xml:space="preserve">
-    <value>Keyboard Manager: Disabled</value>
+    <value>Keyboard Manager: 已禁用</value>
     <comment>Menu item text when Keyboard Manager is disabled</comment>
   </data>
 </root>

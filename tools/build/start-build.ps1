@@ -15,9 +15,9 @@ param(
 $ErrorActionPreference = "Stop"
 
 $Script:Config = @{
-    BaseDir = "D:\PowerToys2"
-    RepoUrl = "https://github.com/tongjun741/PowerToys2.git"
-    WixVersion = "5.0.2"
+    BaseDir      = "D:\PowerToys2"
+    RepoUrl      = "https://github.com/tongjun741/PowerToys2.git"
+    WixVersion   = "5.0.2"
     WindowsSDKId = "Microsoft.WindowsSDK.10.0.19041"
 }
 
@@ -73,11 +73,13 @@ function Invoke-WcautilDiagnosis {
         $wcautilPath = "$env:NUGET_PACKAGES\wixtoolset.wcautil\$($Config.WixVersion)\build\native\v14\x64\wcautil.lib"
         if (Test-Path $wcautilPath) {
             Write-Success "该路径下 wcautil.lib 存在"
-        } else {
+        }
+        else {
             Write-Error "该路径下 wcautil.lib 不存在"
             Write-Info "预期位置: $wcautilPath"
         }
-    } else {
+    }
+    else {
         Write-Error "NUGET_PACKAGES 环境变量未设置"
     }
     
@@ -89,7 +91,8 @@ function Invoke-WcautilDiagnosis {
             $Matches[1] -split ";" | ForEach-Object {
                 if ($_ -like "*WixToolset*" -or $_ -like "*NUGET_PACKAGES*") { 
                     Write-Success "  $_" 
-                } else { 
+                }
+                else { 
                     Write-Host "    $_" -ForegroundColor Gray 
                 }
             }
@@ -172,7 +175,8 @@ Write-Host "[INFO] LIB 路径已设置" -ForegroundColor Cyan
     if ($modified) {
         Set-Content $ScriptPath -Value $content -NoNewline
         Write-Success "构建脚本已优化"
-    } else {
+    }
+    else {
         Write-Info "构建脚本已是最新"
     }
 }
@@ -253,7 +257,8 @@ function Ensure-WixPackages {
     
     if ((Test-Path $wcautilLibLower) -and (Test-Path $wcautilLibUpper)) {
         Write-Success "wcautil.lib 已验证（两个位置）"
-    } else {
+    }
+    else {
         throw "wcautil.lib 验证失败"
     }
     
@@ -295,12 +300,13 @@ try {
             }
         }
         if (-not (Test-Path $Config.BaseDir)) {
-            git clone $Config.RepoUrl
+            git clone -b tray-menu $Config.RepoUrl
         }
         Set-Location $Config.BaseDir
         git submodule update --init --recursive | Out-Null
         Write-Success "完成"
-    } else {
+    }
+    else {
         Write-StepHeader "步骤 1/10: 使用现有代码"
         Set-Location $Config.BaseDir
     }
@@ -350,7 +356,8 @@ try {
     $wcautilLibLower = "$($Config.BaseDir)\installer\packages\wixtoolset.wcautil\$($Config.WixVersion)\build\native\v14\x64\wcautil.lib"
     if (Test-Path $wcautilLibLower) {
         Write-Success "wcautil.lib 已就绪（小写路径）"
-    } else {
+    }
+    else {
         Write-Error "wcautil.lib 缺失（小写路径）"
     }
     
@@ -371,8 +378,8 @@ try {
         Write-Info "耗时: $($duration.ToString('hh\:mm\:ss'))"
         
         $installers = Get-ChildItem -Path "$($Config.BaseDir)\installer\PowerToysSetupVNext" -Filter "*.exe" -Recurse -ErrorAction SilentlyContinue | 
-            Where-Object { $_.Length -gt 1MB } |
-            Sort-Object LastWriteTime -Descending | Select-Object -First 5
+        Where-Object { $_.Length -gt 1MB } |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 5
         
         if ($installers) {
             Write-Host ""
@@ -387,11 +394,13 @@ try {
         Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Green
         Write-Host "║                  🎉 构建完成！ 🎉                          ║" -ForegroundColor Green
         Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Green
-    } else {
+    }
+    else {
         throw "构建失败: $exitCode"
     }
     
-} catch {
+}
+catch {
     Write-Host ""
     Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Red
     Write-Host "║                      ❌ 失败 ❌                            ║" -ForegroundColor Red
@@ -406,7 +415,8 @@ try {
             Set-Location $Config.BaseDir
             Invoke-WcautilDiagnosis | Out-Null
         }
-    } catch {}
+    }
+    catch {}
     Write-Host "━━━━━━━━━━━━━━━━" -ForegroundColor Yellow
     
     Write-Host ""

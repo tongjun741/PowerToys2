@@ -5,6 +5,7 @@
 #include "general_settings.h"
 #include "centralized_hotkeys.h"
 #include "centralized_kb_hook.h"
+#include "powertoy_module.h"
 #include <Windows.h>
 
 #include <common/utils/resources.h>
@@ -72,6 +73,31 @@ void change_menu_item_text(const UINT item_id, wchar_t* new_text)
 void open_quick_access_flyout_window(const POINT flyout_position)
 {
     open_settings_window(std::nullopt, true, flyout_position);
+}
+
+void toggle_keyboard_manager()
+{
+    const std::wstring kbm_key = L"Keyboard Manager";
+    auto& all_modules = modules();
+    auto it = all_modules.find(kbm_key);
+
+    if (it != all_modules.end())
+    {
+        PowertoyModule& powertoy = it->second;
+        bool is_currently_enabled = powertoy->is_enabled();
+
+        if (is_currently_enabled)
+        {
+            Logger::info(L"Toggling Keyboard Manager: Disabling");
+            powertoy->disable();
+        }
+        else
+        {
+            Logger::info(L"Toggling Keyboard Manager: Enabling");
+            powertoy->enable();
+        }
+        powertoy.UpdateHotkeyEx();
+    }
 }
 
 void handle_tray_command(HWND window, const WPARAM command_id, LPARAM lparam)
@@ -200,6 +226,7 @@ LRESULT __stdcall tray_icon_window_proc(HWND window, UINT message, WPARAM wparam
                     static std::wstring submit_bug_menuitem_label = GET_RESOURCE_STRING(IDS_SUBMIT_BUG_TEXT);
                     static std::wstring documentation_menuitem_label = GET_RESOURCE_STRING(IDS_DOCUMENTATION_MENU_TEXT);
                     static std::wstring quick_access_menuitem_label = GET_RESOURCE_STRING(IDS_QUICK_ACCESS_MENU_TEXT);
+
                     change_menu_item_text(ID_SETTINGS_MENU_COMMAND, settings_menuitem_label.data());
                     change_menu_item_text(ID_CLOSE_MENU_COMMAND, close_menuitem_label.data());
                     change_menu_item_text(ID_REPORT_BUG_COMMAND, submit_bug_menuitem_label.data());
