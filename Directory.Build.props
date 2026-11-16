@@ -24,6 +24,8 @@
     <RepositoryUrl>https://github.com/microsoft/PowerToys</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- NuGet 漏洞审计告警不作为错误（依赖项的安全公告会随时间新增，不应阻断 CI） -->
+    <NoWarn>$(NoWarn);NU1901;NU1902;NU1903</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
