@@ -111,9 +111,7 @@ namespace Microsoft.PowerToys.Tools.XamlIndexBuilder
                 // even if future logic excludes them or they live outside typical scan patterns.
                 // Add future files to the ExplicitExtraXamlFiles array below.
                 // -----------------------------------------------------------------------------
-                string[] explicitExtraXamlFiles = new[]
-                {
-                };
+                string[] explicitExtraXamlFiles = Array.Empty<string>();
 
                 foreach (var extraFileName in explicitExtraXamlFiles)
                 {
