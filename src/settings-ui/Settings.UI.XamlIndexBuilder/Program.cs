@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation
+﻿// Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -23,7 +23,6 @@ namespace Microsoft.PowerToys.Tools.XamlIndexBuilder
         // Key: panel file base name (without .xaml), Value: owning page base name
         private static readonly Dictionary<string, string> PanelPageMapping = new(StringComparer.OrdinalIgnoreCase)
         {
-            { "MouseJumpPanel", "MouseUtilsPage" },
         };
 
         private static JsonSerializerOptions serializeOption = new()
@@ -114,7 +113,6 @@ namespace Microsoft.PowerToys.Tools.XamlIndexBuilder
                 // -----------------------------------------------------------------------------
                 string[] explicitExtraXamlFiles = new[]
                 {
-                    "MouseJumpPanel.xaml", // Mouse Jump settings panel
                 };
 
                 foreach (var extraFileName in explicitExtraXamlFiles)

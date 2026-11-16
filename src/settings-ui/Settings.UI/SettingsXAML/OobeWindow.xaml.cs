@@ -68,16 +68,6 @@ namespace Microsoft.PowerToys.Settings.UI
                 shellPage.NavigateToModule(this.initialModule);
             }
 
-            OobeShellPage.SetRunSharedEventCallback(() =>
-            {
-                return Constants.PowerLauncherSharedEvent();
-            });
-
-            OobeShellPage.SetColorPickerSharedEventCallback(() =>
-            {
-                return Constants.ShowColorPickerSharedEvent();
-            });
-
             OobeShellPage.SetOpenMainWindowCallback((Type type) =>
             {
                 App.OpenSettingsWindow(type);

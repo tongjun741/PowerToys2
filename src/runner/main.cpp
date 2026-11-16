@@ -8,7 +8,6 @@
 #include "trace.h"
 #include "general_settings.h"
 #include "restart_elevated.h"
-#include "RestartManagement.h"
 #include "Generated files/resource.h"
 #include "settings_telemetry.h"
 
@@ -25,7 +24,6 @@
 #include <common/utils/os-detect.h>
 #include <common/utils/processApi.h>
 #include <common/utils/resources.h>
-#include <common/utils/clean_video_conference.h>
 
 #include "UpdateUtils.h"
 #include "ActionRunnerUtils.h"
@@ -135,14 +133,6 @@ int runner(bool isProcessElevated, bool openSettings, std::string settingsWindow
         } }.detach();
 
         chdir_current_executable();
-
-        // We deprecated a utility called Video Conference Mute, which registered itself as a video input device.
-        // When running elevated, we try to clean up the device registration from previous installations.
-        // This is done here too because a user-scope installer won't be able to remove the driver registration due to lack of permissions.
-        if (isProcessElevated)
-        {
-            clean_video_conference();
-        }
 
         // Load PowerToys DLLs
 
@@ -260,25 +250,15 @@ enum class toast_notification_handler_result
 
 toast_notification_handler_result toast_notification_handler(const std::wstring_view param)
 {
-    const std::wstring_view cant_drag_elevated_disable = L"cant_drag_elevated_disable/";
-    const std::wstring_view couldnt_toggle_powerpreview_modules_disable = L"couldnt_toggle_powerpreview_modules_disable/";
     const std::wstring_view open_settings = L"open_settings/";
     const std::wstring_view open_overview = L"open_overview/";
     const std::wstring_view update_now = L"update_now/";
 
-    if (param == cant_drag_elevated_disable)
-    {
-        return notifications::disable_toast(notifications::ElevatedDontShowAgainRegistryPath) ? toast_notification_handler_result::exit_success : toast_notification_handler_result::exit_error;
-    }
-    else if (param.starts_with(update_now))
+    if (param.starts_with(update_now))
     {
         std::wstring args{ cmdArg::UPDATE_NOW_LAUNCH_STAGE1 };
         LaunchPowerToysUpdate(args.c_str());
         return toast_notification_handler_result::exit_success;
-    }
-    else if (param == couldnt_toggle_powerpreview_modules_disable)
-    {
-        return notifications::disable_toast(notifications::PreviewModulesDontShowAgainRegistryPath) ? toast_notification_handler_result::exit_success : toast_notification_handler_result::exit_error;
     }
     else if (param == open_settings)
     {

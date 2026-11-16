@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation
+﻿// Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -13,11 +13,6 @@ namespace Microsoft.PowerToys.Tools.XamlIndexBuilder
         // Hardcoded page-level overrides for module -> icon path
         private static readonly System.Collections.Generic.Dictionary<string, string> FileNameOverrides = new System.Collections.Generic.Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase)
         {
-            // Example overrides; expand as needed
-            { "FancyZonesPage.xaml", "/Assets/Settings/Icons/FancyZones.png" },
-            { "FileLocksmithPage.xaml", "/Assets/Settings/Icons/FileLocksmith.png" },
-            { "CmdNotFoundPage.xaml", "/Assets/Settings/Icons/CommandNotFound.png" },
-            { "PowerLauncherPage.xaml", "/Assets/Settings/Icons/PowerToysRun.png" },
         };
 
         // Contract:

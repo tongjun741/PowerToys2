@@ -11,8 +11,6 @@
 #include <common/utils/resources.h>
 #include <common/version/version.h>
 #include <common/logger/logger.h>
-#include <common/utils/elevation.h>
-#include "bug_report.h"
 
 namespace
 {
@@ -29,8 +27,6 @@ namespace
 
     NOTIFYICONDATAW tray_icon_data;
     bool tray_icon_created = false;
-
-    bool about_box_shown = false;
 
     HMENU h_menu = nullptr;
     HMENU h_sub_menu = nullptr;
@@ -75,31 +71,6 @@ void open_quick_access_flyout_window(const POINT flyout_position)
     open_settings_window(std::nullopt, true, flyout_position);
 }
 
-void toggle_keyboard_manager()
-{
-    const std::wstring kbm_key = L"Keyboard Manager";
-    auto& all_modules = modules();
-    auto it = all_modules.find(kbm_key);
-
-    if (it != all_modules.end())
-    {
-        PowertoyModule& powertoy = it->second;
-        bool is_currently_enabled = powertoy->is_enabled();
-
-        if (is_currently_enabled)
-        {
-            Logger::info(L"Toggling Keyboard Manager: Disabling");
-            powertoy->disable();
-        }
-        else
-        {
-            Logger::info(L"Toggling Keyboard Manager: Enabling");
-            powertoy->enable();
-        }
-        powertoy.UpdateHotkeyEx();
-    }
-}
-
 void handle_tray_command(HWND window, const WPARAM command_id, LPARAM lparam)
 {
     switch (command_id)
@@ -117,33 +88,6 @@ void handle_tray_command(HWND window, const WPARAM command_id, LPARAM lparam)
         }
         DestroyWindow(window);
         break;
-    case ID_ABOUT_MENU_COMMAND:
-        if (!about_box_shown)
-        {
-            about_box_shown = true;
-            std::wstring about_msg = L"PowerToys\nVersion " + get_product_version() + L"\n\xa9 2019 Microsoft Corporation";
-            MessageBoxW(nullptr, about_msg.c_str(), L"About PowerToys", MB_OK);
-            about_box_shown = false;
-        }
-        break;
-    case ID_REPORT_BUG_COMMAND:
-    {
-        launch_bug_report();
-        break;
-    }
-
-    case ID_DOCUMENTATION_MENU_COMMAND:
-    {
-        RunNonElevatedEx(L"https://aka.ms/PowerToysOverview", L"", L"");
-        break;
-    }
-    case ID_QUICK_ACCESS_MENU_COMMAND:
-    {
-        POINT mouse_pointer;
-        GetCursorPos(&mouse_pointer);
-        open_quick_access_flyout_window(mouse_pointer);
-        break;
-    }
     case ID_TOGGLE_KEYBOARD_MANAGER_COMMAND:
     {
         toggle_module_enabled(L"Keyboard Manager");
@@ -223,18 +167,8 @@ LRESULT __stdcall tray_icon_window_proc(HWND window, UINT message, WPARAM wparam
                 {
                     static std::wstring settings_menuitem_label = GET_RESOURCE_STRING(IDS_SETTINGS_MENU_TEXT);
                     static std::wstring close_menuitem_label = GET_RESOURCE_STRING(IDS_CLOSE_MENU_TEXT);
-                    static std::wstring submit_bug_menuitem_label = GET_RESOURCE_STRING(IDS_SUBMIT_BUG_TEXT);
-                    static std::wstring documentation_menuitem_label = GET_RESOURCE_STRING(IDS_DOCUMENTATION_MENU_TEXT);
-                    static std::wstring quick_access_menuitem_label = GET_RESOURCE_STRING(IDS_QUICK_ACCESS_MENU_TEXT);
-
                     change_menu_item_text(ID_SETTINGS_MENU_COMMAND, settings_menuitem_label.data());
                     change_menu_item_text(ID_CLOSE_MENU_COMMAND, close_menuitem_label.data());
-                    change_menu_item_text(ID_REPORT_BUG_COMMAND, submit_bug_menuitem_label.data());
-                    bool bug_report_disabled = is_bug_report_running();
-                    EnableMenuItem(h_sub_menu, ID_REPORT_BUG_COMMAND, MF_BYCOMMAND | (bug_report_disabled ? MF_GRAYED : MF_ENABLED));
-                    change_menu_item_text(ID_DOCUMENTATION_MENU_COMMAND, documentation_menuitem_label.data());
-                    change_menu_item_text(ID_QUICK_ACCESS_MENU_COMMAND, quick_access_menuitem_label.data());
-
                     // Update Keyboard Manager menu item text based on current state
                     static std::wstring kbm_enabled_label = GET_RESOURCE_STRING(IDS_KBM_ENABLED_MENU_TEXT);
                     static std::wstring kbm_disabled_label = GET_RESOURCE_STRING(IDS_KBM_DISABLED_MENU_TEXT);
@@ -300,14 +234,6 @@ LRESULT __stdcall tray_icon_window_proc(HWND window, UINT message, WPARAM wparam
     return DefWindowProc(window, message, wparam, lparam);
 }
 
-void update_bug_report_menu_status(bool isRunning)
-{
-    if (h_sub_menu != nullptr)
-    {
-        EnableMenuItem(h_sub_menu, ID_REPORT_BUG_COMMAND, MF_BYCOMMAND | (isRunning ? MF_GRAYED : MF_ENABLED));
-    }
-}
-
 void start_tray_icon(bool isProcessElevated)
 {
     auto h_instance = reinterpret_cast<HINSTANCE>(&__ImageBase);
@@ -358,16 +284,6 @@ void start_tray_icon(bool isProcessElevated)
         ChangeWindowMessageFilterEx(hwnd, WM_COMMAND, MSGFLT_ALLOW, nullptr);
 
         tray_icon_created = Shell_NotifyIcon(NIM_ADD, &tray_icon_data) == TRUE;
-
-        // Register callback to update bug report menu item status
-        BugReportManager::instance().register_callback([](bool isRunning) {
-            dispatch_run_on_main_ui_thread([](PVOID data) {
-                bool* running = static_cast<bool*>(data);
-                update_bug_report_menu_status(*running);
-                delete running;
-            },
-                                           new bool(isRunning));
-        });
     }
 }
 
@@ -383,8 +299,6 @@ void stop_tray_icon()
 {
     if (tray_icon_created)
     {
-        // Clear bug report callbacks
-        BugReportManager::instance().clear_callbacks();
         SendMessage(tray_icon_hwnd, WM_CLOSE, 0, 0);
     }
 }

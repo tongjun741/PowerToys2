@@ -42,9 +42,6 @@
     <ClCompile Include="centralized_hotkeys.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="bug_report.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="hotkey_conflict_detector.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="centralized_hotkeys.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="bug_report.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="hotkey_conflict_detector.h">

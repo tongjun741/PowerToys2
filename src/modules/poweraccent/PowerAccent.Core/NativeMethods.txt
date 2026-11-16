@@ -1,6 +1,0 @@
-GetDpiForWindow
-GetGUIThreadInfo
-GetKeyState
-GetMonitorInfo
-MonitorFromWindow
-SendInput

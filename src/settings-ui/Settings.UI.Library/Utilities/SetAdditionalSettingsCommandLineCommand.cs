@@ -39,7 +39,7 @@ public sealed class SetAdditionalSettingsCommandLineCommand
         public JsonValueKind PropertyType;
     }
 
-    private static readonly Dictionary<string, AdditionalPropertyInfo> SupportedAdditionalPropertiesInfoForModules = new Dictionary<string, AdditionalPropertyInfo> { { "PowerLauncher", new AdditionalPropertyInfo { PropertyPath = "Plugins", PropertyType = JsonValueKind.Array } }, { "ImageResizer", new AdditionalPropertyInfo { PropertyPath = "Properties.ImageresizerSizes.Value", PropertyType = JsonValueKind.Array } } };
+    private static readonly Dictionary<string, AdditionalPropertyInfo> SupportedAdditionalPropertiesInfoForModules = new Dictionary<string, AdditionalPropertyInfo>();
 
     private static IEnumerable<object> ExecuteRootArray(IEnumerable<JsonElement> properties, IEnumerable<object> currentPropertyValuesArray)
     {

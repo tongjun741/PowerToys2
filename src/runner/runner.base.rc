@@ -9,12 +9,7 @@ BEGIN
         POPUP "POPUP"
         BEGIN
                 MENUITEM "Settings", ID_SETTINGS_MENU_COMMAND
-                // MENUITEM "About", ID_ABOUT_MENU_COMMAND
-                MENUITEM SEPARATOR
                 MENUITEM "Keyboard Manager", ID_TOGGLE_KEYBOARD_MANAGER_COMMAND
-                MENUITEM SEPARATOR
-                MENUITEM "Documentation" ID_DOCUMENTATION_MENU_COMMAND
-                MENUITEM "Report Bug" ID_REPORT_BUG_COMMAND
                 MENUITEM SEPARATOR
                 MENUITEM "Close", ID_CLOSE_MENU_COMMAND
         END

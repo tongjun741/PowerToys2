@@ -1,24 +1,7 @@
 <Include>
   <!-- Names of folders and projects -->
-  <?define FancyZonesProjectName="FancyZones"?>
-  <?define ImageResizerProjectName="ImageResizer"?>
   <?define KeyboardManagerProjectName="KeyboardManager"?>
-  <?define PowerAccentProjectName="PowerAccent"?>
-  <?define PowerRenameProjectName="PowerRename"?>
-  <?define FileLocksmithProjectName="FileLocksmith"?>
-  <?define ColorPickerProjectName="ColorPicker"?>
-  <?define PowerOCRProjectName="PowerOCR"?>
-  <?define AwakeProjectName="Awake"?>
-  <?define MouseUtilsProjectName="MouseUtils"?>
-  <?define AlwaysOnTopProjectName="AlwaysOnTop"?>
-  <?define MeasureToolProjectName="MeasureTool"?>
-  <?define HostsProjectName="Hosts"?>
-  <?define MouseWithoutBordersProjectName="MouseWithoutBorders"?>
-  <?define AdvancedPasteProjectName="AdvancedPaste"?>
-  <?define RegistryPreviewProjectName="RegistryPreview"?>
-  <?define PeekProjectName="Peek"?>
-  <?define WorkspacesProjectName="Workspaces"?>
-  
+
   <?define RepoDir="$(var.ProjectDir)..\..\" ?>
   <?if $(var.Platform) = x64?>
         <?define PowerToysPlatform="x64"?>

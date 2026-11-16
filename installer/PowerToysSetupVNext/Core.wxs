@@ -1,4 +1,4 @@
-﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 
   <?include $(sys.CURRENTDIR)\Common.wxi?>
 
@@ -9,25 +9,6 @@
           <RegistryValue Type="string" Name="InstallScope" Value="$(var.InstallScope)" />
         </RegistryKey>
       </Component>
-      <?if $(var.PerUser) = "true" ?>
-      <Component Id="powertoys_env_path_user" Bitness="always64">
-        <!-- Anchor registry for component key path -->
-        <RegistryKey Root="$(var.RegistryScope)" Key="Software\Classes\powertoys\components">
-          <RegistryValue Type="string" Name="powertoys_env_path_user" Value="" KeyPath="yes" />
-        </RegistryKey>
-        <!-- Append DSCModules folder to current user's PATH for DSC v3 usage -->
-        <Environment Id="AddPowerToysToUserPath" Name="PATH" Action="set" Part="last" System="no" Value="[DSCModulesReferenceFolder]" />
-      </Component>
-      <?else?>
-      <Component Id="powertoys_env_path_machine" Bitness="always64">
-        <!-- Anchor registry for component key path -->
-        <RegistryKey Root="$(var.RegistryScope)" Key="Software\Classes\powertoys\components">
-          <RegistryValue Type="string" Name="powertoys_env_path_machine" Value="" KeyPath="yes" />
-        </RegistryKey>
-        <!-- Append DSCModules folder to machine PATH for DSC v3 usage -->
-        <Environment Id="AddPowerToysToMachinePath" Name="PATH" Action="set" Part="last" System="yes" Value="[DSCModulesReferenceFolder]" />
-      </Component>
-      <?endif?>
       <Component Id="powertoys_toast_clsid" Bitness="always64">
         <RemoveFolder Id="Remove_powertoys_toast_clsid" On="uninstall" />
         <RegistryKey Root="$(var.RegistryScope)" Key="Software\Classes\CLSID\{DD5CACDA-7C2E-4997-A62A-04A597B58F76}">
@@ -63,26 +44,6 @@
       </Component>
     </DirectoryRef>
 
-    <?if $(var.PerUser) = "true" ?>
-    <!-- DSC module files for PerUser handled in InstallDSCModule custom action. -->
-    <?else?>
-    <StandardDirectory Id="ProgramFiles64Folder">
-      <Directory Id="WindowsPowerShellFolder" Name="WindowsPowerShell">
-        <Directory Id="PowerShellModulesFolder" Name="Modules">
-          <Directory Id="PowerToysDscFolder" Name="Microsoft.PowerToys.Configure">
-            <Directory Id="PowerToysDscVerFolder" Name="$(var.Version).0">
-              <Component Id="PowerToysDSC" Guid="C52AECA0-DA73-49B8-BB49-31EF6640FF1F" Bitness="always64">
-                <!-- Don't fail installation because of DSC. Files are marked as not vital. -->
-                <File Vital="no" Source="$(var.RepoDir)\src\dsc\Microsoft.PowerToys.Configure\Generated\Microsoft.PowerToys.Configure\$(var.Version).0\Microsoft.PowerToys.Configure.psd1" Id="PTConf.psd1" />
-                <File Vital="no" Source="$(var.RepoDir)\src\dsc\Microsoft.PowerToys.Configure\Generated\Microsoft.PowerToys.Configure\$(var.Version).0\Microsoft.PowerToys.Configure.psm1" Id="PTConf.psm1" />
-              </Component>
-            </Directory>
-          </Directory>
-        </Directory>
-      </Directory>
-    </StandardDirectory>
-    <?endif?>
-
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="PowerToysStartMenuShortcut">
         <Shortcut Id="ApplicationStartMenuShortcut" Name="PowerToys (Preview)" Description="PowerToys - Windows system utilities to maximize productivity" Icon="powertoys.exe" IconIndex="0" Target="[!PowerToys.exe]" WorkingDirectory="INSTALLFOLDER">
@@ -96,7 +57,7 @@
 
     <StandardDirectory Id="DesktopFolder">
       <Component Id="DesktopShortcut" Condition="INSTALLDESKTOPSHORTCUT">
-        
+
         <!-- DesktopShortcutId is implicitly installed in HKCU, so WIX won't allow changing this reg value to HKLM. -->
         <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Name="desktopshorcutinstalled" Type="integer" Value="1" KeyPath="yes" />
         <Shortcut Id="DesktopShortcutId" Name="PowerToys (Preview)" Description="PowerToys - Windows system utilities to maximize productivity" Target="[!PowerToys.exe]" WorkingDirectory="INSTALLFOLDER" Icon="powertoys.exe" Directory="DesktopFolder" />
@@ -112,8 +73,8 @@
         <RemoveFolder Id="RemoveBaseApplicationsAssetsFolder" Directory="BaseApplicationsAssetsFolder" On="uninstall" />
         <RemoveFolder Id="RemoveWinUI3AppsInstallFolder" Directory="WinUI3AppsInstallFolder" On="uninstall" />
         <RemoveFolder Id="RemoveWinUI3AppsAssetsFolder" Directory="WinUI3AppsAssetsFolder" On="uninstall" />
-        <RemoveFolder Id="RemoveDSCModulesReferenceFolder" Directory="DSCModulesReferenceFolder" On="uninstall" />
-        <RemoveFolder Id="RemoveToolsFolder" Directory="ToolsFolder" On="uninstall" />
+        <RemoveFolder Id="RemoveWinUI3AppsMicrosoftUIXamlInstallFolder" Directory="WinUI3AppsMicrosoftUIXamlInstallFolder" On="uninstall" />
+        <RemoveFolder Id="RemoveWinUI3AppsMicrosoftUIXamlAssetsInstallFolder" Directory="WinUI3AppsMicrosoftUIXamlAssetsInstallFolder" On="uninstall" />
         <RemoveFolder Id="RemoveINSTALLFOLDER" Directory="INSTALLFOLDER" On="uninstall" />
       </Component>
       <ComponentRef Id="powertoys_exe" />
@@ -123,14 +84,6 @@
       <ComponentRef Id="License_rtf" />
       <ComponentRef Id="Notice_md" />
       <ComponentRef Id="DesktopShortcut" />
-      <?if $(var.PerUser) = "true" ?>
-      <ComponentRef Id="powertoys_env_path_user" />
-      <?else?>
-      <ComponentRef Id="powertoys_env_path_machine" />
-      <?endif?>
-      <?if $(var.PerUser) = "false" ?>
-      <ComponentRef Id="PowerToysDSC" />
-      <?endif?>
     </ComponentGroup>
   </Fragment>
 </Wix>

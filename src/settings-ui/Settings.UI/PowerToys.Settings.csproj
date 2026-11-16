@@ -20,17 +20,6 @@
 		<ProjectPriFileName>PowerToys.Settings.pri</ProjectPriFileName>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Remove="Assets\Settings\Icons\Models\Azure.svg" />
-		<None Remove="Assets\Settings\Icons\Models\FoundryLocal.svg" />
-		<None Remove="Assets\Settings\Icons\Models\Onnx.svg" />
-		<None Remove="Assets\Settings\Icons\Models\OpenAI.dark.svg" />
-		<None Remove="Assets\Settings\Icons\Models\OpenAI.light.svg" />
-		<None Remove="Assets\Settings\Icons\Models\WindowsML.svg" />
-		<None Remove="Assets\Settings\Modules\APDialog.dark.png" />
-		<None Remove="Assets\Settings\Modules\APDialog.light.png" />
-		<None Remove="Assets\Settings\Modules\CmdPal_Background.png" />
-		<None Remove="Assets\Settings\Modules\CmdPal_Hero.png" />
-		<None Remove="Assets\Settings\Modules\LightSwitch.png" />
 		<None Remove="SettingsXAML\Controls\Dashboard\CheckUpdateControl.xaml" />
 		<None Remove="SettingsXAML\Controls\Dashboard\ShortcutConflictControl.xaml" />
 		<None Remove="SettingsXAML\Controls\KeyVisual\KeyCharPresenter.xaml" />
@@ -46,7 +35,7 @@
 
 	<!-- See https://learn.microsoft.com/windows/apps/develop/platform/csharp-winrt/net-projection-from-cppwinrt-component for more info -->
 	<PropertyGroup>
-		<CsWinRTIncludes>PowerToys.GPOWrapper;PowerToys.ZoomItSettingsInterop</CsWinRTIncludes>
+		<CsWinRTIncludes>PowerToys.GPOWrapper</CsWinRTIncludes>
 		<CsWinRTGeneratedFilesDir>$(OutDir)</CsWinRTGeneratedFilesDir>
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 	</PropertyGroup>
@@ -59,17 +48,6 @@
 		<Content Include="Assets\Settings\Square44x44Logo.targetsize-24_altform-unplated.png" />
 		<Content Include="Assets\Settings\StoreLogo.png" />
 		<Content Include="Assets\Settings\Wide310x150Logo.scale-200.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<!-- AI Model Provider Icons - SVG files -->
-		<Content Include="Assets\Settings\Icons\Models\*.svg">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="Images\MouseJump-Desktop.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -118,11 +96,8 @@
 		<ProjectReference Include="..\..\common\AllExperiments\AllExperiments.csproj" />
 		<ProjectReference Include="..\..\common\GPOWrapper\GPOWrapper.vcxproj" />
 		<ProjectReference Include="..\..\common\interop\PowerToys.Interop.vcxproj" />
-		<ProjectReference Include="..\..\modules\ZoomIt\ZoomItSettingsInterop\ZoomItSettingsInterop.vcxproj" />
 		<ProjectReference Include="..\..\common\ManagedCommon\ManagedCommon.csproj" />
 		<ProjectReference Include="..\..\common\ManagedTelemetry\Telemetry\ManagedTelemetry.csproj" />
-		<ProjectReference Include="..\..\common\LanguageModelProvider\LanguageModelProvider.csproj" />
-		<ProjectReference Include="..\..\modules\MouseUtils\MouseJump.Common\MouseJump.Common.csproj" />
 		<ProjectReference Include="..\Settings.UI.Library\Settings.UI.Library.csproj" />
 	</ItemGroup>
 
@@ -160,21 +135,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Assets\Settings\Scripts\CheckCmdNotFoundRequirements.ps1">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Settings\Scripts\InstallWinGetClientModule.ps1">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Settings\Scripts\InstallPowerShell7.ps1">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Settings\Scripts\EnableModule.ps1">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Assets\Settings\Scripts\DisableModule.ps1">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 		<Page Update="SettingsXAML\Controls\TitleBar\TitleBar.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
@@ -189,24 +149,6 @@
 		</Page>
 		<Page Update="SettingsXAML\Controls\Dashboard\CheckUpdateControl.xaml">
 			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		    <Page Update="SettingsXAML\Controls\Timeline\TimelineStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="SettingsXAML\Controls\Timeline\Timeline.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Page Update="SettingsXAML\OOBE\Views\OobeWorkspaces.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="SettingsXAML\Panels\MouseJumpPanel.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
-		<Page Update="SettingsXAML\Views\WorkspacesPage.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 		</Page>
 	</ItemGroup>
 

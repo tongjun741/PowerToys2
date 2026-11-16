@@ -145,33 +145,7 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             _hotkeyConflictStatus.Clear();
             _hotkeyConflictTooltips.Clear();
 
-            // Since MouseUtils in Settings consolidates four modules: Find My Mouse, Mouse Highlighter, Mouse Pointer Crosshairs, and Mouse Jump
-            // We need to handle this case separately here.
-            if (string.Equals(ModuleName, "MouseUtils", StringComparison.OrdinalIgnoreCase))
-            {
-                var mouseUtilsModules = new HashSet<string>
-                {
-                    FindMyMouseSettings.ModuleName,
-                    MouseHighlighterSettings.ModuleName,
-                    MousePointerCrosshairsSettings.ModuleName,
-                    MouseJumpSettings.ModuleName,
-                };
-
-                // Process in-app conflicts
-                foreach (var conflict in allConflicts.InAppConflicts)
-                {
-                    ProcessMouseUtilsConflictGroup(conflict, mouseUtilsModules, false);
-                }
-
-                // Process system conflicts
-                foreach (var conflict in allConflicts.SystemConflicts)
-                {
-                    ProcessMouseUtilsConflictGroup(conflict, mouseUtilsModules, true);
-                }
-            }
-            else
-            {
-                if (allConflicts.InAppConflicts.Count > 0)
+            if (allConflicts.InAppConflicts.Count > 0)
                 {
                     foreach (var conflictGroup in allConflicts.InAppConflicts)
                     {
@@ -202,7 +176,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
                         }
                     }
                 }
-            }
         }
 
         protected virtual bool GetHotkeyConflictStatus(string key)

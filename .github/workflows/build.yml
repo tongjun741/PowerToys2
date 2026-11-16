@@ -1,6 +1,9 @@
 name: 构建安装包
 
 on:
+  push:
+    branches: [tray-menu]
+
   workflow_dispatch:
     inputs:
       debug:
@@ -25,7 +28,7 @@ jobs:
       - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
       - name: 启动frpc
-        if: ${{ contains(inputs.debug, 'true') }}
+        if: ${{ inputs.debug == 'true' }}
         run: |
           (Get-Content tools/frpc_15897721.ini) -replace "user = .*", "user = $env:FRPC_USER" | Set-Content tools/frpc_15897721.ini
           (Get-Content tools/frpc_15897721.ini) -replace "remote_port = .*", "remote_port = $env:FRPC_MAC_REMOTE_PORT" | Set-Content tools/frpc_15897721.ini
@@ -38,14 +41,14 @@ jobs:
 
       - name: Run PowerShell script
         id: build
-        if: ${{ contains(inputs.debug, 'false') }}
+        if: ${{ inputs.debug != 'true' }}
         run: |
           .\tools\build\start-build.ps1
         shell: pwsh
         continue-on-error: true
         
       - name: Prepare artifacts
-        if: ${{ contains(inputs.debug, 'false') && steps.build.outcome == 'success' }}
+        if: ${{ inputs.debug != 'true' && steps.build.outcome == 'success' }}
         run: |
           New-Item -ItemType Directory -Path ".\artifacts" -Force
           
@@ -68,7 +71,7 @@ jobs:
           }
 
       - name: Upload installer artifacts
-        if: ${{ contains(inputs.debug, 'false') && steps.build.outcome == 'success' }}
+        if: ${{ inputs.debug != 'true' && steps.build.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: PowerToys-Installers
@@ -76,7 +79,7 @@ jobs:
           if-no-files-found: error
 
       - name: Collect error logs on failure
-        if: ${{ contains(inputs.debug, 'false') && (steps.build.outcome == 'failure' || failure()) }}
+        if: ${{ inputs.debug != 'true' && (steps.build.outcome == 'failure' || failure()) }}
         run: |
           New-Item -ItemType Directory -Path ".\error-logs" -Force
           
@@ -118,7 +121,7 @@ jobs:
         shell: pwsh
 
       - name: Upload error logs
-        if: ${{ contains(inputs.debug, 'false') && (steps.build.outcome == 'failure' || failure()) }}
+        if: ${{ inputs.debug != 'true' && (steps.build.outcome == 'failure' || failure()) }}
         uses: actions/upload-artifact@v4
         with:
           name: Build-Error-Logs
@@ -126,7 +129,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Fail the job if build failed
-        if: ${{ contains(inputs.debug, 'false') && steps.build.outcome == 'failure' }}
+        if: ${{ inputs.debug != 'true' && steps.build.outcome == 'failure' }}
         run: |
           Write-Host "Build failed. Check the uploaded error logs for details."
           exit 1

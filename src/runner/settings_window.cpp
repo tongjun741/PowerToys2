@@ -28,7 +28,6 @@
 #include <common/updating/updateState.h>
 #include <common/themes/windows_colors.h>
 #include "settings_window.h"
-#include "bug_report.h"
 
 #define BUFSIZE 1024
 
@@ -225,18 +224,6 @@ void dispatch_received_json(const std::wstring& json_to_parse)
                         current_settings_ipc->send(result.value());
                 }
             }
-        }
-        else if (name == L"bugreport")
-        {
-            launch_bug_report();
-        }
-        else if (name == L"bug_report_status")
-        {
-            json::JsonObject result;
-            result.SetNamedValue(L"bug_report_running", winrt::Windows::Data::Json::JsonValue::CreateBooleanValue(is_bug_report_running()));
-            std::unique_lock lock{ ipc_mutex };
-            if (current_settings_ipc)
-                current_settings_ipc->send(result.Stringify().c_str());
         }
         else if (name == L"killrunner")
         {
@@ -570,16 +557,6 @@ void run_settings_window(bool show_oobe_window, bool show_scoobe_window, std::op
         std::unique_lock lock{ ipc_mutex };
         current_settings_ipc = new TwoWayPipeMessageIPC(powertoys_pipe_name, settings_pipe_name, receive_json_send_to_main_thread);
         current_settings_ipc->start(hToken);
-
-        // Register callback for bug report status changes
-        BugReportManager::instance().register_callback([](bool isRunning) {
-            json::JsonObject result;
-            result.SetNamedValue(L"bug_report_running", winrt::Windows::Data::Json::JsonValue::CreateBooleanValue(isRunning));
-
-            std::unique_lock lock{ ipc_mutex };
-            if (current_settings_ipc)
-                current_settings_ipc->send(result.Stringify().c_str());
-        });
     }
 
     g_settings_process_id = process_info.dwProcessId;
@@ -749,66 +726,8 @@ std::string ESettingsWindowNames_to_string(ESettingsWindowNames value)
         return "Dashboard";
     case ESettingsWindowNames::Overview:
         return "Overview";
-    case ESettingsWindowNames::AlwaysOnTop:
-        return "AlwaysOnTop";
-    case ESettingsWindowNames::Awake:
-        return "Awake";
-    case ESettingsWindowNames::ColorPicker:
-        return "ColorPicker";
-    case ESettingsWindowNames::CmdNotFound:
-        return "CmdNotFound";
-    case ESettingsWindowNames::LightSwitch:
-        return "LightSwitch";
-    case ESettingsWindowNames::FancyZones:
-        return "FancyZones";
-    case ESettingsWindowNames::FileLocksmith:
-        return "FileLocksmith";
-    case ESettingsWindowNames::Run:
-        return "Run";
-    case ESettingsWindowNames::ImageResizer:
-        return "ImageResizer";
     case ESettingsWindowNames::KBM:
         return "KBM";
-    case ESettingsWindowNames::MouseUtils:
-        return "MouseUtils";
-    case ESettingsWindowNames::MouseWithoutBorders:
-        return "MouseWithoutBorders";
-    case ESettingsWindowNames::Peek:
-        return "Peek";
-    case ESettingsWindowNames::PowerAccent:
-        return "PowerAccent";
-    case ESettingsWindowNames::PowerLauncher:
-        return "PowerLauncher";
-    case ESettingsWindowNames::PowerPreview:
-        return "PowerPreview";
-    case ESettingsWindowNames::PowerRename:
-        return "PowerRename";
-    case ESettingsWindowNames::FileExplorer:
-        return "FileExplorer";
-    case ESettingsWindowNames::ShortcutGuide:
-        return "ShortcutGuide";
-    case ESettingsWindowNames::Hosts:
-        return "Hosts";
-    case ESettingsWindowNames::MeasureTool:
-        return "MeasureTool";
-    case ESettingsWindowNames::PowerOCR:
-        return "PowerOcr";
-    case ESettingsWindowNames::Workspaces:
-        return "Workspaces";
-    case ESettingsWindowNames::RegistryPreview:
-        return "RegistryPreview";
-    case ESettingsWindowNames::CropAndLock:
-        return "CropAndLock";
-    case ESettingsWindowNames::EnvironmentVariables:
-        return "EnvironmentVariables";
-    case ESettingsWindowNames::AdvancedPaste:
-        return "AdvancedPaste";
-    case ESettingsWindowNames::NewPlus:
-        return "NewPlus";
-    case ESettingsWindowNames::CmdPal:
-        return "CmdPal";
-    case ESettingsWindowNames::ZoomIt:
-        return "ZoomIt";
     default:
     {
         Logger::error(L"Can't convert ESettingsWindowNames value={} to string", static_cast<int>(value));
@@ -828,125 +747,9 @@ ESettingsWindowNames ESettingsWindowNames_from_string(std::string value)
     {
         return ESettingsWindowNames::Overview;
     }
-    else if (value == "AlwaysOnTop")
-    {
-        return ESettingsWindowNames::AlwaysOnTop;
-    }
-    else if (value == "Awake")
-    {
-        return ESettingsWindowNames::Awake;
-    }
-    else if (value == "ColorPicker")
-    {
-        return ESettingsWindowNames::ColorPicker;
-    }
-    else if (value == "CmdNotFound")
-    {
-        return ESettingsWindowNames::CmdNotFound;
-    }
-    else if (value == "LightSwitch")
-    {
-        return ESettingsWindowNames::LightSwitch;
-    }
-    else if (value == "FancyZones")
-    {
-        return ESettingsWindowNames::FancyZones;
-    }
-    else if (value == "FileLocksmith")
-    {
-        return ESettingsWindowNames::FileLocksmith;
-    }
-    else if (value == "Run")
-    {
-        return ESettingsWindowNames::Run;
-    }
-    else if (value == "ImageResizer")
-    {
-        return ESettingsWindowNames::ImageResizer;
-    }
     else if (value == "KBM")
     {
         return ESettingsWindowNames::KBM;
-    }
-    else if (value == "MouseUtils")
-    {
-        return ESettingsWindowNames::MouseUtils;
-    }
-    else if (value == "MouseWithoutBorders")
-    {
-        return ESettingsWindowNames::MouseWithoutBorders;
-    }
-    else if (value == "Peek")
-    {
-        return ESettingsWindowNames::Peek;
-    }
-    else if (value == "PowerAccent")
-    {
-        return ESettingsWindowNames::PowerAccent;
-    }
-    else if (value == "PowerLauncher")
-    {
-        return ESettingsWindowNames::PowerLauncher;
-    }
-    else if (value == "PowerPreview")
-    {
-        return ESettingsWindowNames::PowerPreview;
-    }
-    else if (value == "PowerRename")
-    {
-        return ESettingsWindowNames::PowerRename;
-    }
-    else if (value == "FileExplorer")
-    {
-        return ESettingsWindowNames::FileExplorer;
-    }
-    else if (value == "ShortcutGuide")
-    {
-        return ESettingsWindowNames::ShortcutGuide;
-    }
-    else if (value == "Hosts")
-    {
-        return ESettingsWindowNames::Hosts;
-    }
-    else if (value == "MeasureTool")
-    {
-        return ESettingsWindowNames::MeasureTool;
-    }
-    else if (value == "PowerOcr")
-    {
-        return ESettingsWindowNames::PowerOCR;
-    }
-    else if (value == "Workspaces")
-    {
-        return ESettingsWindowNames::Workspaces;
-    }
-    else if (value == "RegistryPreview")
-    {
-        return ESettingsWindowNames::RegistryPreview;
-    }
-    else if (value == "CropAndLock")
-    {
-        return ESettingsWindowNames::CropAndLock;
-    }
-    else if (value == "EnvironmentVariables")
-    {
-        return ESettingsWindowNames::EnvironmentVariables;
-    }
-    else if (value == "AdvancedPaste")
-    {
-        return ESettingsWindowNames::AdvancedPaste;
-    }
-    else if (value == "NewPlus")
-    {
-        return ESettingsWindowNames::NewPlus;
-    }
-    else if (value == "CmdPal")
-    {
-        return ESettingsWindowNames::CmdPal;
-    }
-    else if (value == "ZoomIt")
-    {
-        return ESettingsWindowNames::ZoomIt;
     }
     else
     {

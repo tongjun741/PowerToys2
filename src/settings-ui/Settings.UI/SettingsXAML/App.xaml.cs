@@ -67,7 +67,7 @@ namespace Microsoft.PowerToys.Settings.UI
 
         public bool ShowScoobe { get; set; }
 
-        public Type StartupPage { get; set; } = typeof(Views.DashboardPage);
+        public Type StartupPage { get; set; } = typeof(Views.GeneralPage);
 
         public static Action<string> IPCMessageReceivedCallback { get; set; }
 
@@ -238,7 +238,7 @@ namespace Microsoft.PowerToys.Settings.UI
                 return 0;
             });
 
-            if (!ShowOobe && !ShowScoobe && !ShowFlyout)
+            if (!ShowOobe && !ShowScoobe)
             {
                 settingsWindow = new MainWindow();
                 settingsWindow.Activate();
@@ -277,16 +277,6 @@ namespace Microsoft.PowerToys.Settings.UI
                     scoobeWindow.ExtendsContentIntoTitleBar = true;
                     WindowHelpers.ForceTopBorder1PixelInsetOnWindows10(WindowNative.GetWindowHandle(settingsWindow));
                     SetOobeWindow(scoobeWindow);
-                }
-                else if (ShowFlyout)
-                {
-                    POINT? p = null;
-                    if (containsFlyoutPosition)
-                    {
-                        p = new POINT(flyout_x, flyout_y);
-                    }
-
-                    ShellPage.OpenFlyoutCallback(p);
                 }
             }
         }
@@ -364,7 +354,6 @@ namespace Microsoft.PowerToys.Settings.UI
 
         private static MainWindow settingsWindow;
         private static OobeWindow oobeWindow;
-        private static FlyoutWindow flyoutWindow;
 
         public static void ClearSettingsWindow()
         {
@@ -381,19 +370,9 @@ namespace Microsoft.PowerToys.Settings.UI
             return oobeWindow;
         }
 
-        public static FlyoutWindow GetFlyoutWindow()
-        {
-            return flyoutWindow;
-        }
-
         public static void SetOobeWindow(OobeWindow window)
         {
             oobeWindow = window;
-        }
-
-        public static void SetFlyoutWindow(FlyoutWindow window)
-        {
-            flyoutWindow = window;
         }
 
         public static void ClearOobeWindow()
@@ -401,52 +380,20 @@ namespace Microsoft.PowerToys.Settings.UI
             oobeWindow = null;
         }
 
-        public static void ClearFlyoutWindow()
-        {
-            flyoutWindow = null;
-        }
-
         public static Type GetPage(string settingWindow)
         {
             switch (settingWindow)
             {
-                case "Dashboard": return typeof(DashboardPage);
-                case "Overview": return typeof(GeneralPage);
-                case "AdvancedPaste": return typeof(AdvancedPastePage);
-                case "AlwaysOnTop": return typeof(AlwaysOnTopPage);
-                case "Awake": return typeof(AwakePage);
-                case "CmdNotFound": return typeof(CmdNotFoundPage);
-                case "ColorPicker": return typeof(ColorPickerPage);
-                case "LightSwitch": return typeof(LightSwitchPage);
-                case "FancyZones": return typeof(FancyZonesPage);
-                case "FileLocksmith": return typeof(FileLocksmithPage);
-                case "Run": return typeof(PowerLauncherPage);
-                case "ImageResizer": return typeof(ImageResizerPage);
-                case "KBM": return typeof(KeyboardManagerPage);
-                case "MouseUtils": return typeof(MouseUtilsPage);
-                case "MouseWithoutBorders": return typeof(MouseWithoutBordersPage);
-                case "Peek": return typeof(PeekPage);
-                case "PowerAccent": return typeof(PowerAccentPage);
-                case "PowerLauncher": return typeof(PowerLauncherPage);
-                case "PowerPreview": return typeof(PowerPreviewPage);
-                case "PowerRename": return typeof(PowerRenamePage);
-                case "QuickAccent": return typeof(PowerAccentPage);
-                case "FileExplorer": return typeof(PowerPreviewPage);
-                case "ShortcutGuide": return typeof(ShortcutGuidePage);
-                case "PowerOcr": return typeof(PowerOcrPage);
-                case "MeasureTool": return typeof(MeasureToolPage);
-                case "Hosts": return typeof(HostsPage);
-                case "RegistryPreview": return typeof(RegistryPreviewPage);
-                case "CropAndLock": return typeof(CropAndLockPage);
-                case "EnvironmentVariables": return typeof(EnvironmentVariablesPage);
-                case "NewPlus": return typeof(NewPlusPage);
-                case "Workspaces": return typeof(WorkspacesPage);
-                case "CmdPal": return typeof(CmdPalPage);
-                case "ZoomIt": return typeof(ZoomItPage);
+                case "General":
+                case "Dashboard":
+                case "Overview":
+                    return typeof(GeneralPage);
+                case "KBM":
+                    return typeof(KeyboardManagerPage);
                 default:
-                    // Fallback to Dashboard
+                    // Fallback to General page
                     Debug.Assert(false, "Unexpected SettingsWindow argument value");
-                    return typeof(DashboardPage);
+                    return typeof(GeneralPage);
             }
         }
     }
