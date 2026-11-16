@@ -129,15 +129,26 @@ jobs:
 
       - name: Publish logs to ci-logs branch
         if: ${{ inputs.debug != 'true' && (steps.build.outcome == 'failure' || failure()) }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan ci-logs
-          git rm -rf --quiet . 2>$null
-          cp -r error-logs .
-          git add error-logs
-          git commit -m "CI logs for run ${{ github.run_id }}"
-          git push --force origin ci-logs
+          $ErrorActionPreference = 'Continue'
+          $h = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
+          $api = "https://api.github.com/repos/$env:REPO"
+
+          # base the ci-logs branch on current tray-menu head
+          $head = Invoke-RestMethod -Uri "$api/git/ref/heads/tray-menu" -Headers $h
+          try { Invoke-RestMethod -Method Delete -Uri "$api/git/refs/heads/ci-logs" -Headers $h | Out-Null } catch {}
+          $body = @{ ref = 'refs/heads/ci-logs'; sha = $head.object.sha } | ConvertTo-Json
+          Invoke-RestMethod -Method Post -Uri "$api/git/refs" -Body $body -Headers $h | Out-Null
+
+          Get-ChildItem error-logs -File | ForEach-Object {
+            $content = [Convert]::ToBase64String([IO.File]::ReadAllBytes($_.FullName))
+            $put = @{ message = "log $($_.Name)"; content = $content; branch = 'ci-logs' } | ConvertTo-Json
+            Invoke-RestMethod -Method Put -Uri "$api/contents/error-logs/$($_.Name)" -Body $put -Headers $h | Out-Null
+            Write-Host "published $($_.Name)"
+          }
         shell: pwsh
 
       - name: Upload error logs
