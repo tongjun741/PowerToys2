@@ -327,7 +327,12 @@ try {
     
     Write-StepHeader "步骤 3/10: 安装工具"
     dotnet tool install --global wix --version $Config.WixVersion 2>&1 | Out-Null
-    winget install --id $Config.WindowsSDKId --silent --accept-package-agreements --accept-source-agreements 2>&1 | Out-Null
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        winget install --id $Config.WindowsSDKId --silent --accept-package-agreements --accept-source-agreements 2>&1 | Out-Null
+    }
+    else {
+        Write-Info "winget 不可用，跳过 Windows SDK 安装（runner 镜像通常已预装）"
+    }
     Write-Success "完成"
     
     Write-StepHeader "步骤 4/10: 配置 Heat"
