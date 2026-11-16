@@ -45,7 +45,8 @@ jobs:
         id: build
         if: ${{ inputs.debug != 'true' }}
         run: |
-          .\tools\build\start-build.ps1
+          & pwsh -NoProfile -File .\tools\build\start-build.ps1 2>&1 | Tee-Object -FilePath ".\start-build-output.log"
+          exit $LASTEXITCODE
         shell: pwsh
         continue-on-error: true
         
@@ -111,6 +112,11 @@ jobs:
           # 完整构建日志（只保留末尾 800 行）
           if (Test-Path 'D:\PowerToys2\installer\build.release.x64.all.log') {
             Get-Content 'D:\PowerToys2\installer\build.release.x64.all.log' -Tail 800 | Out-File '.\error-logs\build-all-tail.log' -Encoding utf8
+          }
+
+          # start-build 脚本自身的输出（构建未开始就失败时唯一的线索）
+          if (Test-Path '.\start-build-output.log') {
+            Copy-Item '.\start-build-output.log' -Destination '.\error-logs\' -Force
           }
 
           # 列出收集到的所有日志文件

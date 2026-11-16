@@ -283,7 +283,17 @@ try {
     Write-Host "║          修复 NUGET_PACKAGES 路径问题                      ║" -ForegroundColor Cyan
     Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
     Write-Host ""
-    
+
+    # Bootstrap: 部分 runner 镜像没有 nuget.exe，需要先下载到临时目录
+    if (-not (Get-Command nuget -ErrorAction SilentlyContinue)) {
+        Write-Info "nuget.exe 不在 PATH 中，正在下载..."
+        $nugetDir = Join-Path $env:TEMP "nuget-bootstrap"
+        New-Item -ItemType Directory -Path $nugetDir -Force | Out-Null
+        Invoke-WebRequest -Uri "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile (Join-Path $nugetDir "nuget.exe")
+        $env:PATH = "$nugetDir;$env:PATH"
+        Write-Success "nuget.exe 已就绪"
+    }
+
     if ($DiagnoseOnly) {
         Set-Location $Config.BaseDir
         Invoke-WcautilDiagnosis | Out-Null
