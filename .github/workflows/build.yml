@@ -15,6 +15,8 @@ on:
 
 jobs:
   build:
+    permissions:
+      contents: write
 
     runs-on: windows-latest
 
@@ -106,6 +108,11 @@ jobs:
             }
           }
           
+          # 完整构建日志（只保留末尾 800 行）
+          if (Test-Path 'D:\PowerToys2\installer\build.release.x64.all.log') {
+            Get-Content 'D:\PowerToys2\installer\build.release.x64.all.log' -Tail 800 | Out-File '.\error-logs\build-all-tail.log' -Encoding utf8
+          }
+
           # 列出收集到的所有日志文件
           if (Test-Path ".\error-logs\*") {
             Write-Host "`nCollected log files:"
@@ -118,6 +125,19 @@ jobs:
             # 创建一个说明文件
             "No error log file was found at the expected location." | Out-File ".\error-logs\no-logs-found.txt"
           }
+        shell: pwsh
+
+      - name: Publish logs to ci-logs branch
+        if: ${{ inputs.debug != 'true' && (steps.build.outcome == 'failure' || failure()) }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan ci-logs
+          git rm -rf --quiet . 2>$null
+          cp -r error-logs .
+          git add error-logs
+          git commit -m "CI logs for run ${{ github.run_id }}"
+          git push --force origin ci-logs
         shell: pwsh
 
       - name: Upload error logs
