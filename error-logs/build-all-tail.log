@@ -1,0 +1,800 @@
+                         TrackerLogDirectory=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\
+                         TranslateIncludes=false
+                         TreatAngleIncludeAsExternal=false
+                         TreatExternalTemplatesAsInternal=true
+                         TreatWarningAsError=true
+                         TreatWChar_tAsBuiltInType=true
+                         UndefineAllPreprocessorDefinitions=false
+                         UseDynamicDebugging=false
+                         UseFullPaths=true
+                         UseUnicodeForAssemblerListing=
+                         WarningLevel=Level4
+                         WholeProgramOptimization=true
+                         WinRTNoStdLib=false
+                         XMLDocumentationFileName=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\
+         Task Parameter:TLogDirectory=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\
+         Task Parameter:ItemOutputMetadataName=ObjectFileName
+         Task Parameter:TrackFileAccess=True
+         Task Parameter:DynamicDebugging=False
+       Done executing task "CleanupStaleTlogItems".
+     3>Done building target "TlogCleanup" in project "PowerToysSetupCustomActionsVNext.vcxproj".
+     3>Target "FinalizeBuildStatus" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets" from project "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (target "Build" depends on it):
+       Task "Delete"
+         Task Parameter:Files=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\unsuccessfulbuild
+         Deleting file "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\unsuccessfulbuild".
+       Done executing task "Delete".
+       Task "Touch"
+         Task Parameter:Files=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\PowerToysSetupCustomActionsVNext.lastbuildstate
+         Touching "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\PowerToysSetupCustomActionsVNext.lastbuildstate".
+       Done executing task "Touch".
+     3>Done building target "FinalizeBuildStatus" in project "PowerToysSetupCustomActionsVNext.vcxproj".
+       Target "_CheckForInvalidConfigurationAndPlatform" skipped. Previously built successfully.
+       Target "_CheckForInvalidConfigurationAndPlatform" skipped. Previously built successfully.
+     3>Target "Build" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.BuildSteps.Targets" from project "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (entry point):
+     3>Done building target "Build" in project "PowerToysSetupCustomActionsVNext.vcxproj".
+       Target "CallPublishContainerSdkContainerProfile" skipped, due to false condition; ('$(EnableSdkContainerDebugging)' == 'true' AND '$(SdkContainerPublishOnBuild)' == 'true') was evaluated as ('' == 'true' AND '' == 'true').
+       Target "_CalculatePostXamarinTelemetry" skipped. Previously built successfully.
+       Target "_PostXamarinTelemetry" skipped, due to false condition; ('$(_PostXamarinTelemetry)' == 'true') was evaluated as ('' == 'true').
+     3>Done Building Project "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (default targets).
+     2>Done executing task "MSBuild".
+       Task "MSBuild"
+         Task Parameter:BuildInParallel=True
+         Task Parameter:SkipNonexistentTargets=True
+         Task Parameter:
+             Projects=
+                 ..\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                         BuildReference=true
+                         Configuration=Release
+                         DoNotHarvest=True
+                         FullConfiguration=Release|x64
+                         Name=PowerToysSetupCustomActionsVNext
+                         OutputItemType=_WixResolvedProjectReference
+                         Platform=x64
+                         Private=True
+                         Project={B3A354B0-1E54-4B55-A962-FB5AF9330C19}
+                         ReferenceOutputAssembly=false
+                         ReferenceSourceTarget=ProjectReference
+                         RefProjectOutputGroups=Binaries;Content;Satellites
+                         RefTargetDir=INSTALLFOLDER
+                         SetConfiguration=Configuration=Release
+                         SetPlatform=Platform=x64
+                         SkipGetTargetFrameworkProperties=true
+                         Targets=
+         Task Parameter:Targets=GetNativeManifest
+         Task Parameter:
+             Properties=
+                 Configuration=Release
+                 Platform=x64
+         Global Properties:
+           Configuration=Release
+           Platform=x64
+     2>Project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (2) is building "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (3:2) on node 1 (GetNativeManifest target(s)).
+   3:2>Project file contains ToolsVersion="15.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="Current". For more information, please see http://go.microsoft.com/fwlink/?LinkId=293424.
+   3:2>Target "GetNativeManifest" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets" from project "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (entry point):
+       Added Item(s): 
+           Manifest=
+               tmp
+                       AcceptableNonZeroExitCodes=
+                       DeleteSoon=true
+                       EnableDPIAwareness=false
+                       GenerateCatalogFiles=false
+                       LinkCompiledInterface=false
+                       MinimalRebuildFromTracking=true
+                       SuppressStartupBanner=true
+                       TrackerLogDirectory=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\
+                       UpdateFileHashes=false
+                       VerboseOutput=true
+       Set Property: _HasNativeManifest=true
+       Set Property: _HasNativeManifest=false
+       Set Property: _HasNativeManifest=false
+       Set Property: _HasNativeManifest=false
+       Removed Item(s): 
+           Manifest=
+               tmp
+                       AcceptableNonZeroExitCodes=
+                       DeleteSoon=true
+                       EnableDPIAwareness=false
+                       GenerateCatalogFiles=false
+                       LinkCompiledInterface=false
+                       MinimalRebuildFromTracking=true
+                       SuppressStartupBanner=true
+                       TrackerLogDirectory=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\obj\PowerToy.B3A354B0.tlog\
+                       UpdateFileHashes=false
+                       VerboseOutput=true
+   3:2>Done building target "GetNativeManifest" in project "PowerToysSetupCustomActionsVNext.vcxproj".
+   3:2>Done Building Project "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (GetNativeManifest target(s)).
+     2>Done executing task "MSBuild".
+       Task "MSBuildInternalMessage" skipped, due to false condition; ('$(_NonExistentProjectReferenceSeverity)' != '') was evaluated as ('' != '').
+     2>Done building target "ResolveProjectReferences" in project "PowerToysInstallerVNext.wixproj".
+       Target "FindInvalidProjectReferences" skipped, due to false condition; ('$(FindInvalidProjectReferences)' == 'true') was evaluated as ('' == 'true').
+     2>Target "ResolveNativeProjectReferences" in file "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResolveReferences" depends on it):
+       Task "MSBuild"
+         Task Parameter:
+             Projects=
+                 ..\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                         BuildReference=true
+                         Configuration=Release
+                         DoNotHarvest=True
+                         FullConfiguration=Release|x64
+                         Name=PowerToysSetupCustomActionsVNext
+                         OutputItemType=_WixResolvedProjectReference
+                         Platform=x64
+                         Private=True
+                         Project={B3A354B0-1E54-4B55-A962-FB5AF9330C19}
+                         ReferenceOutputAssembly=false
+                         ReferenceSourceTarget=ProjectReference
+                         RefProjectOutputGroups=Binaries;Content;Satellites
+                         RefTargetDir=INSTALLFOLDER
+                         SetConfiguration=Configuration=Release
+                         SetPlatform=Platform=x64
+                         SkipGetTargetFrameworkProperties=true
+                         Targets=
+         Task Parameter:Targets=GetNativeTargetPath
+         Task Parameter:
+             Properties=
+                 Configuration=Release
+                 Platform=x64
+         Global Properties:
+           Configuration=Release
+           Platform=x64
+     2>Project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (2) is building "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (3:3) on node 1 (GetNativeTargetPath target(s)).
+   3:3>Project file contains ToolsVersion="15.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="Current". For more information, please see http://go.microsoft.com/fwlink/?LinkId=293424.
+       Target "_PrepareForReferenceResolution" skipped. Previously built successfully.
+   3:3>Target "GetNativeTargetPath" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets" from project "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (entry point):
+       Added Item(s): NativeTargetPath=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+       Task "Message" skipped, due to false condition; ('$(_REFERENCE_DEBUG)'=='true') was evaluated as (''=='true').
+       Target output items:
+           D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+   3:3>Done building target "GetNativeTargetPath" in project "PowerToysSetupCustomActionsVNext.vcxproj".
+   3:3>Done Building Project "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (GetNativeTargetPath target(s)).
+     2>ResolveNativeProjectReferences:
+         Output Item(s): 
+             _WixResolvedProjectReference=
+                 D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+                         BuildReference=true
+                         Configuration=Release
+                         DoNotHarvest=True
+                         FullConfiguration=Release|x64
+                         MSBuildSourceProjectFile=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                         MSBuildSourceTargetName=GetNativeTargetPath
+                         Name=PowerToysSetupCustomActionsVNext
+                         OriginalItemSpec=..\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                         OutputItemType=_WixResolvedProjectReference
+                         Platform=x64
+                         Private=True
+                         Project={B3A354B0-1E54-4B55-A962-FB5AF9330C19}
+                         ReferenceOutputAssembly=false
+                         ReferenceSourceTarget=ProjectReference
+                         RefProjectOutputGroups=Binaries;Content;Satellites
+                         RefTargetDir=INSTALLFOLDER
+                         SetConfiguration=Configuration=Release
+                         SetPlatform=Platform=x64
+                         SkipGetTargetFrameworkProperties=true
+                         Targets=
+       Done executing task "MSBuild".
+     2>Done building target "ResolveNativeProjectReferences" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "_ConvertResolvedProjectReferencesIntoWixConstructs" in file "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResolveReferences" depends on it):
+       Added Item(s): 
+           _WixReferencedProjectOutputs=
+               D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+                       BuildReference=true
+                       Configuration=Release
+                       DoNotHarvest=True
+                       FullConfiguration=Release|x64
+                       MSBuildSourceProjectFile=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                       MSBuildSourceTargetName=GetNativeTargetPath
+                       Name=PowerToysSetupCustomActionsVNext
+                       OriginalItemSpec=..\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                       OutputItemType=_WixResolvedProjectReference
+                       Platform=x64
+                       Private=True
+                       Project={B3A354B0-1E54-4B55-A962-FB5AF9330C19}
+                       ReferenceOutputAssembly=false
+                       ReferenceSourceTarget=ProjectReference
+                       RefProjectOutputGroups=Binaries;Content;Satellites
+                       RefTargetDir=INSTALLFOLDER
+                       SetConfiguration=Configuration=Release
+                       SetPlatform=Platform=x64
+                       SkipGetTargetFrameworkProperties=true
+                       Targets=
+       Using "CreateProjectReferenceDefineConstantsAndBindPaths" task from assembly "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\net472\WixToolset.BuildTasks.dll".
+       Task "CreateProjectReferenceDefineConstantsAndBindPaths"
+         Task Parameter:
+             ResolvedProjectReferences=
+                 D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+                         BuildReference=true
+                         Configuration=Release
+                         DoNotHarvest=True
+                         FullConfiguration=Release|x64
+                         MSBuildSourceProjectFile=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                         MSBuildSourceTargetName=GetNativeTargetPath
+                         Name=PowerToysSetupCustomActionsVNext
+                         OriginalItemSpec=..\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                         OutputItemType=_WixResolvedProjectReference
+                         Platform=x64
+                         Private=True
+                         Project={B3A354B0-1E54-4B55-A962-FB5AF9330C19}
+                         ReferenceOutputAssembly=false
+                         ReferenceSourceTarget=ProjectReference
+                         RefProjectOutputGroups=Binaries;Content;Satellites
+                         RefTargetDir=INSTALLFOLDER
+                         SetConfiguration=Configuration=Release
+                         SetPlatform=Platform=x64
+                         SkipGetTargetFrameworkProperties=true
+                         Targets=
+         Output Item(s): 
+             BindPath=
+                 D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared
+                 D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared
+                         BindName=PowerToysSetupCustomActionsVNext
+         Output Property: ProjectReferenceDefineConstants=PowerToysSetupCustomActionsVNext.Configuration=Release;PowerToysSetupCustomActionsVNext.FullConfiguration=Release|x64;PowerToysSetupCustomActionsVNext.Platform=x64;PowerToysSetupCustomActionsVNext.ProjectDir=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\;PowerToysSetupCustomActionsVNext.ProjectExt=.vcxproj;PowerToysSetupCustomActionsVNext.ProjectFileName=PowerToysSetupCustomActionsVNext.vcxproj;PowerToysSetupCustomActionsVNext.ProjectName=PowerToysSetupCustomActionsVNext;PowerToysSetupCustomActionsVNext.ProjectPath=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj;PowerToysSetupCustomActionsVNext.TargetDir=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\;PowerToysSetupCustomActionsVNext.TargetExt=.dll;PowerToysSetupCustomActionsVNext.TargetFileName=PowerToysSetupCustomActionsVNext.dll;PowerToysSetupCustomActionsVNext.TargetName=PowerToysSetupCustomActionsVNext;PowerToysSetupCustomActionsVNext.TargetPath=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+       Done executing task "CreateProjectReferenceDefineConstantsAndBindPaths".
+       Removed Item(s): 
+           _WixResolvedProjectReference=
+               D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+                       BuildReference=true
+                       Configuration=Release
+                       DoNotHarvest=True
+                       FullConfiguration=Release|x64
+                       MSBuildSourceProjectFile=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                       MSBuildSourceTargetName=GetNativeTargetPath
+                       Name=PowerToysSetupCustomActionsVNext
+                       OriginalItemSpec=..\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                       OutputItemType=_WixResolvedProjectReference
+                       Platform=x64
+                       Private=True
+                       Project={B3A354B0-1E54-4B55-A962-FB5AF9330C19}
+                       ReferenceOutputAssembly=false
+                       ReferenceSourceTarget=ProjectReference
+                       RefProjectOutputGroups=Binaries;Content;Satellites
+                       RefTargetDir=INSTALLFOLDER
+                       SetConfiguration=Configuration=Release
+                       SetPlatform=Platform=x64
+                       SkipGetTargetFrameworkProperties=true
+                       Targets=
+     2>Done building target "_ConvertResolvedProjectReferencesIntoWixConstructs" in project "PowerToysInstallerVNext.wixproj".
+       Target "ResolveWixLibraryReferences" skipped, due to false condition; ( '@(WixLibrary)' != '') was evaluated as ( '' != '').
+     2>Target "ResolveWixExtensionReferences" in file "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResolveReferences" depends on it):
+       Set Property: WixExtensionSearchPaths=;{HintPathFromItem};{RawFileName}
+       Using "ResolveWixReferences" task from assembly "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\net472\WixToolset.BuildTasks.dll".
+       Task "ResolveWixReferences"
+         Task Parameter:
+             SearchPaths=
+                 {HintPathFromItem}
+                 {RawFileName}
+         Task Parameter:
+             WixReferences=
+                 D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\build\..\wixext5\WixToolset.Util.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\build\..\wixext5\WixToolset.UI.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\build\..\wixext5\WixToolset.Netfx.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\build\..\wixext5\WixToolset.Firewall.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\build\..\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+         Task Parameter:SearchFilenameExtensions=.wixext.dll
+         WixReference: D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\build\..\wixext5\WixToolset.Util.wixext.dll
+         Trying {HintPathFromItem}
+         Trying {RawFileName}
+         Trying path D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\build\..\wixext5\WixToolset.Util.wixext.dll
+         Resolved path D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\wixext5\WixToolset.Util.wixext.dll
+         WixReference: D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\build\..\wixext5\WixToolset.UI.wixext.dll
+         Trying {HintPathFromItem}
+         Trying {RawFileName}
+         Trying path D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\build\..\wixext5\WixToolset.UI.wixext.dll
+         Resolved path D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\wixext5\WixToolset.UI.wixext.dll
+         WixReference: D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\build\..\wixext5\WixToolset.Netfx.wixext.dll
+         Trying {HintPathFromItem}
+         Trying {RawFileName}
+         Trying path D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\build\..\wixext5\WixToolset.Netfx.wixext.dll
+         Resolved path D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\wixext5\WixToolset.Netfx.wixext.dll
+         WixReference: D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\build\..\wixext5\WixToolset.Firewall.wixext.dll
+         Trying {HintPathFromItem}
+         Trying {RawFileName}
+         Trying path D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\build\..\wixext5\WixToolset.Firewall.wixext.dll
+         Resolved path D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\wixext5\WixToolset.Firewall.wixext.dll
+         WixReference: D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\build\..\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+         Trying {HintPathFromItem}
+         Trying {RawFileName}
+         Trying path D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\build\..\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+         Resolved path D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+         Output Item(s): 
+             _ResolvedWixExtensionPaths=
+                 D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\wixext5\WixToolset.Util.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\build\..\wixext5\WixToolset.Util.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\wixext5\WixToolset.UI.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\build\..\wixext5\WixToolset.UI.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\wixext5\WixToolset.Netfx.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\build\..\wixext5\WixToolset.Netfx.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\wixext5\WixToolset.Firewall.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\build\..\wixext5\WixToolset.Firewall.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\build\..\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+       Done executing task "ResolveWixReferences".
+     2>Done building target "ResolveWixExtensionReferences" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "_CreateProjectDefineConstants" in file "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResolveReferences" depends on it):
+       Set Property: ProjectDefineConstants=
+               Configuration=Release;
+               OutDir=x64\Release\UserSetup\;
+               InstallerPlatform=x64;
+               Platform=x64;
+               ProjectDir=D:\PowerToys2\installer\PowerToysSetupVNext\;
+               ProjectExt=.wixproj;
+               ProjectFileName=PowerToysInstallerVNext.wixproj;
+               ProjectName=PowerToysInstallerVNext;
+               ProjectPath=D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj;
+               TargetDir=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\;
+               TargetExt=.msi;
+               TargetFileName=PowerToysUserSetup-0.0.1-x64.msi;
+               TargetName=PowerToysUserSetup-0.0.1-x64;
+               TargetPath=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.msi;
+             
+       Set Property: SolutionDefineConstants=;DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\
+       Set Property: SolutionDefineConstants=;DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;SolutionDir=D:\PowerToys2\installer\
+       Set Property: SolutionDefineConstants=;DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;SolutionDir=D:\PowerToys2\installer\;SolutionExt=.sln
+       Set Property: SolutionDefineConstants=;DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;SolutionDir=D:\PowerToys2\installer\;SolutionExt=.sln;SolutionFileName=PowerToysSetup.sln
+       Set Property: SolutionDefineConstants=;DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;SolutionDir=D:\PowerToys2\installer\;SolutionExt=.sln;SolutionFileName=PowerToysSetup.sln;SolutionName=PowerToysSetup
+       Set Property: SolutionDefineConstants=;DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;SolutionDir=D:\PowerToys2\installer\;SolutionExt=.sln;SolutionFileName=PowerToysSetup.sln;SolutionName=PowerToysSetup;SolutionPath=D:\PowerToys2\installer\PowerToysSetup.sln
+     2>Done building target "_CreateProjectDefineConstants" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "AfterResolveReferences" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResolveReferences" depends on it):
+     2>Done building target "AfterResolveReferences" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "ResolveReferences" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "CoreBuild" depends on it):
+     2>Done building target "ResolveReferences" in project "PowerToysInstallerVNext.wixproj".
+       Target "ResolveNuGetPackageAssets" skipped, due to false condition; ('$(ResolveNuGetPackages)' == 'true' and exists('$(ProjectLockFile)')) was evaluated as ('false' == 'true' and exists('obj\Installer\project.assets.json')).
+     2>Target "ValidationExtension" in file "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.WorkflowBuildExtensions.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "PrepareResources" depends on it):
+       Task "WorkflowBuildMessageTask" skipped, due to false condition; ('$(SkipWorkflowValidation)'!='' and '$(SkipWorkflowValidation)'!='true' and '$(SkipWorkflowValidation)'!='false') was evaluated as (''!='' and ''!='true' and ''!='false').
+       Added Item(s): 
+           XamlBuildTaskTypeInspectionExtensionName=
+               Microsoft.Activities.Build.Validation.ValidationBuildExtension
+                       AssemblyName=Microsoft.Activities.Build, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+                       Visible=false
+     2>Done building target "ValidationExtension" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "ExpressionBuildExtension" in file "C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.WorkflowBuildExtensions.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "PrepareResources" depends on it):
+       Task "WorkflowBuildMessageTask" skipped, due to false condition; ('$(DisableWorkflowCompiledExpressions)'!='' and '$(DisableWorkflowCompiledExpressions)'!='true' and '$(DisableWorkflowCompiledExpressions)'!='false') was evaluated as (''!='' and ''!='true' and ''!='false').
+       Added Item(s): 
+           XamlBuildTaskTypeInspectionExtensionName=
+               Microsoft.Activities.Build.Expressions.ExpressionsBuildExtension
+                       AssemblyName=Microsoft.Activities.Build, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+                       Visible=false
+     2>Done building target "ExpressionBuildExtension" in project "PowerToysInstallerVNext.wixproj".
+       Target "XamlMarkupCompilePass1" skipped, due to false condition; ('@(XamlPage)' != '' or '@(XamlAppDef)' != '') was evaluated as ('' != '' or '' != '').
+       Target "XamlMarkupCompileReadGeneratedFileList" skipped, due to false condition; ('@(XamlPage)' != '' or '@(XamlAppDef)' != '') was evaluated as ('' != '' or '' != '').
+       Target "XamlMarkupCompileAddFilesGenerated" skipped, due to false condition; ('@(XamlPage)' != '' or '@(XamlAppDef)' != '') was evaluated as ('' != '' or '' != '').
+       Target "XamlMarkupCompilePass2" skipped, due to false condition; ('$(XamlRequiresCompilationPass2)' == 'true' ) was evaluated as ('false' == 'true' ).
+       Target "XamlMarkupCompileReadPass2Flag" skipped, due to false condition; ('@(XamlPage)' != '' or '@(XamlAppDef)' != '') was evaluated as ('' != '' or '' != '').
+       Target "XamlMarkupCompileAddExtensionFilesGenerated" skipped, due to false condition; ('@(XamlPage)' != '' or '@(XamlAppDef)' != '') was evaluated as ('' != '' or '' != '').
+       Target "AddDeferredValidationErrorsFileToFileWrites" skipped, due to false condition; (Exists('$(DeferredValidationErrorsFileName)')) was evaluated as (Exists('obj\Installer\x64\Release\UserSetup\\AC2C1ABA-CCF6-44D4-8127-588FD4D0A860-DeferredValidationErrors.xml')).
+       Target "ReportValidationBuildExtensionErrors" skipped, due to false condition; ('$(SkipWorkflowValidation)' != 'true' and ('@(XamlPage)' != '' or '@(XamlAppDef)' != '')) was evaluated as ('' != 'true' and ('' != '' or '' != '')).
+     2>Target "AssignTargetPaths" in file "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "PrepareResourceNames" depends on it):
+       Using "WixAssignCulture" task from assembly "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\net472\WixToolset.BuildTasks.dll".
+       Task "WixAssignCulture"
+         Output Item(s): 
+             CultureGroup=
+                 null
+                         OutputFolder=
+                         OutputSuffix=neutral
+       Done executing task "WixAssignCulture".
+       Added Item(s): _CulturedTargetPath=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.msi
+       Added Item(s): _CulturedTargetPdbPath=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.wixpdb
+       Set Property: TargetPath=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.msi
+       Set Property: TargetPdbPath=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.wixpdb
+       D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets(498,7): message : Property reassignment: $(BindTrackingFilePrefix)="PowerToysInstallerVNext.wixproj.BindTracking-" (previous value: "PowerToysInstallerVNext.wixproj.BindTracking") at D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets (498,7) [D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj]
+       Set Property: BindTrackingFilePrefix=PowerToysInstallerVNext.wixproj.BindTracking-
+     2>Done building target "AssignTargetPaths" in project "PowerToysInstallerVNext.wixproj".
+       Target "AssignTargetPaths" skipped. Previously built successfully.
+     2>Target "SplitResourcesByCulture" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "PrepareResourceNames" depends on it):
+       Set Property: RespectAlreadyAssignedItemCulture=false
+       Set Property: WarnOnCultureOverwritten=false
+       Task "MSBuildInternalMessage" skipped, due to false condition; ('@(ResxWithNoCulture)'!='') was evaluated as (''!='').
+       Task "MSBuildInternalMessage" skipped, due to false condition; ('@(ResxWithCulture)'!='') was evaluated as (''!='').
+       Task "MSBuildInternalMessage" skipped, due to false condition; ('@(NonResxWithCulture)'!='') was evaluated as (''!='').
+       Task "MSBuildInternalMessage" skipped, due to false condition; ('@(NonResxWithNoCulture)'!='') was evaluated as (''!='').
+       Task "AssignCulture"
+         Task Parameter:WarnOnCultureOverwritten=False
+         Task Parameter:RespectAlreadyAssignedItemCulture=False
+       Done executing task "AssignCulture".
+     2>Done building target "SplitResourcesByCulture" in project "PowerToysInstallerVNext.wixproj".
+       Target "CreateManifestResourceNames" skipped, due to false condition; ( '@(EmbeddedResource)' != '' ) was evaluated as ( '' != '' ).
+     2>Target "CreateCustomManifestResourceNames" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "PrepareResourceNames" depends on it):
+     2>Done building target "CreateCustomManifestResourceNames" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "PrepareResourceNames" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "PrepareResources" depends on it):
+     2>Done building target "PrepareResourceNames" in project "PowerToysInstallerVNext.wixproj".
+       Target "ResolveProjectReferences" skipped. Previously built successfully.
+       Target "FindInvalidProjectReferences" skipped, due to false condition; ('$(FindInvalidProjectReferences)' == 'true') was evaluated as ('' == 'true').
+       Target "GetFrameworkPaths" skipped. Previously built successfully.
+       Target "GetReferenceAssemblyPaths" skipped. Previously built successfully.
+       Target "PrepareForBuild" skipped. Previously built successfully.
+       Target "GetInstalledSDKLocations" skipped, due to false condition; ('@(SDKReference)' != '') was evaluated as ('' != '').
+     2>Target "ResolveSDKReferences" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResolveAssemblyReferences" depends on it):
+       Task "ResolveSDKReference" skipped, due to false condition; ('@(SDKReference)'!='') was evaluated as (''!='').
+     2>Done building target "ResolveSDKReferences" in project "PowerToysInstallerVNext.wixproj".
+       Target "ResolveSDKReferences" skipped. Previously built successfully.
+     2>Target "ExpandSDKReferences" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResolveAssemblyReferences" depends on it):
+       Task "GetSDKReferenceFiles" skipped, due to false condition; ('@(ResolvedSDKReference)'!='') was evaluated as (''!='').
+     2>Done building target "ExpandSDKReferences" in project "PowerToysInstallerVNext.wixproj".
+       Target "ResolveNuGetPackageAssets" skipped, due to false condition; ('$(ResolveNuGetPackages)' == 'true' and exists('$(ProjectLockFile)')) was evaluated as ('false' == 'true' and exists('obj\Installer\project.assets.json')).
+       Target "FakesGenerateBeforeBuild" skipped, due to false condition; (@(Fakes) != '' AND $(BuildingProject) AND $(FakesUseV2Generation) != 'true') was evaluated as ( != '' AND true AND  != 'true').
+     2>Target "ResolveAssemblyReferences" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResGen" depends on it):
+       Set Property: ResolveAssemblyReferencesStateFile=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.AssemblyReference.cache
+       Set Property: ResolveAssemblyReferencesSilent=false
+       Set Property: ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch=Warning
+       Set Property: ResolveAssemblyReferencesFindRelatedSatellites=true
+       Set Property: ResolveAssemblyReferencesFindSerializationAssemblies=true
+       Set Property: ResolveAssemblyReferencesFindRelatedFiles=true
+       Set Property: ResolveAssemblyReferenceOutputUnresolvedAssemblyConflicts=false
+       Set Property: EnableCustomCulture=false
+       Set Property: FindDependenciesOfExternallyResolvedReferences=false
+       Task "ResolveAssemblyReference" skipped, due to false condition; ('@(Reference)'!='' or '@(_ResolvedProjectReferencePaths)'!='' or '@(_ExplicitReference)' != '') was evaluated as (''!='' or ''!='' or '' != '').
+     2>Done building target "ResolveAssemblyReferences" in project "PowerToysInstallerVNext.wixproj".
+       Target "GenerateFakes" skipped, due to false condition; ($(BuildingProject) AND $(FakesUseV2Generation) == 'true') was evaluated as (true AND  == 'true').
+       Target "SplitResourcesByCulture" skipped. Previously built successfully.
+     2>Target "BeforeResGen" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResGen" depends on it):
+     2>Done building target "BeforeResGen" in project "PowerToysInstallerVNext.wixproj".
+       Target "ResolveReferences" skipped. Previously built successfully.
+       Target "AppendGeneratedFakesAssemblyReferences" skipped, due to false condition; ($(FakesUseV2Generation) == 'true' AND Exists('$(FakesOutputPath)')) was evaluated as ( == 'true' AND Exists('D:\PowerToys2\installer\PowerToysSetupVNext\FakesAssemblies')).
+     2>Target "FindReferenceAssembliesForReferences" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "CoreResGen" depends on it):
+     2>Done building target "FindReferenceAssembliesForReferences" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "CoreResGen" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResGen" depends on it):
+       Set Property: GenerateResourceMSBuildArchitecture=CurrentArchitecture
+       Set Property: ResgenToolPath=
+       Set Property: GenerateResourceMSBuildRuntime=CurrentRuntime
+       Task "GenerateResource" skipped, due to false condition; ('%(EmbeddedResource.Type)' == 'Resx' and '%(EmbeddedResource.GenerateResource)' != 'false' and '$(GenerateResourceMSBuildRuntime)' != 'CLR2') was evaluated as ('' == 'Resx' and '' != 'false' and 'CurrentRuntime' != 'CLR2').
+       Task "GenerateResource" skipped, due to false condition; ('%(EmbeddedResource.Type)' == 'Resx' and '%(EmbeddedResource.GenerateResource)' != 'false' and '$(GenerateResourceMSBuildRuntime)' == 'CLR2') was evaluated as ('' == 'Resx' and '' != 'false' and 'CurrentRuntime' == 'CLR2').
+     2>Done building target "CoreResGen" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "AfterResGen" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "ResGen" depends on it):
+     2>Done building target "AfterResGen" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "ResGen" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "PrepareResources" depends on it):
+     2>Done building target "ResGen" in project "PowerToysInstallerVNext.wixproj".
+       Target "CompileLicxFiles" skipped, due to false condition; ('@(_LicxFile)'!='') was evaluated as (''!='').
+     2>Target "PrepareResources" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "CoreBuild" depends on it):
+     2>Done building target "PrepareResources" in project "PowerToysInstallerVNext.wixproj".
+       Target "ResolveKeySource" skipped, due to false condition; ($(SignManifests) == 'true' or $(SignAssembly) == 'true') was evaluated as ( == 'true' or  == 'true').
+       Target "ResolveReferences" skipped. Previously built successfully.
+       Target "ResolveKeySource" skipped, due to false condition; ($(SignManifests) == 'true' or $(SignAssembly) == 'true') was evaluated as ( == 'true' or  == 'true').
+       Target "ResolveComReferences" skipped, due to false condition; ('@(COMReference)'!='' or '@(COMFileReference)'!='') was evaluated as (''!='' or ''!='').
+       Target "ResolveNativeReferences" skipped, due to false condition; ('@(NativeReference)'!='') was evaluated as (''!='').
+       Target "_SetExternalWin32ManifestProperties" skipped, due to false condition; ('$(GenerateClickOnceManifests)'=='true' or '@(NativeReference)'!='' or '@(ResolvedIsolatedComModules)'!='') was evaluated as (''=='true' or ''!='' or ''!='').
+     2>Target "_SetEmbeddedWin32ManifestProperties" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "SetWin32ManifestProperties" depends on it):
+       Set Property: EmbeddedWin32Manifest=
+       Set Property: Win32Manifest=
+       Using "GetFrameworkPath" task from assembly "Microsoft.Build.Tasks.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a".
+       Task "GetFrameworkPath"
+         Output Property: _FrameworkVersion40Path=C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+       Done executing task "GetFrameworkPath".
+       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets(4219,7): message : Property reassignment: $(EmbeddedWin32Manifest)="C:\Windows\Microsoft.NET\Framework64\v4.0.30319\default.win32manifest" (previous value: "") at C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets (4219,7) [D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj]
+       Set Property: EmbeddedWin32Manifest=C:\Windows\Microsoft.NET\Framework64\v4.0.30319\default.win32manifest
+     2>Done building target "_SetEmbeddedWin32ManifestProperties" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "SetWin32ManifestProperties" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "Compile" depends on it):
+     2>Done building target "SetWin32ManifestProperties" in project "PowerToysInstallerVNext.wixproj".
+       Target "_SetPreferNativeArm64Win32ManifestProperties" skipped, due to false condition; ( '$(PreferNativeArm64)'=='true' and '$(NoWin32Manifest)'!='true') was evaluated as ( ''=='true' and ''!='true').
+       Target "FindReferenceAssembliesForReferences" skipped. Previously built successfully.
+     2>Target "_GenerateCompileInputs" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "Compile" depends on it):
+       Task "MSBuildInternalMessage" skipped, due to false condition; ('@(ManifestResourceWithNoCulture)'!='' and '%(ManifestResourceWithNoCulture.EmittedForCompatibilityOnly)'=='') was evaluated as (''!='' and ''=='').
+       Task "MSBuildInternalMessage" skipped, due to false condition; ('@(ManifestNonResxWithNoCultureOnDisk)'!='' and '%(ManifestNonResxWithNoCultureOnDisk.EmittedForCompatibilityOnly)'=='') was evaluated as (''!='' and ''=='').
+     2>Done building target "_GenerateCompileInputs" in project "PowerToysInstallerVNext.wixproj".
+       Target "GenerateTargetFrameworkMonikerAttribute" skipped, due to false condition; ('@(Compile)' != '' and '$(GenerateTargetFrameworkAttribute)' == 'true') was evaluated as ('CustomDialogs\PTInstallDirDlg.wxs;CustomDialogs\PTLicenseDlg.wxs;CustomDialogs\WixUI_PTInstallDir.wxs;...' != '' and 'false' == 'true').
+       Target "GenerateAdditionalSources" skipped, due to false condition; ('@(AssemblyAttributes)' != '' and '$(GenerateAdditionalSources)' == 'true') was evaluated as ('' != '' and '' == 'true').
+     2>Target "BeforeCompile" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "Compile" depends on it):
+     2>Done building target "BeforeCompile" in project "PowerToysInstallerVNext.wixproj".
+       Target "_TimeStampBeforeCompile" skipped, due to false condition; ('$(RunPostBuildEvent)'=='OnOutputUpdated' or ('$(RegisterForComInterop)'=='true' and '$(OutputType)'=='library')) was evaluated as ('Always'=='OnOutputUpdated' or (''=='true' and 'Package'=='library')).
+       Target "ResolveAssemblyReferences" skipped. Previously built successfully.
+       Target "_GenerateCompileInputs" skipped. Previously built successfully.
+     2>Target "_GenerateCompileDependencyCache" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "Compile" depends on it):
+       Added Item(s): CustomAdditionalCompileInputs=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+       Added Item(s): 
+           CoreCompileCache=
+               CustomDialogs\PTInstallDirDlg.wxs
+               CustomDialogs\PTLicenseDlg.wxs
+               CustomDialogs\WixUI_PTInstallDir.wxs
+               Product.wxs
+               BaseApplications.wxs
+               KeyboardManager.wxs
+               Core.wxs
+               Resources.wxs
+               Settings.wxs
+               WinUI3Applications.wxs
+               WinAppSDK.wxs
+       Added Item(s): 
+           CoreCompileCache=
+               Version=0.0.1
+               PerUser=true
+               CIBuild=true
+       Task "Hash"
+         Task Parameter:
+             ItemsToHash=
+                 CustomDialogs\PTInstallDirDlg.wxs
+                 CustomDialogs\PTLicenseDlg.wxs
+                 CustomDialogs\WixUI_PTInstallDir.wxs
+                 Product.wxs
+                 BaseApplications.wxs
+                 KeyboardManager.wxs
+                 Core.wxs
+                 Resources.wxs
+                 Settings.wxs
+                 WinUI3Applications.wxs
+                 WinAppSDK.wxs
+                 Version=0.0.1
+                 PerUser=true
+                 CIBuild=true
+         Task Parameter:IgnoreCase=True
+         Output Property: CoreCompileDependencyHash=4c4cefc4a8f53fc417b1d93cca7314de28399cefdf039da49c2a911bea603b93
+       Done executing task "Hash".
+       Task "WriteLinesToFile"
+         Task Parameter:WriteOnlyWhenDifferent=True
+         Task Parameter:Lines=4c4cefc4a8f53fc417b1d93cca7314de28399cefdf039da49c2a911bea603b93
+         Task Parameter:Overwrite=True
+         Task Parameter:File=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+       Done executing task "WriteLinesToFile".
+       Added Item(s): FileWrites=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+     2>Done building target "_GenerateCompileDependencyCache" in project "PowerToysInstallerVNext.wixproj".
+       Target "AssignTargetPaths" skipped. Previously built successfully.
+       Target "CreateManifestResourceNames" skipped, due to false condition; ( '@(EmbeddedResource)' != '' ) was evaluated as ( '' != '' ).
+     2>Target "ReadPreviousBindInputsAndBuiltOutputs" in file "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "CoreCompile" depends on it):
+       Using "ReadTracking" task from assembly "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\net472\WixToolset.BuildTasks.dll".
+       Task "ReadTracking"
+         Task Parameter:File=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.BindTracking-neutral.txt
+       Done executing task "ReadTracking".
+     2>Done building target "ReadPreviousBindInputsAndBuiltOutputs" in project "PowerToysInstallerVNext.wixproj".
+       Target "_CreateProjectDefineConstants" skipped. Previously built successfully.
+       Target "ConvertReferences" skipped, due to false condition; ( $(EnableProjectHarvesting) and ('$(OutputType)' == 'Package' or '$(OutputType)' == 'PatchCreation' or '$(OutputType)' == 'Module') ) was evaluated as ( false and ('Package' == 'Package' or 'Package' == 'PatchCreation' or 'Package' == 'Module') ).
+       Target "ConvertBundleReferences" skipped, due to false condition; ( $(EnableProjectHarvesting) and ('$(OutputType)' == 'Bundle') ) was evaluated as ( false and ('Package' == 'Bundle') ).
+       Target "HarvestProjects" skipped, due to false condition; ( $(EnableProjectHarvesting) and ('@(HeatProject)' != '' or '@(HarvestProject)' != '') ) was evaluated as ( false and ('' != '' or '' != '') ).
+       Target "HarvestDirectory" skipped, due to false condition; ( '@(HarvestDirectory)' != '' ) was evaluated as ( '' != '' ).
+       Target "HarvestFile" skipped, due to false condition; ( '@(HarvestFile)' != '' ) was evaluated as ( '' != '' ).
+       Target "RefreshGeneratedFile" skipped, due to false condition; ( $(EnableProjectHarvesting) and ('$(OutputType)' == 'Package' or '$(OutputType)' == 'PatchCreation' or '$(OutputType)' == 'Module') and '@(_GeneratedFiles)' != '' ) was evaluated as ( false and ('Package' == 'Package' or 'Package' == 'PatchCreation' or 'Package' == 'Module') and '' != '' ).
+       Target "RefreshBundleGeneratedFile" skipped, due to false condition; ( $(EnableProjectHarvesting) and ('$(OutputType)' == 'Bundle' and '@(_GeneratedFiles)' != '') ) was evaluated as ( false and ('Package' == 'Bundle' and '' != '') ).
+     2>Target "GenerateCode" in file "D:\PowerToys2\installer\packages\wixtoolset.heat\5.0.2\build\WixToolset.Heat.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "Harvest" depends on it):
+     2>Done building target "GenerateCode" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "Harvest" in file "D:\PowerToys2\installer\packages\wixtoolset.heat\5.0.2\build\WixToolset.Heat.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "CoreCompile" depends on it):
+     2>Done building target "Harvest" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "CoreCompile" in file "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\wix.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "Compile" depends on it):
+       Building target "CoreCompile" completely.
+       Output file "obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.BindTracking-neutral.txt" does not exist.
+       Task "Warning" skipped, due to false condition; ( '@(UnsupportedWixExtension)' != '' ) was evaluated as ( '' != '' ).
+       Using "WixBuild" task from assembly "D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\net472\WixToolset.BuildTasks.dll".
+       Task "WixBuild"
+         Task Parameter:OutputType=Package
+         Task Parameter:OutputFile=obj\Installer\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.msi
+         Task Parameter:
+             BindPaths=
+                 D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared
+                 D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared
+                         BindName=PowerToysSetupCustomActionsVNext
+         Task Parameter:IntermediateDirectory=obj\Installer\x64\Release\UserSetup\
+         Task Parameter:PdbType=full
+         Task Parameter:PdbFile=obj\Installer\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.wixpdb
+         Task Parameter:NoLogo=True
+         Task Parameter:BindTrackingFile=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.BindTracking-neutral.txt
+         Task Parameter:AdditionalOptions= 
+         Task Parameter:InstallerPlatform=x64
+         Task Parameter:
+             SourceFiles=
+                 CustomDialogs\PTInstallDirDlg.wxs
+                 CustomDialogs\PTLicenseDlg.wxs
+                 CustomDialogs\WixUI_PTInstallDir.wxs
+                 Product.wxs
+                 BaseApplications.wxs
+                 KeyboardManager.wxs
+                 Core.wxs
+                 Resources.wxs
+                 Settings.wxs
+                 WinUI3Applications.wxs
+                 WinAppSDK.wxs
+         Task Parameter:
+             DefineConstants=
+                 Version=0.0.1
+                 PerUser=true
+                 CIBuild=true
+                 DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\
+                 SolutionDir=D:\PowerToys2\installer\
+                 SolutionExt=.sln
+                 SolutionFileName=PowerToysSetup.sln
+                 SolutionName=PowerToysSetup
+                 SolutionPath=D:\PowerToys2\installer\PowerToysSetup.sln
+                 Configuration=Release
+                 OutDir=x64\Release\UserSetup\
+                 InstallerPlatform=x64
+                 Platform=x64
+                 ProjectDir=D:\PowerToys2\installer\PowerToysSetupVNext\
+                 ProjectExt=.wixproj
+                 ProjectFileName=PowerToysInstallerVNext.wixproj
+                 ProjectName=PowerToysInstallerVNext
+                 ProjectPath=D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj
+                 TargetDir=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\
+                 TargetExt=.msi
+                 TargetFileName=PowerToysUserSetup-0.0.1-x64.msi
+                 TargetName=PowerToysUserSetup-0.0.1-x64
+                 TargetPath=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.msi
+                 PowerToysSetupCustomActionsVNext.Configuration=Release
+                 PowerToysSetupCustomActionsVNext.FullConfiguration=Release|x64
+                 PowerToysSetupCustomActionsVNext.Platform=x64
+                 PowerToysSetupCustomActionsVNext.ProjectDir=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\
+                 PowerToysSetupCustomActionsVNext.ProjectExt=.vcxproj
+                 PowerToysSetupCustomActionsVNext.ProjectFileName=PowerToysSetupCustomActionsVNext.vcxproj
+                 PowerToysSetupCustomActionsVNext.ProjectName=PowerToysSetupCustomActionsVNext
+                 PowerToysSetupCustomActionsVNext.ProjectPath=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj
+                 PowerToysSetupCustomActionsVNext.TargetDir=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\
+                 PowerToysSetupCustomActionsVNext.TargetExt=.dll
+                 PowerToysSetupCustomActionsVNext.TargetFileName=PowerToysSetupCustomActionsVNext.dll
+                 PowerToysSetupCustomActionsVNext.TargetName=PowerToysSetupCustomActionsVNext
+                 PowerToysSetupCustomActionsVNext.TargetPath=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll
+         Task Parameter:
+             SuppressSpecificWarnings=
+                 1026
+                 1076
+         Task Parameter:Cultures=null
+         Task Parameter:YieldDuringToolExecution=True
+         Task Parameter:
+             Extensions=
+                 D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\wixext5\WixToolset.Util.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\build\..\wixext5\WixToolset.Util.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\wixext5\WixToolset.UI.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\build\..\wixext5\WixToolset.UI.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\wixext5\WixToolset.Netfx.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\build\..\wixext5\WixToolset.Netfx.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\wixext5\WixToolset.Firewall.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\build\..\wixext5\WixToolset.Firewall.wixext.dll
+                 D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+                         OriginalItemSpec=D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\build\..\wixext5\WixToolset.BootstrapperApplications.wixext.dll
+         D:\PowerToys2\installer\packages\wixtoolset.sdk\5.0.2\tools\net472\x64\wix.exe build -platform x64 -out obj\Installer\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.msi -outputType Package -pdb obj\Installer\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.wixpdb -pdbType full -culture null -d Version=0.0.1 -d PerUser=true -d CIBuild=true -d "DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\\" -d SolutionDir=D:\PowerToys2\installer\ -d SolutionExt=.sln -d SolutionFileName=PowerToysSetup.sln -d SolutionName=PowerToysSetup -d SolutionPath=D:\PowerToys2\installer\PowerToysSetup.sln -d Configuration=Release -d OutDir=x64\Release\UserSetup\ -d InstallerPlatform=x64 -d Platform=x64 -d ProjectDir=D:\PowerToys2\installer\PowerToysSetupVNext\ -d ProjectExt=.wixproj -d ProjectFileName=PowerToysInstallerVNext.wixproj -d ProjectName=PowerToysInstallerVNext -d ProjectPath=D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj -d TargetDir=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\ -d TargetExt=.msi -d TargetFileName=PowerToysUserSetup-0.0.1-x64.msi -d TargetName=PowerToysUserSetup-0.0.1-x64 -d TargetPath=D:\PowerToys2\installer\PowerToysSetupVNext\x64\Release\UserSetup\PowerToysUserSetup-0.0.1-x64.msi -d PowerToysSetupCustomActionsVNext.Configuration=Release -d "PowerToysSetupCustomActionsVNext.FullConfiguration=Release|x64" -d PowerToysSetupCustomActionsVNext.Platform=x64 -d PowerToysSetupCustomActionsVNext.ProjectDir=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\ -d PowerToysSetupCustomActionsVNext.ProjectExt=.vcxproj -d PowerToysSetupCustomActionsVNext.ProjectFileName=PowerToysSetupCustomActionsVNext.vcxproj -d PowerToysSetupCustomActionsVNext.ProjectName=PowerToysSetupCustomActionsVNext -d PowerToysSetupCustomActionsVNext.ProjectPath=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj -d PowerToysSetupCustomActionsVNext.TargetDir=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\ -d PowerToysSetupCustomActionsVNext.TargetExt=.dll -d PowerToysSetupCustomActionsVNext.TargetFileName=PowerToysSetupCustomActionsVNext.dll -d PowerToysSetupCustomActionsVNext.TargetName=PowerToysSetupCustomActionsVNext -d PowerToysSetupCustomActionsVNext.TargetPath=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared\PowerToysSetupCustomActionsVNext.dll -ext D:\PowerToys2\installer\packages\wixtoolset.util.wixext\5.0.2\wixext5\WixToolset.Util.wixext.dll -ext D:\PowerToys2\installer\packages\wixtoolset.ui.wixext\5.0.2\wixext5\WixToolset.UI.wixext.dll -ext D:\PowerToys2\installer\packages\wixtoolset.netfx.wixext\5.0.2\wixext5\WixToolset.Netfx.wixext.dll -ext D:\PowerToys2\installer\packages\wixtoolset.firewall.wixext\5.0.2\wixext5\WixToolset.Firewall.wixext.dll -ext D:\PowerToys2\installer\packages\wixtoolset.bal.wixext\5.0.2\wixext5\WixToolset.BootstrapperApplications.wixext.dll -intermediatefolder obj\Installer\x64\Release\UserSetup\ -trackingfile obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.BindTracking-neutral.txt -nologo -sw1026 -sw1076  -bindPath D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared -bindPath PowerToysSetupCustomActionsVNext=D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\x64\Release\SetupShared CustomDialogs\PTInstallDirDlg.wxs CustomDialogs\PTLicenseDlg.wxs CustomDialogs\WixUI_PTInstallDir.wxs Product.wxs BaseApplications.wxs KeyboardManager.wxs Core.wxs Resources.wxs Settings.wxs WinUI3Applications.wxs WinAppSDK.wxs
+     2>D:\PowerToys2\installer\PowerToysSetupVNext\Settings.wxs(72): error WIX0010: The File/@Name attribute was not found; it is required. [D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj]
+         The command exited with code 10.
+         Output Property: _WixBuildExitCode=10
+       Done executing task "WixBuild" -- FAILED.
+       Target output items:
+           obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.BindTracking-neutral.txt
+     2>Done building target "CoreCompile" in project "PowerToysInstallerVNext.wixproj" -- FAILED.
+       Target "_TimeStampAfterCompile" skipped, due to false condition; ('$(RunPostBuildEvent)'=='OnOutputUpdated' or ('$(RegisterForComInterop)'=='true' and '$(OutputType)'=='library')) was evaluated as ('Always'=='OnOutputUpdated' or (''=='true' and 'Package'=='library')).
+     2>Target "PostBuildEvent" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "CoreBuild" depends on it):
+       Task "Exec"
+         Task Parameter:Command=
+               call move /Y ..\..\..\BaseApplications.wxs.bk ..\..\..\BaseApplications.wxs
+               call move /Y ..\..\..\Core.wxs.bk ..\..\..\Core.wxs
+               call move /Y ..\..\..\KeyboardManager.wxs.bk ..\..\..\KeyboardManager.wxs
+               call move /Y ..\..\..\Product.wxs.bk ..\..\..\Product.wxs
+               call move /Y ..\..\..\Resources.wxs.bk ..\..\..\Resources.wxs
+               call move /Y ..\..\..\Settings.wxs.bk ..\..\..\Settings.wxs
+               call move /Y ..\..\..\WinAppSDK.wxs.bk ..\..\..\WinAppSDK.wxs
+               call move /Y ..\..\..\WinUI3Applications.wxs.bk ..\..\..\WinUI3Applications.wxs
+             
+         Task Parameter:WorkingDirectory=x64\Release\UserSetup\
+         
+               call move /Y ..\..\..\BaseApplications.wxs.bk ..\..\..\BaseApplications.wxs
+               call move /Y ..\..\..\Core.wxs.bk ..\..\..\Core.wxs
+               call move /Y ..\..\..\KeyboardManager.wxs.bk ..\..\..\KeyboardManager.wxs
+               call move /Y ..\..\..\Product.wxs.bk ..\..\..\Product.wxs
+               call move /Y ..\..\..\Resources.wxs.bk ..\..\..\Resources.wxs
+               call move /Y ..\..\..\Settings.wxs.bk ..\..\..\Settings.wxs
+               call move /Y ..\..\..\WinAppSDK.wxs.bk ..\..\..\WinAppSDK.wxs
+               call move /Y ..\..\..\WinUI3Applications.wxs.bk ..\..\..\WinUI3Applications.wxs
+             
+                 1 file(s) moved.
+                 1 file(s) moved.
+                 1 file(s) moved.
+                 1 file(s) moved.
+                 1 file(s) moved.
+                 1 file(s) moved.
+                 1 file(s) moved.
+                 1 file(s) moved.
+       Done executing task "Exec".
+     2>Done building target "PostBuildEvent" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "_CheckForCompileOutputs" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "_CleanGetCurrentAndPriorFileWrites" depends on it):
+       Set Property: _DocumentationFileProduced=false
+       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets(5589,7): message : Property reassignment: $(_DebugSymbolsProduced)="false" (previous value: "true") at C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets (5589,7) [D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj]
+       Set Property: _DebugSymbolsProduced=false
+     2>Done building target "_CheckForCompileOutputs" in project "PowerToysInstallerVNext.wixproj".
+       Target "_SGenCheckForOutputs" skipped, due to false condition; ('$(_SGenGenerateSerializationAssembliesConfig)' == 'On' or ('@(WebReferenceUrl)'!='' and '$(_SGenGenerateSerializationAssembliesConfig)' == 'Auto')) was evaluated as ('Auto' == 'On' or (''!='' and 'Auto' == 'Auto')).
+     2>Target "_CleanGetCurrentAndPriorFileWrites" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "_CleanRecordFileWrites" depends on it):
+       Task "ReadLinesFromFile"
+         Task Parameter:File=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.FileListAbsolute.txt
+       Done executing task "ReadLinesFromFile".
+       Task "ConvertToAbsolutePath"
+       Done executing task "ConvertToAbsolutePath".
+       Task "FindUnderPath"
+         Task Parameter:UpdateToAbsolutePaths=True
+         Task Parameter:Path=D:\PowerToys2\installer\PowerToysSetupVNext
+         Comparison path is "D:\PowerToys2\installer\PowerToysSetupVNext".
+       Done executing task "FindUnderPath".
+       Task "FindUnderPath"
+         Task Parameter:UpdateToAbsolutePaths=True
+         Task Parameter:Files=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+         Task Parameter:Path=x64\Release\UserSetup\
+         Comparison path is "x64\Release\UserSetup\".
+       Done executing task "FindUnderPath".
+       Task "FindUnderPath"
+         Task Parameter:UpdateToAbsolutePaths=True
+         Task Parameter:Files=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+         Task Parameter:Path=obj\Installer\x64\Release\UserSetup\
+         Comparison path is "obj\Installer\x64\Release\UserSetup\".
+         Output Item(s): _CleanCurrentFileWritesInIntermediate=D:\PowerToys2\installer\PowerToysSetupVNext\obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+       Done executing task "FindUnderPath".
+       Added Item(s): _CleanCurrentFileWritesWithNoReferences=D:\PowerToys2\installer\PowerToysSetupVNext\obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+       Task "RemoveDuplicates"
+         Output Item(s): _CleanCurrentFileWrites=D:\PowerToys2\installer\PowerToysSetupVNext\obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+       Done executing task "RemoveDuplicates".
+     2>Done building target "_CleanGetCurrentAndPriorFileWrites" in project "PowerToysInstallerVNext.wixproj".
+     2>Target "_CleanRecordFileWrites" in file "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets" from project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (target "CoreBuild" depends on it):
+       Task "RemoveDuplicates"
+         Output Item(s): _CleanUniqueFileWrites=D:\PowerToys2\installer\PowerToysSetupVNext\obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+       Done executing task "RemoveDuplicates".
+       Task "MakeDir"
+         Task Parameter:Directories=obj\Installer\x64\Release\UserSetup\
+       Done executing task "MakeDir".
+       Task "WriteLinesToFile"
+         Task Parameter:WriteOnlyWhenDifferent=True
+         Task Parameter:Lines=D:\PowerToys2\installer\PowerToysSetupVNext\obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.CoreCompileInputs.cache
+         Task Parameter:Overwrite=True
+         Task Parameter:File=obj\Installer\x64\Release\UserSetup\PowerToysInstallerVNext.wixproj.FileListAbsolute.txt
+       Done executing task "WriteLinesToFile".
+     2>Done building target "_CleanRecordFileWrites" in project "PowerToysInstallerVNext.wixproj".
+     2>Done Building Project "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (default targets) -- FAILED.
+     1>Done executing task "MSBuild" -- FAILED.
+     1>Done building target "PowerToysInstallerVNext" in project "PowerToysSetup.sln" -- FAILED.
+     1>Done Building Project "D:\PowerToys2\installer\PowerToysSetup.sln" (PowerToysInstallerVNext target(s)) -- FAILED.
+Deferred Messages
+     0>
+Detailed Build Summary
+======================
+    
+         
+         ============================== Build Hierarchy (IDs represent configurations) =====================================================
+         Id                  : Exclusive Time   Total Time   Path (Targets)
+         -----------------------------------------------------------------------------------------------------------------------------------
+         0                   : 0.016s           17.590s       D:\PowerToys2\installer\PowerToysSetup.sln (PowerToysInstallerVNext) 
+         . 1                 : 0.313s           17.168s       D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj () 
+         | | 2               : 5.809s           7.249s       D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj () 
+         | | | 3             : 0.078s           1.440s       D:\PowerToys2\src\common\logger\logger.vcxproj () 
+         | | | | 4           : 0.281s           0.281s       D:\PowerToys2\src\logging\logging.vcxproj () 
+         | | | | 5           : 0.454s           0.454s       D:\PowerToys2\src\common\version\version.vcxproj () 
+         | | | | 7           : 0.000s           0.000s       D:\PowerToys2\src\common\version\version.vcxproj (GetNativeManifest) 
+         | | | | 6           : 0.000s           0.000s       D:\PowerToys2\src\logging\logging.vcxproj (GetNativeManifest) 
+         | | | | 9           : 0.016s           0.016s       D:\PowerToys2\src\common\version\version.vcxproj (GetProjectInfoForReference) 
+         | | | . 8           : 0.000s           0.000s       D:\PowerToys2\src\logging\logging.vcxproj (GetProjectInfoForReference) 
+         | | | 10            : 0.000s           0.000s       D:\PowerToys2\src\common\logger\logger.vcxproj (GetNativeManifest) 
+         | | . 11            : 0.000s           0.000s       D:\PowerToys2\src\common\logger\logger.vcxproj (GetProjectInfoForReference) 
+         | | 12              : 0.000s           0.000s       D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj (GetNativeManifest) 
+         | . 13              : 0.000s           0.000s       D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj (GetNativeTargetPath) 
+         
+         ============================== Node Utilization (IDs represent configurations) ====================================================
+         Timestamp:            1       2        Duration   Cumulative
+         -----------------------------------------------------------------------------------------------------------------------------------
+         639304788192287458:   0       x        0.016s     0.016s 
+         639304788192443790:   1       x        0.219s     0.234s ....
+         639304788194631330:   2       x        0.062s     0.297s .
+         639304788195256276:   3       x        0.016s     0.313s 
+         639304788195412577:   4       x        0.016s     0.328s 
+         639304788195568800:   |       5        0.266s     0.594s .....
+         639304788198225148:   x       |        0.031s     0.625s 
+         639304788198537702:   x       |        0.877s     1.502s .................
+         639304788207305735:   x       |        0.157s     1.659s ...
+         639304788208877766:   3       7        0.047s     1.706s 
+         639304788209345741:   8       9        0.016s     1.721s 
+         639304788209502018:   3       x        0.016s     1.737s 
+         639304788209658294:   2       x        1.001s     2.738s ....................
+         639304788219669935:   |       x        0.016s     2.754s 
+         639304788219826234:   |       x        6.085s     8.839s + (scale 1:100)
+         639304788280680315:   |       x        0.016s     8.855s 
+         639304788280842371:   |       x        3.521s     12.377s ......................................................................
+         639304788316052647:   |       x        4.714s     17.090s ..............................................................................................
+         639304788363189679:   1       x        0.031s     17.122s 
+         639304788363502521:   |       x        0.406s     17.528s ........
+         639304788367565225:   |       x        0.063s     17.590s .
+         639304788367565225:   0       x        0.063s     17.653s .
+         -----------------------------------------------------------------------------------------------------------------------------------
+         Utilization:          93.9    7.8      Average Utilization: 50.8
+
+Build FAILED.
+
+       "D:\PowerToys2\installer\PowerToysSetup.sln" (PowerToysInstallerVNext target) (1) ->
+       "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (default target) (2) ->
+       "D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj" (default target) (3) ->
+       (PreBuildEvent target) -> 
+         EXEC : warning : Path not found: [D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj]
+
+
+       "D:\PowerToys2\installer\PowerToysSetup.sln" (PowerToysInstallerVNext target) (1) ->
+       "D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj" (default target) (2) ->
+       (CoreCompile target) -> 
+         D:\PowerToys2\installer\PowerToysSetupVNext\Settings.wxs(72): error WIX0010: The File/@Name attribute was not found; it is required. [D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj]
+
+    1 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:17.62
