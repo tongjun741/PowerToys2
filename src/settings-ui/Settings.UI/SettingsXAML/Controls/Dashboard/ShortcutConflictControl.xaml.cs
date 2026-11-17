@@ -18,7 +18,6 @@ namespace Microsoft.PowerToys.Settings.UI.Controls
     {
         private static readonly ResourceLoader ResourceLoader = Helpers.ResourceLoaderInstance.ResourceLoader;
 
-
         public static readonly DependencyProperty AllHotkeyConflictsDataProperty =
             DependencyProperty.Register(
                 nameof(AllHotkeyConflictsData),
@@ -112,7 +111,6 @@ namespace Microsoft.PowerToys.Settings.UI.Controls
             {
                 VisualStateManager.GoToState(this, "NoConflictState", true);
             }
-
         }
 
         private void OnPropertyChanged(string propertyName)

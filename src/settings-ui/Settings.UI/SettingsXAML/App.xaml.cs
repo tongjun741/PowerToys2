@@ -232,12 +232,12 @@ namespace Microsoft.PowerToys.Settings.UI
             settingsWindow.ExtendsContentIntoTitleBar = true;
             settingsWindow.NavigateToSection(StartupPage);
 
-                // https://github.com/microsoft/microsoft-ui-xaml/issues/7595 - Activate doesn't bring window to the foreground
-                // Need to call SetForegroundWindow to actually gain focus.
-                WindowHelpers.BringToForeground(settingsWindow.GetWindowHandle());
+            // https://github.com/microsoft/microsoft-ui-xaml/issues/7595 - Activate doesn't bring window to the foreground
+            // Need to call SetForegroundWindow to actually gain focus.
+            WindowHelpers.BringToForeground(settingsWindow.GetWindowHandle());
 
-                // https://github.com/microsoft/microsoft-ui-xaml/issues/8948 - A window's top border incorrectly
-                // renders as black on Windows 10.
+            // https://github.com/microsoft/microsoft-ui-xaml/issues/8948 - A window's top border incorrectly
+            // renders as black on Windows 10.
             WindowHelpers.ForceTopBorder1PixelInsetOnWindows10(WindowNative.GetWindowHandle(settingsWindow));
         }
 
