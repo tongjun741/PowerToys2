@@ -4,14 +4,6 @@ EXPORTS
 	LaunchPowerToysCA
 	CheckGPOCA
 	DetectPrevInstallPathCA
-	TelemetryLogInstallSuccessCA
-	TelemetryLogInstallCancelCA
-	TelemetryLogInstallFailCA
-	TelemetryLogUninstallSuccessCA
-	TelemetryLogUninstallCancelCA
-	TelemetryLogUninstallFailCA
-	TelemetryLogRepairCancelCA
-	TelemetryLogRepairFailCA
 	TerminateProcessesCA
 	SetBundleInstallLocationCA
 	InstallPackageIdentityMSIXCA

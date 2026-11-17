@@ -3,12 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-using Microsoft.PowerToys.Settings.Telemetry;
-using Microsoft.PowerToys.Telemetry;
 
 namespace Microsoft.PowerToys.Settings.UI.Library
 {
@@ -32,7 +29,6 @@ namespace Microsoft.PowerToys.Settings.UI.Library
             {
                 if (keyboardManager != value)
                 {
-                    LogTelemetryEvent(value);
                     keyboardManager = value;
                 }
             }
@@ -46,16 +42,6 @@ namespace Microsoft.PowerToys.Settings.UI.Library
         public string ToJsonString()
         {
             return JsonSerializer.Serialize(this);
-        }
-
-        private static void LogTelemetryEvent(bool value, [CallerMemberName] string moduleName = null)
-        {
-            var dataEvent = new SettingsEnabledEvent()
-            {
-                Value = value,
-                Name = moduleName,
-            };
-            PowerToysTelemetry.Log.WriteEvent(dataEvent);
         }
 
         internal void AddEnabledModuleChangeNotification(Action callBack)

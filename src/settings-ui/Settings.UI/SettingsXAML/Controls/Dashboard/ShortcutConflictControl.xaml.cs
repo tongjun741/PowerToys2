@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation
+﻿// Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -7,9 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.PowerToys.Settings.UI.Library.HotkeyConflicts;
-using Microsoft.PowerToys.Settings.UI.Library.Telemetry.Events;
 using Microsoft.PowerToys.Settings.UI.SettingsXAML.Controls.Dashboard;
-using Microsoft.PowerToys.Telemetry;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.ApplicationModel.Resources;
@@ -119,10 +117,6 @@ namespace Microsoft.PowerToys.Settings.UI.Controls
             if (!_telemetryEventSent && HasConflicts)
             {
                 // Log telemetry event when conflicts are detected
-                PowerToysTelemetry.Log.WriteEvent(new ShortcutConflictDetectedEvent()
-                {
-                    ConflictCount = ConflictCount,
-                });
 
                 _telemetryEventSent = true;
             }
@@ -149,10 +143,6 @@ namespace Microsoft.PowerToys.Settings.UI.Controls
             }
 
             // Log telemetry event when user clicks the shortcut conflict button
-            PowerToysTelemetry.Log.WriteEvent(new ShortcutConflictControlClickedEvent()
-            {
-                ConflictCount = this.ConflictCount,
-            });
 
             // Create and show the new window instead of dialog
             var conflictWindow = new ShortcutConflictWindow();

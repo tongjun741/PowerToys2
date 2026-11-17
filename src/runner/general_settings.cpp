@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "general_settings.h"
 #include "auto_start_helper.h"
 #include "tray_icon.h"
@@ -9,7 +9,6 @@
 #include "powertoy_module.h"
 #include <common/themes/windows_colors.h>
 
-#include "trace.h"
 #include <common/utils/elevation.h>
 #include <common/version/version.h>
 #include <common/utils/resources.h>
@@ -67,7 +66,6 @@ static std::wstring settings_theme = L"system";
 static bool show_tray_icon = true;
 static bool run_as_elevated = false;
 static bool show_new_updates_toast_notification = true;
-static bool download_updates_automatically = true;
 static bool show_whats_new_after_updates = true;
 static bool enable_experimentation = true;
 static bool enable_warnings_elevated_apps = true;
@@ -98,7 +96,6 @@ json::JsonObject GeneralSettings::to_json()
     result.SetNamedValue(L"is_elevated", json::value(isElevated));
     result.SetNamedValue(L"run_elevated", json::value(isRunElevated));
     result.SetNamedValue(L"show_new_updates_toast_notification", json::value(showNewUpdatesToastNotification));
-    result.SetNamedValue(L"download_updates_automatically", json::value(downloadUpdatesAutomatically));
     result.SetNamedValue(L"show_whats_new_after_updates", json::value(showWhatsNewAfterUpdates));
     result.SetNamedValue(L"enable_experimentation", json::value(enableExperimentation));
     result.SetNamedValue(L"dashboard_sort_order", json::value(static_cast<int>(dashboardSortOrder)));
@@ -122,7 +119,6 @@ json::JsonObject load_general_settings()
     }
     run_as_elevated = loaded.GetNamedBoolean(L"run_elevated", false);
     show_new_updates_toast_notification = loaded.GetNamedBoolean(L"show_new_updates_toast_notification", true);
-    download_updates_automatically = loaded.GetNamedBoolean(L"download_updates_automatically", true) && check_user_is_admin();
     show_whats_new_after_updates = loaded.GetNamedBoolean(L"show_whats_new_after_updates", true);
     enable_experimentation = loaded.GetNamedBoolean(L"enable_experimentation", true);
     enable_warnings_elevated_apps = loaded.GetNamedBoolean(L"enable_warnings_elevated_apps", true);
@@ -153,7 +149,6 @@ GeneralSettings get_general_settings()
         .isAdmin = is_user_admin,
         .enableWarningsElevatedApps = enable_warnings_elevated_apps,
         .showNewUpdatesToastNotification = show_new_updates_toast_notification,
-        .downloadUpdatesAutomatically = download_updates_automatically && is_user_admin,
         .showWhatsNewAfterUpdates = show_whats_new_after_updates,
         .enableExperimentation = enable_experimentation,
     .dashboardSortOrder = dashboard_sort_order,
@@ -184,7 +179,6 @@ void apply_general_settings(const json::JsonObject& general_configs, bool save)
 
     show_new_updates_toast_notification = general_configs.GetNamedBoolean(L"show_new_updates_toast_notification", true);
 
-    download_updates_automatically = general_configs.GetNamedBoolean(L"download_updates_automatically", true);
     show_whats_new_after_updates = general_configs.GetNamedBoolean(L"show_whats_new_after_updates", true);
 
     enable_experimentation = general_configs.GetNamedBoolean(L"enable_experimentation", true);
@@ -314,7 +308,6 @@ void apply_general_settings(const json::JsonObject& general_configs, bool save)
     {
         GeneralSettings save_settings = get_general_settings();
         PTSettingsHelper::save_general_settings(save_settings.to_json());
-        Trace::SettingsChanged(save_settings);
     }
 }
 

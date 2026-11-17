@@ -39,14 +39,6 @@ namespace Microsoft.PowerToys.Settings.UI.Views
             var loader = Helpers.ResourceLoaderInstance.ResourceLoader;
             var settingsUtils = new SettingsUtils();
 
-            Action stateUpdatingAction = () =>
-            {
-                this.DispatcherQueue.TryEnqueue(() =>
-                {
-                    ViewModel.RefreshUpdatingState();
-                });
-            };
-
             Action hideBackupAndRestoreMessageArea = () =>
             {
                 this.DispatcherQueue.TryEnqueue(async () =>
@@ -74,9 +66,7 @@ namespace Microsoft.PowerToys.Settings.UI.Views
                 ShellPage.IsUserAnAdmin,
                 ShellPage.SendDefaultIPCMessage,
                 ShellPage.SendRestartAdminIPCMessage,
-                ShellPage.SendCheckForUpdatesIPCMessage,
                 string.Empty,
-                stateUpdatingAction,
                 hideBackupAndRestoreMessageArea,
                 doRefreshBackupRestoreStatus,
                 PickSingleFolderDialog,
@@ -149,19 +139,9 @@ namespace Microsoft.PowerToys.Settings.UI.Views
             ViewModel.Restart();
         }
 
-        private void Click_ViewDiagnosticDataViewerRestart(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Restart();
-        }
-
         public void RefreshEnabledState()
         {
             ViewModel.RefreshSettingsOnExternalChange();
-        }
-
-        private async void ViewDiagnosticData_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Run(ViewModel.ViewDiagnosticData);
         }
 
         private void ShowSystemTrayIcon_Toggled(object sender, RoutedEventArgs e)

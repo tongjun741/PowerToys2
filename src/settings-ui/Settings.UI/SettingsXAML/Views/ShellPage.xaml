@@ -174,18 +174,6 @@
             <NavigationView.PaneFooter>
                 <StackPanel Orientation="Vertical">
                     <NavigationViewItem
-                        x:Name="OOBENavigationItem"
-                        x:Uid="OOBE_NavViewItem"
-                        AutomationProperties.AutomationId="OOBENavItem"
-                        Icon="{ui:FontIcon Glyph=&#xF133;}"
-                        Tapped="OOBEItem_Tapped" />
-                    <NavigationViewItem
-                        x:Name="WhatIsNewNavigationItem"
-                        x:Uid="WhatIsNew_NavViewItem"
-                        AutomationProperties.AutomationId="WhatIsNewNavItem"
-                        Icon="{ui:FontIcon Glyph=&#xE789;}"
-                        Tapped="WhatIsNewItem_Tapped" />
-                    <NavigationViewItem
                         x:Name="FeedbackNavigationItem"
                         x:Uid="Feedback_NavViewItem"
                         AutomationProperties.AutomationId="FeedbackNavItem"

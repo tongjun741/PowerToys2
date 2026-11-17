@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation
+﻿// Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -13,11 +13,9 @@ using System.Threading.Tasks;
 using ManagedCommon;
 using Microsoft.PowerToys.Settings.UI.Helpers;
 using Microsoft.PowerToys.Settings.UI.Library;
-using Microsoft.PowerToys.Settings.UI.Library.Telemetry.Events;
 using Microsoft.PowerToys.Settings.UI.SerializationContext;
 using Microsoft.PowerToys.Settings.UI.Services;
 using Microsoft.PowerToys.Settings.UI.Views;
-using Microsoft.PowerToys.Telemetry;
 using Microsoft.UI.Xaml;
 using PowerToys.Interop;
 using Windows.UI.Popups;
@@ -61,17 +59,14 @@ namespace Microsoft.PowerToys.Settings.UI
 
         public static int PowerToysPID { get; set; }
 
-        public bool ShowOobe { get; set; }
 
         public bool ShowFlyout { get; set; }
 
-        public bool ShowScoobe { get; set; }
 
         public Type StartupPage { get; set; } = typeof(Views.GeneralPage);
 
         public static Action<string> IPCMessageReceivedCallback { get; set; }
 
-        public ETWTrace EtwTrace { get; private set; } = new ETWTrace();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.
@@ -95,7 +90,6 @@ namespace Microsoft.PowerToys.Settings.UI
             NativeEventWaiter.WaitForEventLoop(
                 Constants.PowerToysRunnerTerminateSettingsEvent(), () =>
             {
-                EtwTrace?.Dispose();
                 Environment.Exit(0);
             });
         }
@@ -192,8 +186,6 @@ namespace Microsoft.PowerToys.Settings.UI
 
             IsElevated = cmdArgs[(int)Arguments.ElevatedStatus] == "true";
             IsUserAnAdmin = cmdArgs[(int)Arguments.IsUserAdmin] == "true";
-            ShowOobe = cmdArgs[(int)Arguments.ShowOobeWindow] == "true";
-            ShowScoobe = cmdArgs[(int)Arguments.ShowScoobeWindow] == "true";
             ShowFlyout = cmdArgs[(int)Arguments.ShowFlyout] == "true";
             bool containsSettingsWindow = cmdArgs[(int)Arguments.ContainsSettingsWindow] == "true";
             bool containsFlyoutPosition = cmdArgs[(int)Arguments.ContainsFlyoutPosition] == "true";
@@ -238,7 +230,6 @@ namespace Microsoft.PowerToys.Settings.UI
                 return 0;
             });
 
-            if (!ShowOobe && !ShowScoobe)
             {
                 settingsWindow = new MainWindow();
                 settingsWindow.Activate();
@@ -252,32 +243,6 @@ namespace Microsoft.PowerToys.Settings.UI
                 // https://github.com/microsoft/microsoft-ui-xaml/issues/8948 - A window's top border incorrectly
                 // renders as black on Windows 10.
                 WindowHelpers.ForceTopBorder1PixelInsetOnWindows10(WindowNative.GetWindowHandle(settingsWindow));
-            }
-            else
-            {
-                // Create the Settings window hidden so that it's fully initialized and
-                // it will be ready to receive the notification if the user opens
-                // the Settings from the tray icon.
-                settingsWindow = new MainWindow(true);
-
-                if (ShowOobe)
-                {
-                    PowerToysTelemetry.Log.WriteEvent(new OobeStartedEvent());
-                    OobeWindow oobeWindow = new OobeWindow(OOBE.Enums.PowerToysModules.Overview);
-                    oobeWindow.Activate();
-                    oobeWindow.ExtendsContentIntoTitleBar = true;
-                    WindowHelpers.ForceTopBorder1PixelInsetOnWindows10(WindowNative.GetWindowHandle(settingsWindow));
-                    SetOobeWindow(oobeWindow);
-                }
-                else if (ShowScoobe)
-                {
-                    PowerToysTelemetry.Log.WriteEvent(new ScoobeStartedEvent());
-                    OobeWindow scoobeWindow = new OobeWindow(OOBE.Enums.PowerToysModules.WhatsNew);
-                    scoobeWindow.Activate();
-                    scoobeWindow.ExtendsContentIntoTitleBar = true;
-                    WindowHelpers.ForceTopBorder1PixelInsetOnWindows10(WindowNative.GetWindowHandle(settingsWindow));
-                    SetOobeWindow(scoobeWindow);
-                }
             }
         }
 
@@ -353,7 +318,6 @@ namespace Microsoft.PowerToys.Settings.UI
         public static ThemeService ThemeService => themeService;
 
         private static MainWindow settingsWindow;
-        private static OobeWindow oobeWindow;
 
         public static void ClearSettingsWindow()
         {
@@ -363,21 +327,6 @@ namespace Microsoft.PowerToys.Settings.UI
         public static MainWindow GetSettingsWindow()
         {
             return settingsWindow;
-        }
-
-        public static OobeWindow GetOobeWindow()
-        {
-            return oobeWindow;
-        }
-
-        public static void SetOobeWindow(OobeWindow window)
-        {
-            oobeWindow = window;
-        }
-
-        public static void ClearOobeWindow()
-        {
-            oobeWindow = null;
         }
 
         public static Type GetPage(string settingWindow)

@@ -4,11 +4,9 @@
 
 using System;
 using ManagedCommon;
-using Microsoft.PowerLauncher.Telemetry;
 using Microsoft.PowerToys.Settings.UI.Helpers;
 using Microsoft.PowerToys.Settings.UI.Library;
 using Microsoft.PowerToys.Settings.UI.Views;
-using Microsoft.PowerToys.Telemetry;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -25,9 +23,6 @@ namespace Microsoft.PowerToys.Settings.UI
     {
         public MainWindow(bool createHidden = false)
         {
-            var bootTime = new System.Diagnostics.Stopwatch();
-            bootTime.Start();
-
             this.Activated += Window_Activated_SetIcon;
 
             App.ThemeService.ThemeChanged += OnThemeChanged;
@@ -65,12 +60,6 @@ namespace Microsoft.PowerToys.Settings.UI
                 Environment.Exit(0); // close application
             });
 
-            // send IPC Message
-            ShellPage.SetCheckForUpdatesMessageCallback(msg =>
-            {
-                App.GetTwoWayIPCManager()?.Send(msg);
-            });
-
             // open main window
             ShellPage.SetOpenMainWindowCallback(type =>
             {
@@ -99,32 +88,6 @@ namespace Microsoft.PowerToys.Settings.UI
                 return needToUpdate;
             });
 
-            // open oobe
-            ShellPage.SetOpenOobeCallback(() =>
-            {
-                if (App.GetOobeWindow() == null)
-                {
-                    App.SetOobeWindow(new OobeWindow(OOBE.Enums.PowerToysModules.Overview));
-                }
-
-                App.GetOobeWindow().Activate();
-            });
-
-            // open whats new window
-            ShellPage.SetOpenWhatIsNewCallback(() =>
-            {
-                if (App.GetOobeWindow() == null)
-                {
-                    App.SetOobeWindow(new OobeWindow(OOBE.Enums.PowerToysModules.WhatsNew));
-                }
-                else
-                {
-                    App.GetOobeWindow().SetAppWindow(OOBE.Enums.PowerToysModules.WhatsNew);
-                }
-
-                App.GetOobeWindow().Activate();
-            });
-
             this.InitializeComponent();
             SetAppTitleBar();
 
@@ -148,9 +111,6 @@ namespace Microsoft.PowerToys.Settings.UI
                 }
             };
 
-            bootTime.Stop();
-
-            PowerToysTelemetry.Log.WriteEvent(new SettingsBootEvent() { BootTimeMs = bootTime.ElapsedMilliseconds });
         }
 
         private void SetAppTitleBar()
@@ -179,15 +139,7 @@ namespace Microsoft.PowerToys.Settings.UI
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
             WindowHelper.SerializePlacement(hWnd);
 
-            if (App.GetOobeWindow() == null)
-            {
-                App.ClearSettingsWindow();
-            }
-            else
-            {
-                args.Handled = true;
-                NativeMethods.ShowWindow(hWnd, NativeMethods.SW_HIDE);
-            }
+            App.ClearSettingsWindow();
 
             App.ThemeService.ThemeChanged -= OnThemeChanged;
         }

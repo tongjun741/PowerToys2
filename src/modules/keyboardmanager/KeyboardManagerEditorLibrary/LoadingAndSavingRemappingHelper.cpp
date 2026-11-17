@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "LoadingAndSavingRemappingHelper.h"
 
 #include <set>
@@ -185,7 +185,6 @@ namespace LoadingAndSavingRemappingHelper
         // If telemetry is to be logged, log the key remap counts
         if (isTelemetryRequired)
         {
-            Trace::KeyRemapCount(successfulKeyToKeyRemapCount, successfulKeyToShortcutRemapCount, successfulKeyToTextRemapCount);
         }
     }
 
@@ -244,8 +243,6 @@ namespace LoadingAndSavingRemappingHelper
         // If telemetry is to be logged, log the shortcut remap counts
         if (isTelemetryRequired)
         {
-            Trace::OSLevelShortcutRemapCount(successfulOSLevelShortcutToShortcutRemapCount, successfulOSLevelShortcutToKeyRemapCount);
-            Trace::AppSpecificShortcutRemapCount(successfulAppSpecificShortcutToShortcutRemapCount, successfulAppSpecificShortcutToKeyRemapCount);
         }
     }
 }

@@ -254,9 +254,6 @@
   <data name="General.ModuleTitle" xml:space="preserve">
     <value>General</value>
   </data>
-  <data name="GeneralPage_CheckForUpdates.Content" xml:space="preserve">
-    <value>Check for updates</value>
-  </data>
   <data name="General_SettingsBackupAndRestoreLocationText.Header" xml:space="preserve">
     <value>Location</value>
   </data>
@@ -353,12 +350,6 @@
   </data>
   <data name="GeneralPage_ToggleSwitch_AlwaysRunElevated_Link.Content" xml:space="preserve">
     <value>Learn more about administrator mode</value>
-  </data>
-  <data name="GeneralPage_AutoDownloadAndInstallUpdates.Header" xml:space="preserve">
-    <value>Download and install updates automatically</value>
-  </data>
-  <data name="GeneralPage_AutoDownloadAndInstallUpdates.Description" xml:space="preserve">
-    <value>Except on metered connections</value>
   </data>
   <data name="GeneralPage_ToggleSwitch_RunningAsAdminNote.Text" xml:space="preserve">
     <value>Currently running as administrator</value>
@@ -690,155 +681,11 @@ Made with 💗 by Microsoft and the PowerToys community.</value>
   <data name="EnableAIDialog_CancelBtnText" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Oobe_GetStarted.Text" xml:space="preserve">
-    <value>Let's get started!</value>
-  </data>
-  <data name="Oobe_PowerToysDescription.Text" xml:space="preserve">
-    <value>Welcome to PowerToys! These overviews will help you quickly learn the basics of all our utilities.</value>
-  </data>
-  <data name="Oobe_GettingStarted.Text" xml:space="preserve">
-    <value>Getting started</value>
-  </data>
-  <data name="Oobe_Launch.Text" xml:space="preserve">
-    <value>Launch</value>
-  </data>
   <data name="Launch_ColorPicker.Content" xml:space="preserve">
     <value>Open Color Picker</value>
   </data>
-  <data name="Oobe_LearnMore.Text" xml:space="preserve">
-    <value>Learn more about</value>
-  </data>
-  <data name="Oobe_FileExplorer.Description" xml:space="preserve">
-    <value>PowerToys introduces add-ons to the Windows File Explorer that will enable files like Markdown (.md), PDF (.pdf), SVG (.svg), STL (.stl), G-code (.gcode), Binary G-code (.bgcode), and developer files to be viewed in the preview pane. It introduces File Explorer thumbnail support for a number of these file types as well.</value>
-  </data>
-  <data name="Oobe_KBM.Description" xml:space="preserve">
-    <value>Keyboard Manager allows you to customize the keyboard to be more productive by remapping keys and creating your own keyboard shortcuts.</value>
-  </data>
-  <data name="Oobe_Overview.Description" xml:space="preserve">
-    <value>Microsoft PowerToys is a set of utilities for power users to tune and streamline their Windows experience for greater productivity.
-
-Take a moment to preview the various utilities listed or view our comprehensive documentation.</value>
-  </data>
-  <data name="Oobe_Overview_DescriptionLinkText.Text" xml:space="preserve">
-    <value>Documentation on Microsoft Learn</value>
-  </data>
-  <data name="Oobe_Overview_Telemetry_Title.Text" xml:space="preserve">
-    <value>Help us make PowerToys better</value>
-  </data>
-  <data name="Oobe_Overview_Telemetry_Desc.Text" xml:space="preserve">
-    <value>Diagnostics &amp; feedback helps us to improve PowerToys and keep it secure, up to date, and working as expected.</value>
-  </data>
-  <data name="Oobe_Overview_Hotkey_Conflict_Title.Text" xml:space="preserve">
-    <value>Shortcut conflict detection</value>
-  </data>
-  <data name="Oobe_Overview_Hotkey_Conflict_Card.Text" xml:space="preserve">
-    <value>Shortcuts configured by PowerToys are conflicting.</value>
-  </data>
-  <data name="Oobe_Overview_Hotkey_Conflict_Card_Description.Header" xml:space="preserve">
-    <value>Shortcuts configured by PowerToys are conflicting</value>
-  </data>
-  <data name="Oobe_Overview_Hotkey_NoConflict_Card_Header" xml:space="preserve">
-    <value>No conflicts found</value>
-  </data>
-  <data name="Oobe_Overview_Hotkey_NoConflict_Card_Description" xml:space="preserve">
-    <value>All shortcuts function correctly</value>
-  </data>
-  <data name="Oobe_Overview_DiagnosticsAndFeedback_Settings_Link.Content" xml:space="preserve">
-    <value>View more diagnostic data settings</value>
-  </data>
-  <data name="Oobe_Overview_DiagnosticsAndFeedback_Link.Content" xml:space="preserve">
-    <value>Learn more about the information PowerToys logs &amp; how it gets used</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_InfoBar.Header" xml:space="preserve">
-    <value>Turn on diagnostic data to help us improve PowerToys?</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_InfoBar_Desc.Text" xml:space="preserve">
-    <value>PowerToys diagnostic data is completely optional.</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_InfoBar_Button_Enable.Content" xml:space="preserve">
-    <value>Enable</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_Yes_Click_InfoBar_Title" xml:space="preserve">
-    <value>Thank you for helping to make PowerToys better!</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_No_Click_InfoBar_Title" xml:space="preserve">
-    <value>Preference updated.</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_Yes_Click_InfoBar_Desc.Text" xml:space="preserve">
-    <value>You can change this at any time from</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_Yes_Click_OpenSettings_Text.Text" xml:space="preserve">
-    <value>settings.</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_Button_Yes.Content" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="Oobe_WhatsNew_DataDiagnostics_Button_No.Content" xml:space="preserve">
-    <value>No</value>
-  </data>
   <data name="ReleaseNotes.Content" xml:space="preserve">
     <value>Release notes</value>
-  </data>
-  <data name="Oobe_FileExplorer_HowToEnable.Text" xml:space="preserve">
-    <value>Select **View** which is located at the top of File Explorer, followed by **Show**, and then **Preview pane**.
-From there, simply click on one of the supported files in the File Explorer and observe the content on the preview pane!</value>
-  </data>
-  <data name="Oobe_HowToCreateMappings.Text" xml:space="preserve">
-    <value>How to create mappings</value>
-  </data>
-  <data name="Oobe_HowToEnable.Text" xml:space="preserve">
-    <value>How to enable</value>
-  </data>
-  <data name="Oobe_HowToLaunch.Text" xml:space="preserve">
-    <value>How to launch</value>
-  </data>
-  <data name="Oobe_HowToUse.Text" xml:space="preserve">
-    <value>How to use</value>
-  </data>
-  <data name="Oobe_KBM_HowToCreateMappings.Text" xml:space="preserve">
-    <value>Open **PowerToys Settings**, navigate to the Keyboard Manager menu, and select either **Remap a key** or **Remap a shortcut**.</value>
-  </data>
-  <data name="Oobe_KBM_TipsAndTricks.Text" xml:space="preserve">
-    <value>Want to only have a shortcut work for a single application? Use the Target App field when creating the shortcut remapping.</value>
-  </data>
-  <data name="Oobe_TipsAndTricks.Text" xml:space="preserve">
-    <value>Tips &amp; tricks</value>
-  </data>
-  <data name="Oobe_KBM.Title" xml:space="preserve">
-    <value>Keyboard Manager</value>
-    <comment>Do not localize this string</comment>
-  </data>
-  <data name="Oobe_Overview.Title" xml:space="preserve">
-    <value>Welcome</value>
-  </data>
-  <data name="Oobe_WhatsNew.Text" xml:space="preserve">
-    <value>What's new</value>
-  </data>
-  <data name="Oobe_WhatsNew_LoadingError.Title" xml:space="preserve">
-    <value>Couldn't load the release notes.</value>
-  </data>
-  <data name="Oobe_WhatsNew_LoadingError.Message" xml:space="preserve">
-    <value>Please check your internet connection.</value>
-  </data>
-  <data name="Oobe_WhatsNew_ProxyAuthenticationWarning.Title" xml:space="preserve">
-    <value>Couldn't load the release notes.</value>
-  </data>
-  <data name="Oobe_WhatsNew_ProxyAuthenticationWarning.Message" xml:space="preserve">
-    <value>Your proxy server requires authentication.</value>
-  </data>
-  <data name="Oobe_WhatsNew_DetailedReleaseNotesLink.Text" xml:space="preserve">
-    <value>See more detailed release notes on GitHub</value>
-    <comment>Don't loc "GitHub", it's the name of a product</comment>
-  </data>
-  <data name="OOBE_Settings.Content" xml:space="preserve">
-    <value>Open Settings</value>
-  </data>
-  <data name="Oobe_NavViewItem.Content" xml:space="preserve">
-    <value>Welcome to PowerToys</value>
-    <comment>Don't loc "PowerToys"</comment>
-  </data>
-  <data name="WhatIsNew_NavViewItem.Content" xml:space="preserve">
-    <value>What's new</value>
   </data>
   <data name="Feedback_NavViewItem.Content" xml:space="preserve">
     <value>Give feedback</value>
@@ -853,38 +700,8 @@ From there, simply click on one of the supported files in the File Explorer and 
     <value>PowerToys Settings</value>
     <comment>Title of the settings window when running as user</comment>
   </data>
-  <data name="General_FailedToDownloadTheNewVersion.Title" xml:space="preserve">
-    <value>An error occurred trying to install this update:</value>
-  </data>
-  <data name="General_InstallNow.Content" xml:space="preserve">
-    <value>Install now</value>
-  </data>
   <data name="General_ReadMore.Text" xml:space="preserve">
     <value>Read more</value>
-  </data>
-  <data name="General_NewVersionAvailable.Title" xml:space="preserve">
-    <value>An update is available:</value>
-  </data>
-  <data name="General_Downloading.Text" xml:space="preserve">
-    <value>Downloading...</value>
-  </data>
-  <data name="General_TryAgainToDownloadAndInstall.Content" xml:space="preserve">
-    <value>Try again to download and install</value>
-  </data>
-  <data name="General_CheckingForUpdates.Text" xml:space="preserve">
-    <value>Checking for updates...</value>
-  </data>
-  <data name="General_NewVersionReadyToInstall.Title" xml:space="preserve">
-    <value>An update is ready to install:</value>
-  </data>
-  <data name="General_UpToDate.Title" xml:space="preserve">
-    <value>PowerToys is up to date</value>
-  </data>
-  <data name="General_CantCheck.Title" xml:space="preserve">
-    <value>Network error. Please try again later</value>
-  </data>
-  <data name="General_DownloadAndInstall.Content" xml:space="preserve">
-    <value>Download &amp; install</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -896,9 +713,6 @@ From there, simply click on one of the supported files in the File Explorer and 
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
     <comment>Label of a confirmation button</comment>
-  </data>
-  <data name="SeeWhatsNew.Content" xml:space="preserve">
-    <value>See what's new</value>
   </data>
   <data name="ExcludedApps.Header" xml:space="preserve">
     <value>Excluded apps</value>
@@ -986,10 +800,6 @@ From there, simply click on one of the supported files in the File Explorer and 
   <data name="LearnMore_ShortcutGuide.Text" xml:space="preserve">
     <value>Learn more about Shortcut Guide</value>
     <comment>Shortcut Guide is a product name, do not loc</comment>
-  </data>
-  <data name="Oobe_FileExplorer.Title" xml:space="preserve">
-    <value>File Explorer add-ons</value>
-    <comment>Do not localize this string</comment>
   </data>
   <data name="Launch_Run.Content" xml:space="preserve">
     <value>Open PowerToys Run</value>
@@ -1200,42 +1010,8 @@ Right-click to remove the key combination, thereby deactivating the shortcut.</v
   <data name="Alternate_OOBE_Run_Title.Text" xml:space="preserve">
     <value>PowerToys Run</value>
   </data>
-  <data name="General_Experimentation.Header" xml:space="preserve">
-    <value>Experimentation</value>
-  </data>
-  <data name="GeneralPage_EnableExperimentation.Description" xml:space="preserve">
-    <value>Only Windows Insider builds may be selected for experimentation</value>
-    <comment>{Locked="Windows Insider"}</comment>
-  </data>
-  <data name="GeneralPage_EnableExperimentation.Header" xml:space="preserve">
-    <value>Allow experimentation with new features</value>
-  </data>
   <data name="General_DiagnosticsAndFeedback.Header" xml:space="preserve">
     <value>Diagnostics &amp; feedback</value>
-  </data>
-  <data name="GeneralPage_DiagnosticsAndFeedback_Link.Content" xml:space="preserve">
-    <value>Learn more about the logged information and how it's used</value>
-  </data>
-  <data name="GeneralPage_EnableDataDiagnostics.Header" xml:space="preserve">
-    <value>Diagnostic data</value>
-  </data>
-  <data name="GeneralPage_EnableViewDiagnosticData.Header" xml:space="preserve">
-    <value>Save logs to this device</value>
-  </data>
-  <data name="Oobe_AdvancedPasteUI_HowToUse.Text" xml:space="preserve">
-    <value>to open UI to select the format you want to paste your data as.</value>
-  </data>
-  <data name="Oobe_AdvancedPastePlain_HowToUse.Text" xml:space="preserve">
-    <value>to paste your clipboard data as plain text.</value>
-  </data>
-  <data name="Oobe_AdvancedPasteMarkdown_HowToUse.Text" xml:space="preserve">
-    <value>to paste your clipboard data as Markdown. Note: Clipboard content type has to be HTML.</value>
-  </data>
-  <data name="Oobe_AdvancedPasteJson_HowToUse.Text" xml:space="preserve">
-    <value>to paste your clipboard data as JSON. Note: Clipboard content data has to contain XML or CSV text.</value>
-  </data>
-  <data name="Oobe_AdvancedPasteCustom_HowToUse.Text" xml:space="preserve">
-    <value>to open AI-powered dialog to enter query and convert your data to any format you need.</value>
   </data>
   <data name="InstalledLabel.Text" xml:space="preserve">
     <value>Installed</value>
@@ -1322,17 +1098,11 @@ Right-click to remove the key combination, thereby deactivating the shortcut.</v
   <data name="ShowPluginsOverview_NonGlobal.Content" xml:space="preserve">
     <value>Not included in global results</value>
   </data>
-  <data name="GeneralPage_ShowWhatsNewAfterUpdates.Content" xml:space="preserve">
-    <value>Show the release notes after an update</value>
-  </data>
   <data name="ShowSystemTrayIcon.Description" xml:space="preserve">
     <value>To access settings, run the PowerToys executable again</value>
   </data>
   <data name="ShowSystemTrayIcon.Header" xml:space="preserve">
     <value>Show system tray icon</value>
-  </data>
-  <data name="GeneralPage_ShowNewUpdatesToast.Header" xml:space="preserve">
-    <value>Show notifications for new updates</value>
   </data>
   <data name="GPO_SomeSettingsAreManaged.Title" xml:space="preserve">
     <value>Some settings are managed by your organization.</value>
@@ -1463,12 +1233,6 @@ Right-click to remove the key combination, thereby deactivating the shortcut.</v
   <data name="Chinese_Traditional_Language" xml:space="preserve">
     <value>Chinese (Traditional)</value>
   </data>
-  <data name="GeneralPage_ViewDiagnosticDataViewerInfo.Title" xml:space="preserve">
-    <value>Restart PowerToys for enable viewing change to take effect.</value>
-  </data>
-  <data name="GeneralPage_ViewDiagnosticDataViewerInfoButton.Content" xml:space="preserve">
-    <value>Restart</value>
-  </data>
   <data name="Shell_TopLevelAdvanced.Content" xml:space="preserve">
     <value>Advanced</value>
   </data>
@@ -1584,9 +1348,6 @@ Right-click to remove the key combination, thereby deactivating the shortcut.</v
   <data name="LearnMore.Content" xml:space="preserve">
     <value>Learn more</value>
   </data>
-  <data name="GeneralPage_EnableDataDiagnosticsText.Text" xml:space="preserve">
-    <value>Helps us make PowerToys faster, more stable, and better over time</value>
-  </data>
   <data name="UpdateAvailable.Title" xml:space="preserve">
     <value>Update available</value>
   </data>
@@ -1595,9 +1356,6 @@ Right-click to remove the key combination, thereby deactivating the shortcut.</v
   </data>
   <data name="EnabledModules.Text" xml:space="preserve">
     <value>Enabled modules</value>
-  </data>
-  <data name="GeneralPage_EnableViewDiagnosticDataText.Text" xml:space="preserve">
-    <value>Stores diagnostic data locally in .xml format; folder may include .etl files as well. May use up 1 GB or more of disk space.</value>
   </data>
   <data name="LearnMore_LightSwitch.Text" xml:space="preserve">
     <value>Learn more about Light Switch</value>

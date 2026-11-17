@@ -68,12 +68,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="restart_elevated.cpp" />
     <ClCompile Include="centralized_kb_hook.cpp" />
-    <ClCompile Include="settings_telemetry.cpp" />
     <ClCompile Include="settings_window.cpp" />
-    <ClCompile Include="trace.cpp" />
     <ClCompile Include="tray_icon.cpp" />
     <ClCompile Include="unhandled_exception_handler.cpp" />
-    <ClCompile Include="UpdateUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionRunnerUtils.h" />
@@ -83,13 +80,10 @@
     <ClInclude Include="hotkey_conflict_detector.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="centralized_kb_hook.h" />
-    <ClInclude Include="settings_telemetry.h" />
-    <ClInclude Include="UpdateUtils.h" />
     <ClInclude Include="powertoy_module.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="restart_elevated.h" />
     <ClInclude Include="settings_window.h" />
-    <ClInclude Include="trace.h" />
     <ClInclude Include="tray_icon.h" />
     <ClInclude Include="unhandled_exception_handler.h" />
   </ItemGroup>
@@ -114,17 +108,8 @@
     <ProjectReference Include="..\common\logger\logger.vcxproj">
       <Project>{d9b8fc84-322a-4f9f-bbb9-20915c47ddfd}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\common\notifications\notifications.vcxproj">
-      <Project>{1d5be09d-78c0-4fd7-af00-ae7c1af7c525}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\common\Telemetry\EtwTrace\EtwTrace.vcxproj">
-      <Project>{8f021b46-362b-485c-bfba-ccf83e820cbd}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\common\Themes\Themes.vcxproj">
       <Project>{98537082-0fdb-40de-abd8-0dc5a4269bab}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\common\updating\updating.vcxproj">
-      <Project>{17da04df-e393-4397-9cf0-84dabe11032e}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

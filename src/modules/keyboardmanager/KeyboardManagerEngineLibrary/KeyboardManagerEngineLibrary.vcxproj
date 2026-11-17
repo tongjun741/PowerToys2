@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.240111.5\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\..\..\..\packages\Microsoft.Windows.CppWinRT.2.0.240111.5\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
@@ -37,7 +37,6 @@
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="State.h" />
-    <ClInclude Include="trace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KeyboardEventHandlers.cpp" />
@@ -46,7 +45,6 @@
       <PrecompiledHeader Condition="'$(UsePrecompiledHeaders)' != 'false'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="State.cpp" />
-    <ClCompile Include="trace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\common\KeyboardManagerCommon.vcxproj">

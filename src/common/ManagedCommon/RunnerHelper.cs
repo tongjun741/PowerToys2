@@ -7,8 +7,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Microsoft.PowerToys.Telemetry;
-using Microsoft.PowerToys.Telemetry.Events;
 
 namespace ManagedCommon
 {
@@ -18,7 +16,6 @@ namespace ManagedCommon
         {
             var stackTrace = new StackTrace();
             var assembly = Assembly.GetCallingAssembly().GetName();
-            PowerToysTelemetry.Log.WriteEvent(new DebugEvent() { Message = $"[{assembly}][{memberName}]WaitForPowerToysRunner waiting for Event powerToysPID={powerToysPID}" });
             Task.Run(() =>
             {
                 const uint INFINITE = 0xFFFFFFFF;
@@ -28,7 +25,6 @@ namespace ManagedCommon
                 IntPtr powerToysProcHandle = NativeMethods.OpenProcess(SYNCHRONIZE, false, powerToysPID);
                 if (NativeMethods.WaitForSingleObject(powerToysProcHandle, INFINITE) == WAIT_OBJECT_0)
                 {
-                    PowerToysTelemetry.Log.WriteEvent(new DebugEvent() { Message = $"[{assembly}][{memberName}]WaitForPowerToysRunner Event Notified powerToysPID={powerToysPID}" });
                     act.Invoke();
                 }
             });

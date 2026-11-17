@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <WinSafer.h>
 #include <Sddl.h>
 #include <sstream>
@@ -10,7 +10,6 @@
 #include "tray_icon.h"
 #include "general_settings.h"
 #include "restart_elevated.h"
-#include "UpdateUtils.h"
 #include "centralized_kb_hook.h"
 #include "Generated files/resource.h"
 #include "hotkey_conflict_detector.h"
@@ -25,7 +24,6 @@
 #include <common/utils/process_path.h>
 #include <common/utils/timeutil.h>
 #include <common/utils/winapi_error.h>
-#include <common/updating/updateState.h>
 #include <common/themes/windows_colors.h>
 #include "settings_window.h"
 
@@ -34,7 +32,6 @@
 TwoWayPipeMessageIPC* current_settings_ipc = NULL;
 std::mutex ipc_mutex;
 std::atomic_bool g_isLaunchInProgress = false;
-std::atomic_bool isUpdateCheckThreadRunning = false;
 HANDLE g_terminateSettingsEvent = CreateEventW(nullptr, false, false, CommonSharedConstants::TERMINATE_SETTINGS_SHARED_EVENT);
 
 json::JsonObject get_power_toys_settings()
@@ -107,30 +104,6 @@ std::optional<std::wstring> dispatch_json_action_to_module(const json::JsonObjec
                         schedule_restart_as_non_elevated(true);
                         PostQuitMessage(1);
                     }
-                }
-                else if (action == L"check_for_updates")
-                {
-                    bool expected_isUpdateCheckThreadRunning = false;
-                    if (isUpdateCheckThreadRunning.compare_exchange_strong(expected_isUpdateCheckThreadRunning, true))
-                    {
-                        std::thread([]() {
-                            CheckForUpdatesCallback();
-                            isUpdateCheckThreadRunning.store(false);
-                        }).detach();
-                    }
-                }
-                else if (action == L"request_update_state_date")
-                {
-                    json::JsonObject json;
-
-                    auto update_state = UpdateState::read();
-                    if (update_state.githubUpdateLastCheckedDate)
-                    {
-                        const time_t date = *update_state.githubUpdateLastCheckedDate;
-                        json.SetNamedValue(L"updateStateDate", json::value(std::to_wstring(date)));
-                    }
-
-                    result.emplace(json.Stringify());
                 }
             }
             catch (...)
@@ -390,7 +363,7 @@ BOOL run_settings_non_elevated(LPCWSTR executable_path, LPWSTR executable_args, 
 
 DWORD g_settings_process_id = 0;
 
-void run_settings_window(bool show_oobe_window, bool show_scoobe_window, std::optional<std::wstring> settings_window, bool show_flyout = false, const std::optional<POINT>& flyout_position = std::nullopt)
+void run_settings_window(std::optional<std::wstring> settings_window, bool show_flyout = false, const std::optional<POINT>& flyout_position = std::nullopt)
 {
     g_isLaunchInProgress = true;
 
@@ -454,12 +427,6 @@ void run_settings_window(bool show_oobe_window, bool show_scoobe_window, std::op
     bool isAdmin{ save_settings.isAdmin };
     std::wstring settings_isUserAnAdmin = isAdmin ? L"true" : L"false";
 
-    // Arg 8: should oobe window be shown
-    std::wstring settings_showOobe = show_oobe_window ? L"true" : L"false";
-
-    // Arg 9: should scoobe window be shown
-    std::wstring settings_showScoobe = show_scoobe_window ? L"true" : L"false";
-
     // Arg 10: should flyout be shown
     std::wstring settings_showFlyout = show_flyout ? L"true" : L"false";
 
@@ -483,8 +450,8 @@ void run_settings_window(bool show_oobe_window, bool show_scoobe_window, std::op
                                                settings_theme,
                                                settings_elevatedStatus,
                                                settings_isUserAnAdmin,
-                                               settings_showOobe,
-                                               settings_showScoobe,
+                                               L"false",
+                                               L"false",
                                                settings_showFlyout,
                                                settings_containsSettingsWindow,
                                                settings_containsFlyoutPosition);
@@ -702,20 +669,6 @@ void close_settings_window()
             TerminateProcess(proc.get(), 0);
         }
     }
-}
-
-void open_oobe_window()
-{
-    std::thread([]() {
-        run_settings_window(true, false, std::nullopt);
-    }).detach();
-}
-
-void open_scoobe_window()
-{
-    std::thread([]() {
-        run_settings_window(false, true, std::nullopt);
-    }).detach();
 }
 
 std::string ESettingsWindowNames_to_string(ESettingsWindowNames value)

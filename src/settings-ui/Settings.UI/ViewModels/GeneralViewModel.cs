@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation
+﻿// Copyright (c) Microsoft Corporation
 // The Microsoft Corporation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
@@ -25,7 +25,6 @@ using Microsoft.PowerToys.Settings.UI.Library.Interfaces;
 using Microsoft.PowerToys.Settings.UI.Library.Utilities;
 using Microsoft.PowerToys.Settings.UI.Library.ViewModels.Commands;
 using Microsoft.PowerToys.Settings.UI.SerializationContext;
-using Microsoft.PowerToys.Telemetry;
 using Microsoft.Win32;
 using Windows.System.Profile;
 
@@ -41,9 +40,7 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
 
         private GeneralSettings GeneralSettingsConfig { get; set; }
 
-        private UpdatingSettings UpdatingSettingsConfig { get; set; }
 
-        public ButtonClickCommand CheckForUpdatesEventHandler { get; set; }
 
         public Windows.ApplicationModel.Resources.ResourceLoader ResourceLoader { get; set; }
 
@@ -61,13 +58,11 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
 
         public ButtonClickCommand RestartElevatedButtonEventHandler { get; set; }
 
-        public ButtonClickCommand UpdateNowButtonEventHandler { get; set; }
 
         public Func<string, int> SendConfigMSG { get; }
 
         public Func<string, int> SendRestartAsAdminConfigMSG { get; }
 
-        public Func<string, int> SendCheckForUpdatesConfigMSG { get; }
 
         public string RunningAsUserDefaultText { get; set; }
 
@@ -75,7 +70,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
 
         private string _settingsConfigFileFolder = string.Empty;
 
-        private IFileSystemWatcher _fileWatcher;
 
         private Func<Task<string>> PickSingleFolderDialog { get; }
 
@@ -83,11 +77,9 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
 
         private const string InstallScopeRegKey = @"Software\Classes\powertoys\";
 
-        public GeneralViewModel(ISettingsRepository<GeneralSettings> settingsRepository, string runAsAdminText, string runAsUserText, bool isElevated, bool isAdmin, Func<string, int> ipcMSGCallBackFunc, Func<string, int> ipcMSGRestartAsAdminMSGCallBackFunc, Func<string, int> ipcMSGCheckForUpdatesCallBackFunc, string configFileSubfolder = "", Action dispatcherAction = null, Action hideBackupAndRestoreMessageAreaAction = null, Action<int> doBackupAndRestoreDryRun = null, Func<Task<string>> pickSingleFolderDialog = null, Windows.ApplicationModel.Resources.ResourceLoader resourceLoader = null)
+        public GeneralViewModel(ISettingsRepository<GeneralSettings> settingsRepository, string runAsAdminText, string runAsUserText, bool isElevated, bool isAdmin, Func<string, int> ipcMSGCallBackFunc, Func<string, int> ipcMSGRestartAsAdminMSGCallBackFunc, string configFileSubfolder = "", Action hideBackupAndRestoreMessageAreaAction = null, Action<int> doBackupAndRestoreDryRun = null, Func<Task<string>> pickSingleFolderDialog = null, Windows.ApplicationModel.Resources.ResourceLoader resourceLoader = null)
         {
-            CheckForUpdatesEventHandler = new ButtonClickCommand(CheckForUpdatesClick);
             RestartElevatedButtonEventHandler = new ButtonClickCommand(RestartElevated);
-            UpdateNowButtonEventHandler = new ButtonClickCommand(UpdateNowClick);
             BackupConfigsEventHandler = new ButtonClickCommand(BackupConfigsClick);
             SelectSettingBackupDirEventHandler = new ButtonClickCommand(SelectSettingBackupDir);
             RestoreConfigsEventHandler = new ButtonClickCommand(RestoreConfigsClick);
@@ -101,15 +93,8 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             ArgumentNullException.ThrowIfNull(settingsRepository);
 
             GeneralSettingsConfig = settingsRepository.SettingsConfig;
-            UpdatingSettingsConfig = UpdatingSettings.LoadSettings();
-            if (UpdatingSettingsConfig == null)
-            {
-                UpdatingSettingsConfig = new UpdatingSettings();
-            }
-
             // set the callback functions value to handle outgoing IPC message.
             SendConfigMSG = ipcMSGCallBackFunc;
-            SendCheckForUpdatesConfigMSG = ipcMSGCheckForUpdatesCallBackFunc;
             SendRestartAsAdminConfigMSG = ipcMSGRestartAsAdminMSGCallBackFunc;
 
             // Update Settings file folder:
@@ -147,10 +132,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             }
 
             _showSysTrayIcon = GeneralSettingsConfig.ShowSysTrayIcon;
-            _showNewUpdatesToastNotification = GeneralSettingsConfig.ShowNewUpdatesToastNotification;
-            _autoDownloadUpdates = GeneralSettingsConfig.AutoDownloadUpdates;
-            _showWhatsNewAfterUpdates = GeneralSettingsConfig.ShowWhatsNewAfterUpdates;
-            _enableExperimentation = GeneralSettingsConfig.EnableExperimentation;
 
             _isElevated = isElevated;
             _runElevated = GeneralSettingsConfig.RunElevated;
@@ -160,41 +141,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             RunningAsAdminDefaultText = runAsAdminText;
 
             _isAdmin = isAdmin;
-
-            _updatingState = UpdatingSettingsConfig.State;
-            _newAvailableVersion = UpdatingSettingsConfig.NewVersion;
-            _newAvailableVersionLink = UpdatingSettingsConfig.ReleasePageLink;
-            _updateCheckedDate = UpdatingSettingsConfig.LastCheckedDateLocalized;
-
-            _newUpdatesToastIsGpoDisabled = GPOWrapper.GetDisableNewUpdateToastValue() == GpoRuleConfigured.Enabled;
-            _autoDownloadUpdatesIsGpoDisabled = GPOWrapper.GetDisableAutomaticUpdateDownloadValue() == GpoRuleConfigured.Enabled;
-            _experimentationIsGpoDisallowed = GPOWrapper.GetAllowExperimentationValue() == GpoRuleConfigured.Disabled;
-            _showWhatsNewAfterUpdatesIsGpoDisabled = GPOWrapper.GetDisableShowWhatsNewAfterUpdatesValue() == GpoRuleConfigured.Enabled;
-            _enableDataDiagnosticsIsGpoDisallowed = GPOWrapper.GetAllowDataDiagnosticsValue() == GpoRuleConfigured.Disabled;
-
-            if (_enableDataDiagnosticsIsGpoDisallowed)
-            {
-                _enableDataDiagnostics = false;
-            }
-            else
-            {
-                _enableDataDiagnostics = DataDiagnosticsSettings.GetEnabledValue();
-            }
-
-            _enableViewDataDiagnostics = DataDiagnosticsSettings.GetViewEnabledValue();
-            _enableViewDataDiagnosticsOnLoad = _enableViewDataDiagnostics;
-
-            if (dispatcherAction != null)
-            {
-                _fileWatcher = Helper.GetFileWatcher(string.Empty, UpdatingSettings.SettingsFile, dispatcherAction);
-            }
-
-            // Diagnostic data retention policy
-            string etwDirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\PowerToys\\etw");
-            DeleteDiagnosticDataOlderThan28Days(etwDirPath);
-
-            string localLowEtwDirPath = Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "AppData", "LocalLow", "Microsoft", "PowerToys", "etw");
-            DeleteDiagnosticDataOlderThan28Days(localLowEtwDirPath);
 
             InitializeLanguages();
         }
@@ -238,28 +184,8 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
         private bool _enableWarningsElevatedApps;
         private int _themeIndex;
 
-        private bool _showNewUpdatesToastNotification;
-        private bool _newUpdatesToastIsGpoDisabled;
-        private bool _autoDownloadUpdates;
-        private bool _autoDownloadUpdatesIsGpoDisabled;
-        private bool _showWhatsNewAfterUpdates;
-        private bool _showWhatsNewAfterUpdatesIsGpoDisabled;
-        private bool _enableExperimentation;
-        private bool _experimentationIsGpoDisallowed;
-        private bool _enableDataDiagnostics;
-        private bool _enableDataDiagnosticsIsGpoDisallowed;
-        private bool _enableViewDataDiagnostics;
-        private bool _enableViewDataDiagnosticsOnLoad;
-        private bool _viewDiagnosticDataViewerChanged;
 
-        private UpdatingSettings.UpdatingState _updatingState = UpdatingSettings.UpdatingState.UpToDate;
-        private string _newAvailableVersion = string.Empty;
-        private string _newAvailableVersionLink = string.Empty;
-        private string _updateCheckedDate = string.Empty;
 
-        private bool _isNewVersionDownloading;
-        private bool _isNewVersionChecked;
-        private bool _isNoNetwork;
         private bool _isBugReportRunning;
 
         private bool _settingsBackupRestoreMessageVisible;
@@ -480,171 +406,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             }
         }
 
-        public bool SomeUpdateSettingsAreGpoManaged
-        {
-            get
-            {
-                return _newUpdatesToastIsGpoDisabled ||
-                    (_isAdmin && _autoDownloadUpdatesIsGpoDisabled) ||
-                    _showWhatsNewAfterUpdatesIsGpoDisabled;
-            }
-        }
-
-        public bool ShowNewUpdatesToastNotification
-        {
-            get
-            {
-                return _showNewUpdatesToastNotification && !_newUpdatesToastIsGpoDisabled;
-            }
-
-            set
-            {
-                if (_showNewUpdatesToastNotification != value)
-                {
-                    _showNewUpdatesToastNotification = value;
-                    GeneralSettingsConfig.ShowNewUpdatesToastNotification = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsShowNewUpdatesToastNotificationCardEnabled
-        {
-            get => !_isDevBuild && !_newUpdatesToastIsGpoDisabled;
-        }
-
-        public bool AutoDownloadUpdates
-        {
-            get
-            {
-                return _autoDownloadUpdates && !_autoDownloadUpdatesIsGpoDisabled;
-            }
-
-            set
-            {
-                if (_autoDownloadUpdates != value)
-                {
-                    _autoDownloadUpdates = value;
-                    GeneralSettingsConfig.AutoDownloadUpdates = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsAutoDownloadUpdatesCardEnabled
-        {
-            get => !_isDevBuild && !_autoDownloadUpdatesIsGpoDisabled;
-        }
-
-        public bool ShowWhatsNewAfterUpdates
-        {
-            get
-            {
-                return _showWhatsNewAfterUpdates && !_showWhatsNewAfterUpdatesIsGpoDisabled;
-            }
-
-            set
-            {
-                if (_showWhatsNewAfterUpdates != value)
-                {
-                    _showWhatsNewAfterUpdates = value;
-                    GeneralSettingsConfig.ShowWhatsNewAfterUpdates = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsShowWhatsNewAfterUpdatesCardEnabled
-        {
-            get => !_isDevBuild && !_showWhatsNewAfterUpdatesIsGpoDisabled;
-        }
-
-        public bool EnableExperimentation
-        {
-            get
-            {
-                return _enableExperimentation && !_experimentationIsGpoDisallowed;
-            }
-
-            set
-            {
-                if (_enableExperimentation != value)
-                {
-                    _enableExperimentation = value;
-                    GeneralSettingsConfig.EnableExperimentation = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool EnableDataDiagnostics
-        {
-            get
-            {
-                return _enableDataDiagnostics;
-            }
-
-            set
-            {
-                if (_enableDataDiagnostics != value)
-                {
-                    _enableDataDiagnostics = value;
-
-                    if (_enableDataDiagnostics == false)
-                    {
-                        EnableViewDataDiagnostics = false;
-                    }
-
-                    DataDiagnosticsSettings.SetEnabledValue(_enableDataDiagnostics);
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool ViewDiagnosticDataViewerChanged
-        {
-            get => _viewDiagnosticDataViewerChanged;
-        }
-
-        public bool EnableViewDataDiagnostics
-        {
-            get
-            {
-                return _enableViewDataDiagnostics;
-            }
-
-            set
-            {
-                if (_enableViewDataDiagnostics != value)
-                {
-                    _enableViewDataDiagnostics = value;
-
-                    if (_enableViewDataDiagnostics != _enableViewDataDiagnosticsOnLoad)
-                    {
-                        _viewDiagnosticDataViewerChanged = true;
-                    }
-                    else
-                    {
-                        _viewDiagnosticDataViewerChanged = false;
-                    }
-
-                    DataDiagnosticsSettings.SetViewEnabledValue(_enableViewDataDiagnostics);
-                    OnPropertyChanged(nameof(EnableViewDataDiagnostics));
-                    OnPropertyChanged(nameof(ViewDiagnosticDataViewerChanged));
-                }
-            }
-        }
-
-        public bool IsExperimentationGpoDisallowed
-        {
-            get => _experimentationIsGpoDisallowed;
-        }
-
-        public bool IsDataDiagnosticsGPOManaged
-        {
-            get => _enableDataDiagnosticsIsGpoDisallowed;
-        }
-
         public bool IsRunAtStartupGPOManaged
         {
             get => _runAtStartupIsGPOConfigured;
@@ -699,24 +460,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             get
             {
                 return Helper.GetProductVersion();
-            }
-        }
-
-        public string UpdateCheckedDate
-        {
-            get
-            {
-                RequestUpdateCheckedDate();
-                return _updateCheckedDate;
-            }
-
-            set
-            {
-                if (_updateCheckedDate != value)
-                {
-                    _updateCheckedDate = value;
-                    NotifyPropertyChanged();
-                }
             }
         }
 
@@ -869,90 +612,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             }
         }
 
-        public UpdatingSettings.UpdatingState PowerToysUpdatingState
-        {
-            get
-            {
-                return _updatingState;
-            }
-
-            private set
-            {
-                if (value != _updatingState)
-                {
-                    _updatingState = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public string PowerToysNewAvailableVersion
-        {
-            get
-            {
-                return _newAvailableVersion;
-            }
-
-            private set
-            {
-                if (value != _newAvailableVersion)
-                {
-                    _newAvailableVersion = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public string PowerToysNewAvailableVersionLink
-        {
-            get
-            {
-                return _newAvailableVersionLink;
-            }
-
-            private set
-            {
-                if (value != _newAvailableVersionLink)
-                {
-                    _newAvailableVersionLink = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsNewVersionDownloading
-        {
-            get
-            {
-                return _isNewVersionDownloading;
-            }
-
-            set
-            {
-                if (value != _isNewVersionDownloading)
-                {
-                    _isNewVersionDownloading = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsNewVersionCheckedAndUpToDate
-        {
-            get
-            {
-                return _isNewVersionChecked;
-            }
-        }
-
-        public bool IsNoNetwork
-        {
-            get
-            {
-                return _isNoNetwork;
-            }
-        }
-
         public bool IsBugReportRunning
         {
             get
@@ -991,22 +650,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             get
             {
                 return _settingsBackupMessage;
-            }
-        }
-
-        public bool IsDownloadAllowed
-        {
-            get
-            {
-                return !_isDevBuild && !IsNewVersionDownloading;
-            }
-        }
-
-        public bool IsUpdatePanelVisible
-        {
-            get
-            {
-                return PowerToysUpdatingState == UpdatingSettings.UpdatingState.UpToDate || PowerToysUpdatingState == UpdatingSettings.UpdatingState.NetworkError;
             }
         }
 
@@ -1166,24 +809,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
         }
 
         // callback function to launch the URL to check for updates.
-        private void CheckForUpdatesClick()
-        {
-            GeneralSettingsConfig.CustomActionName = "check_for_updates";
-
-            OutGoingGeneralSettings outsettings = new OutGoingGeneralSettings(GeneralSettingsConfig);
-            GeneralSettingsCustomAction customaction = new GeneralSettingsCustomAction(outsettings);
-
-            SendCheckForUpdatesConfigMSG(customaction.ToString());
-        }
-
-        private void UpdateNowClick()
-        {
-            IsNewVersionDownloading = string.IsNullOrEmpty(UpdatingSettingsConfig.DownloadedInstallerFilename);
-            NotifyPropertyChanged(nameof(IsDownloadAllowed));
-
-            Process.Start(new ProcessStartInfo(Helper.GetPowerToysInstallationFolder() + "\\PowerToys.exe") { Arguments = "powertoys://update_now/" });
-        }
-
         /// <summary>
         /// Class <c>GetResourceString</c> gets a localized text.
         /// </summary>
@@ -1208,16 +833,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             {
                 return resource;
             }
-        }
-
-        public void RequestUpdateCheckedDate()
-        {
-            GeneralSettingsConfig.CustomActionName = "request_update_state_date";
-
-            OutGoingGeneralSettings outsettings = new OutGoingGeneralSettings(GeneralSettingsConfig);
-            GeneralSettingsCustomAction customaction = new GeneralSettingsCustomAction(outsettings);
-
-            SendCheckForUpdatesConfigMSG(customaction.ToString());
         }
 
         public void RestartElevated()
@@ -1258,54 +873,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
         {
             _settingsBackupRestoreMessageVisible = false;
             NotifyAllBackupAndRestoreProperties();
-        }
-
-        public void RefreshUpdatingState()
-        {
-            object oLock = new object();
-            lock (oLock)
-            {
-                var config = UpdatingSettings.LoadSettings();
-
-                // Retry loading if failed
-                for (int i = 0; i < 3 && config == null; i++)
-                {
-                    System.Threading.Thread.Sleep(100);
-                    config = UpdatingSettings.LoadSettings();
-                }
-
-                if (config == null)
-                {
-                    return;
-                }
-
-                UpdatingSettingsConfig = config;
-
-                if (PowerToysUpdatingState != config.State)
-                {
-                    IsNewVersionDownloading = false;
-                }
-                else
-                {
-                    bool dateChanged = UpdateCheckedDate == UpdatingSettingsConfig.LastCheckedDateLocalized;
-                    bool fileDownloaded = string.IsNullOrEmpty(UpdatingSettingsConfig.DownloadedInstallerFilename);
-                    IsNewVersionDownloading = !(dateChanged || fileDownloaded);
-                }
-
-                PowerToysUpdatingState = UpdatingSettingsConfig.State;
-                PowerToysNewAvailableVersion = UpdatingSettingsConfig.NewVersion;
-                PowerToysNewAvailableVersionLink = UpdatingSettingsConfig.ReleasePageLink;
-                UpdateCheckedDate = UpdatingSettingsConfig.LastCheckedDateLocalized;
-
-                _isNoNetwork = PowerToysUpdatingState == UpdatingSettings.UpdatingState.NetworkError;
-                NotifyPropertyChanged(nameof(IsNoNetwork));
-                NotifyPropertyChanged(nameof(IsNewVersionDownloading));
-                NotifyPropertyChanged(nameof(IsUpdatePanelVisible));
-                _isNewVersionChecked = PowerToysUpdatingState == UpdatingSettings.UpdatingState.UpToDate && !IsNewVersionDownloading;
-                NotifyPropertyChanged(nameof(IsNewVersionCheckedAndUpToDate));
-
-                NotifyPropertyChanged(nameof(IsDownloadAllowed));
-            }
         }
 
         private void InitializeLanguages()
@@ -1361,78 +928,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
 
         internal void RefreshSettingsOnExternalChange()
         {
-            EnableDataDiagnostics = DataDiagnosticsSettings.GetEnabledValue();
-
-            NotifyPropertyChanged(nameof(EnableDataDiagnostics));
-        }
-
-        // Per retention policy
-        private void DeleteDiagnosticDataOlderThan28Days(string etwDirPath)
-        {
-            if (!Directory.Exists(etwDirPath))
-            {
-                return;
-            }
-
-            var directoryInfo = new DirectoryInfo(etwDirPath);
-            var cutoffDate = DateTime.Now.AddDays(-28);
-
-            foreach (var file in directoryInfo.GetFiles())
-            {
-                if (file.LastWriteTime < cutoffDate)
-                {
-                    try
-                    {
-                        file.Delete();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError($"Failed to delete file: {file.FullName}. Error: {ex.Message}");
-                    }
-                }
-            }
-        }
-
-        internal void ViewDiagnosticData()
-        {
-            string localLowEtwDirPath = Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "AppData", "LocalLow", "Microsoft", "PowerToys", "etw");
-            string etwDirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\PowerToys\\etw");
-
-            if (Directory.Exists(localLowEtwDirPath))
-            {
-                if (!Directory.Exists(etwDirPath))
-                {
-                    Directory.CreateDirectory(etwDirPath);
-                }
-
-                string[] localLowEtlFiles = Directory.GetFiles(localLowEtwDirPath, "*.etl");
-
-                foreach (string file in localLowEtlFiles)
-                {
-                    string fileName = Path.GetFileName(file);
-                    string destFile = Path.Combine(etwDirPath, fileName);
-
-                    try
-                    {
-                        File.Copy(file, destFile, overwrite: true);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError($"Failed to copy etl file: {fileName}. Error: {ex.Message}");
-                    }
-                }
-            }
-
-            string tracerptPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "system32");
-
-            ETLConverter converter = new ETLConverter(etwDirPath, tracerptPath);
-            Task.Run(() => converter.ConvertDiagnosticsETLsAsync()).Wait();
-
-            if (Directory.Exists(etwDirPath))
-            {
-                // Open etw dir in FileExplorer
-                Process.Start("explorer.exe", etwDirPath);
-            }
         }
     }
 }

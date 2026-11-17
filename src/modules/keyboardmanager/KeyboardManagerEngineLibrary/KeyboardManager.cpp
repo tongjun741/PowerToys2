@@ -13,7 +13,6 @@
 #include <ctime>
 
 #include "KeyboardEventHandlers.h"
-#include "trace.h"
 
 HHOOK KeyboardManager::hookHandleCopy;
 HHOOK KeyboardManager::hookHandle;
@@ -86,7 +85,6 @@ void KeyboardManager::LoadSettings()
     try
     {
         // Send telemetry about configured key/shortcut to key/shortcut mappings, OS an app specific level.
-        Trace::SendKeyAndShortcutRemapLoadedConfiguration(state);
     }
     catch (...)
     {
@@ -94,7 +92,6 @@ void KeyboardManager::LoadSettings()
         {
             Logger::error("Failed to send telemetry for the configured remappings.");
             // Try not to crash the app sending telemetry. Everything inside a try.
-            Trace::ErrorSendingKeyAndShortcutRemapLoadedConfiguration();
         }
         catch (...)
         {
@@ -144,7 +141,6 @@ void KeyboardManager::StartLowlevelKeyboardHook()
             DWORD errorCode = GetLastError();
             show_last_error_message(L"SetWindowsHookEx", errorCode, L"PowerToys - Keyboard Manager");
             auto errorMessage = get_last_error_message(errorCode);
-            Trace::Error(errorCode, errorMessage.has_value() ? errorMessage.value() : L"", L"StartLowlevelKeyboardHook::SetWindowsHookEx");
         }
     }
 }

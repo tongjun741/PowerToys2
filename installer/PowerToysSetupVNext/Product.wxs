@@ -57,12 +57,6 @@
 
       <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Condition="NOT Installed" />
       <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Property="_REMOVE_ALL" Value="Yes" />
-      <Publish Dialog="UserExit" Control="Finish" Event="DoAction" Value="TelemetryLogInstallCancel" Condition="NOT Installed" />
-      <Publish Dialog="FatalError" Control="Finish" Event="DoAction" Value="TelemetryLogInstallFail" Condition="NOT Installed" />
-      <Publish Dialog="UserExit" Control="Finish" Event="DoAction" Value="TelemetryLogUninstallCancel" Condition="Installed AND _REMOVE_ALL=&quot;Yes&quot;" />
-      <Publish Dialog="FatalError" Control="Finish" Event="DoAction" Value="TelemetryLogUninstallFail" Condition="Installed AND _REMOVE_ALL=&quot;Yes&quot;" />
-      <Publish Dialog="UserExit" Control="Finish" Event="DoAction" Value="TelemetryLogRepairCancel" Condition="Installed AND NOT (_REMOVE_ALL=&quot;Yes&quot;)" />
-      <Publish Dialog="FatalError" Control="Finish" Event="DoAction" Value="TelemetryLogRepairFail" Condition="Installed AND NOT (_REMOVE_ALL=&quot;Yes&quot;)" />
     </UI>
 
     <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Images\banner.png" />
@@ -83,16 +77,11 @@
     <InstallExecuteSequence>
       <Custom Action="DetectPrevInstallPath" After="AppSearch" />
       <Custom Action="SetLaunchPowerToysParam" Before="LaunchPowerToys" />
-      <Custom Action="SetInstallPackageIdentityMSIXParam" Before="InstallPackageIdentityMSIX" />
 
       <Custom Action="CheckGPO" After="InstallInitialize" Condition="NOT Installed" />
       <Custom Action="SetBundleInstallLocationData" Before="SetBundleInstallLocation" Condition="NOT Installed OR WIX_UPGRADE_DETECTED" />
       <Custom Action="SetBundleInstallLocation" After="InstallFiles" Condition="NOT Installed OR WIX_UPGRADE_DETECTED" />
-      <Custom Action="InstallPackageIdentityMSIX" After="InstallFiles" Condition="NOT Installed" />
       <Custom Action="override Wix4CloseApplications_$(sys.BUILDARCHSHORT)" Before="RemoveFiles" />
-      <Custom Action="TelemetryLogInstallSuccess" After="InstallFinalize" Condition="NOT Installed" />
-      <Custom Action="TelemetryLogUninstallSuccess" After="InstallFinalize" Condition="Installed and (NOT UPGRADINGPRODUCTCODE) AND (REMOVE=&quot;ALL&quot;)" />
-      <Custom Action="UninstallPackageIdentityMSIX" Before="RemoveFiles" Condition="Installed AND (NOT UPGRADINGPRODUCTCODE) AND (REMOVE=&quot;ALL&quot;)" />
       <Custom Action="TerminateProcesses" Before="InstallValidate" />
       <Custom Action="LaunchPowerToys" Before="InstallFinalize" Condition="NOT Installed" />
     </InstallExecuteSequence>
@@ -112,21 +101,13 @@
 
 
 
-    <CustomAction Id="TelemetryLogInstallSuccess" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogInstallSuccessCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="TelemetryLogInstallCancel" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogInstallCancelCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="TelemetryLogInstallFail" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogInstallFailCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="TelemetryLogUninstallSuccess" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogUninstallSuccessCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="TelemetryLogUninstallCancel" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogUninstallCancelCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="TelemetryLogUninstallFail" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogUninstallFailCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="TelemetryLogRepairCancel" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogRepairCancelCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="TelemetryLogRepairFail" Return="ignore" Impersonate="yes" DllEntry="TelemetryLogRepairFailCA" BinaryRef="PTCustomActions" />
 
     <CustomAction Id="DetectPrevInstallPath" Return="check" Impersonate="yes" DllEntry="DetectPrevInstallPathCA" BinaryRef="PTCustomActions" />
 
@@ -134,11 +115,8 @@
 
     <CustomAction Id="SetBundleInstallLocation" Return="ignore" Impersonate="no" Execute="deferred" DllEntry="SetBundleInstallLocationCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="SetInstallPackageIdentityMSIXParam" Property="InstallPackageIdentityMSIX" Value="[INSTALLFOLDER];[InstallScope]" />
 
-    <CustomAction Id="InstallPackageIdentityMSIX" Return="ignore" Impersonate="yes" Execute="deferred" DllEntry="InstallPackageIdentityMSIXCA" BinaryRef="PTCustomActions" />
 
-    <CustomAction Id="UninstallPackageIdentityMSIX" Return="ignore" Impersonate="yes" DllEntry="UninstallPackageIdentityMSIXCA" BinaryRef="PTCustomActions" />
 
     <!-- Close 'PowerToys.exe' before uninstall-->
     <Property Id="MSIRESTARTMANAGERCONTROL" Value="DisableShutdown" />

@@ -20,7 +20,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\common\interop\PowerToys.Interop.vcxproj" />
         <ProjectReference Include="..\..\common\ManagedCommon\ManagedCommon.csproj" />
-        <ProjectReference Include="..\..\common\ManagedTelemetry\Telemetry\ManagedTelemetry.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <interface/powertoy_module_interface.h>
 #include <common/SettingsAPI/settings_objects.h>
 #include <common/utils/resources.h>
@@ -15,13 +15,11 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD ul_reason_for_call, LPVOID /*lp
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        Trace::RegisterProvider();
         break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
         break;
     case DLL_PROCESS_DETACH:
-        Trace::UnregisterProvider();
         break;
     }
 
@@ -133,7 +131,6 @@ public:
     {
         m_enabled = true;
         // Log telemetry
-        Trace::EnableKeyboardManager(true);
 
         unsigned long powertoys_pid = GetCurrentProcessId();
         std::wstring executable_args = L"";
@@ -168,7 +165,6 @@ public:
     {
         m_enabled = false;
         // Log telemetry
-        Trace::EnableKeyboardManager(false);
 
         if (m_hProcess)
         {

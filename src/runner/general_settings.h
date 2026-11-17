@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <common/utils/json.h>
 
@@ -19,7 +19,6 @@ struct GeneralSettings
     bool isAdmin;
     bool enableWarningsElevatedApps;
     bool showNewUpdatesToastNotification;
-    bool downloadUpdatesAutomatically;
     bool showWhatsNewAfterUpdates;
     bool enableExperimentation;
     DashboardSortOrder dashboardSortOrder;

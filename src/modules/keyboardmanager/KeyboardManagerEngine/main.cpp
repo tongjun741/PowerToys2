@@ -1,5 +1,4 @@
 ﻿#include "pch.h"
-#include <common/Telemetry/EtwTrace/EtwTrace.h>
 #include <common/utils/EventWaiter.h>
 #include <common/utils/window.h>
 #include <common/utils/ProcessWaiter.h>
@@ -22,8 +21,6 @@ int WINAPI wWinMain(_In_ HINSTANCE /*hInstance*/,
     winrt::init_apartment();
     LoggerHelpers::init_logger(KeyboardManagerConstants::ModuleName, L"Engine", LogSettings::keyboardManagerLoggerName);
 
-    Shared::Trace::ETWTrace trace;
-    trace.UpdateState(true);
 
     if (powertoys_gpo::getConfiguredKeyboardManagerEnabledValue() == powertoys_gpo::gpo_rule_configured_disabled)
     {
@@ -45,7 +42,6 @@ int WINAPI wWinMain(_In_ HINSTANCE /*hInstance*/,
         return 0;
     }
 
-    Trace::RegisterProvider();
 
     std::wstring pid = std::wstring(lpCmdLine);
 
@@ -83,9 +79,7 @@ int WINAPI wWinMain(_In_ HINSTANCE /*hInstance*/,
     run_message_loop({}, {}, { { KeyboardManager::StartHookMessageID, StartHookFunc } });
 
     kbm.StopLowlevelKeyboardHook();
-    Trace::UnregisterProvider();
 
-    trace.Flush();
 
     return 0;
 }

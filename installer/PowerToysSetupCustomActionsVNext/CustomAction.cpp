@@ -1,7 +1,6 @@
 ﻿#include "pch.h"
 #include "resource.h"
 #include "RcResource.h"
-#include <ProjectTelemetry.h>
 #include <spdlog/sinks/base_sink.h>
 #include <filesystem>
 #include <string_view>
@@ -9,9 +8,7 @@
 #include "../../src/common/logger/logger.h"
 #include "../../src/common/utils/gpo.h"
 #include "../../src/common/utils/MsiUtils.h"
-#include "../../src/common/updating/installer.h"
 #include "../../src/common/version/version.h"
-#include "../../src/common/Telemetry/EtwTrace/EtwTrace.h"
 #include "../../src/common/utils/package.h"
 
 #include <winrt/Windows.ApplicationModel.h>
@@ -27,65 +24,6 @@
 using namespace std;
 
 HINSTANCE DLL_HANDLE = nullptr;
-
-TRACELOGGING_DEFINE_PROVIDER(
-    g_hProvider,
-    "Microsoft.PowerToys",
-    // {38e8889b-9731-53f5-e901-e8a7c1753074}
-    (0x38e8889b, 0x9731, 0x53f5, 0xe9, 0x01, 0xe8, 0xa7, 0xc1, 0x75, 0x30, 0x74),
-    TraceLoggingOptionProjectTelemetry());
-
-const DWORD USERNAME_DOMAIN_LEN = DNLEN + UNLEN + 2; // Domain Name + '\' + User Name + '\0'
-const DWORD USERNAME_LEN = UNLEN + 1;                // User Name + '\0'
-
-static const wchar_t *POWERTOYS_EXE_COMPONENT = L"{A2C66D91-3485-4D00-B04D-91844E6B345B}";
-static const wchar_t *POWERTOYS_UPGRADE_CODE = L"{42B84BF7-5FBF-473B-9C8B-049DC16F7708}";
-
-constexpr inline const wchar_t *DataDiagnosticsRegKey = L"Software\\Classes\\PowerToys";
-constexpr inline const wchar_t *DataDiagnosticsRegValueName = L"AllowDataDiagnostics";
-
-#define TraceLoggingWriteWrapper(provider, eventName, ...)   \
-    if (isDataDiagnosticEnabled())                           \
-    {                                                        \
-        trace.UpdateState(true);                             \
-        TraceLoggingWrite(provider, eventName, __VA_ARGS__); \
-        trace.Flush();                                       \
-        trace.UpdateState(false);                            \
-    }
-
-static Shared::Trace::ETWTrace trace{L"PowerToys_Installer"};
-
-inline bool isDataDiagnosticEnabled()
-{
-    HKEY key{};
-    if (RegOpenKeyExW(HKEY_CURRENT_USER,
-                      DataDiagnosticsRegKey,
-                      0,
-                      KEY_READ,
-                      &key) != ERROR_SUCCESS)
-    {
-        return false;
-    }
-
-    DWORD isDataDiagnosticsEnabled = 0;
-    DWORD size = sizeof(isDataDiagnosticsEnabled);
-
-    if (RegGetValueW(
-            HKEY_CURRENT_USER,
-            DataDiagnosticsRegKey,
-            DataDiagnosticsRegValueName,
-            RRF_RT_REG_DWORD,
-            nullptr,
-            &isDataDiagnosticsEnabled,
-            &size) != ERROR_SUCCESS)
-    {
-        RegCloseKey(key);
-        return false;
-    }
-    RegCloseKey(key);
-
-    return isDataDiagnosticsEnabled == 1;
-}
 
 HRESULT getInstallFolder(MSIHANDLE hInstall, std::wstring &installationDir)
 {
@@ -552,174 +490,6 @@ LExit:
 // Removes all Scheduled Tasks in the PowerToys folder and deletes the folder afterwards.
 // Based on the Task Scheduler Displaying Task Names and State example:
 // https://learn.microsoft.com/windows/desktop/TaskSchd/displaying-task-names-and-state--c---/
-UINT __stdcall TelemetryLogInstallSuccessCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogInstallSuccessCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "Install_Success",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
-UINT __stdcall TelemetryLogInstallCancelCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogInstallCancelCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "Install_Cancel",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
-UINT __stdcall TelemetryLogInstallFailCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogInstallFailCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "Install_Fail",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
-UINT __stdcall TelemetryLogUninstallSuccessCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogUninstallSuccessCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "UnInstall_Success",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
-UINT __stdcall TelemetryLogUninstallCancelCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogUninstallCancelCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "UnInstall_Cancel",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
-UINT __stdcall TelemetryLogUninstallFailCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogUninstallFailCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "UnInstall_Fail",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
-UINT __stdcall TelemetryLogRepairCancelCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogRepairCancelCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "Repair_Cancel",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
-UINT __stdcall TelemetryLogRepairFailCA(MSIHANDLE hInstall)
-{
-    HRESULT hr = S_OK;
-    UINT er = ERROR_SUCCESS;
-
-    hr = WcaInitialize(hInstall, "TelemetryLogRepairFailCA");
-    ExitOnFailure(hr, "Failed to initialize");
-
-    TraceLoggingWriteWrapper(
-        g_hProvider,
-        "Repair_Fail",
-        TraceLoggingWideString(get_product_version().c_str(), "Version"),
-        ProjectTelemetryPrivacyDataTag(ProjectTelemetryTag_ProductAndServicePerformance),
-        TraceLoggingBoolean(TRUE, "UTCReplace_AppSessionGuid"),
-        TraceLoggingKeyword(PROJECT_KEYWORD_MEASURE));
-
-LExit:
-    er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-    return WcaFinalize(er);
-}
-
 UINT __stdcall DetectPrevInstallPathCA(MSIHANDLE hInstall)
 {
     HRESULT hr = S_OK;
@@ -997,12 +767,10 @@ extern "C" BOOL WINAPI DllMain(__in HINSTANCE hInst, __in ULONG ulReason, __in L
     case DLL_PROCESS_ATTACH:
         WcaGlobalInitialize(hInst);
         initSystemLogger();
-        TraceLoggingRegister(g_hProvider);
         DLL_HANDLE = hInst;
         break;
 
     case DLL_PROCESS_DETACH:
-        TraceLoggingUnregister(g_hProvider);
         WcaGlobalFinalize();
         break;
     }

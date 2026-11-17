@@ -10,11 +10,9 @@ using CommunityToolkit.WinUI;
 using Microsoft.PowerToys.Settings.UI.Helpers;
 using Microsoft.PowerToys.Settings.UI.Library;
 using Microsoft.PowerToys.Settings.UI.Library.HotkeyConflicts;
-using Microsoft.PowerToys.Settings.UI.Library.Telemetry.Events;
 using Microsoft.PowerToys.Settings.UI.Services;
 using Microsoft.PowerToys.Settings.UI.SettingsXAML.Controls.Dashboard;
 using Microsoft.PowerToys.Settings.UI.Views;
-using Microsoft.PowerToys.Telemetry;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
@@ -101,10 +99,6 @@ namespace Microsoft.PowerToys.Settings.UI.Controls
                 var actualSource = DetermineControlSource(control);
 
                 // Conflict was resolved - send general telemetry
-                PowerToysTelemetry.Log.WriteEvent(new ShortcutConflictResolvedEvent()
-                {
-                    Source = actualSource.ToString(),
-                });
             }
         }
 

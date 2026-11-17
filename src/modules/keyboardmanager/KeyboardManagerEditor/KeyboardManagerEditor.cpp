@@ -1,4 +1,4 @@
-// KeyboardManagerEditor.cpp : Defines the entry point for the application.
+﻿// KeyboardManagerEditor.cpp : Defines the entry point for the application.
 //
 
 #include "pch.h"
@@ -35,7 +35,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     InitUnhandledExceptionHandler();
-    Trace::RegisterProvider();
 
     auto mutex = CreateMutex(nullptr, true, instanceMutexName.c_str());
     if (mutex == nullptr)
@@ -120,7 +119,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         show_last_error_message(L"SetWindowsHookEx", errorCode, L"PowerToys - Keyboard Manager Editor");
         auto errorMessage = get_last_error_message(errorCode);
         Logger::error(L"Unable to start keyboard hook: {}", errorMessage.has_value() ? errorMessage.value() : L"");
-        Trace::Error(errorCode, errorMessage.has_value() ? errorMessage.value() : L"", L"start_lowlevel_keyboard_hook.SetWindowsHookEx");
 
         return -1;
     }
@@ -129,7 +127,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     editor = nullptr;
 
-    Trace::UnregisterProvider();
     return 0;
 }
 

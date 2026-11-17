@@ -70,18 +70,6 @@ namespace Microsoft.PowerToys.Settings.UI.Library
         [CmdConfigureIgnore]
         public EnabledModules Enabled { get; set; }
 
-        [JsonPropertyName("show_new_updates_toast_notification")]
-        public bool ShowNewUpdatesToastNotification { get; set; }
-
-        [JsonPropertyName("download_updates_automatically")]
-        public bool AutoDownloadUpdates { get; set; }
-
-        [JsonPropertyName("show_whats_new_after_updates")]
-        public bool ShowWhatsNewAfterUpdates { get; set; }
-
-        [JsonPropertyName("enable_experimentation")]
-        public bool EnableExperimentation { get; set; }
-
         [JsonPropertyName("dashboard_sort_order")]
         public DashboardSortOrder DashboardSortOrder { get; set; }
 
@@ -95,9 +83,6 @@ namespace Microsoft.PowerToys.Settings.UI.Library
             IsAdmin = false;
             EnableWarningsElevatedApps = true;
             IsElevated = false;
-            ShowNewUpdatesToastNotification = true;
-            AutoDownloadUpdates = false;
-            EnableExperimentation = true;
             DashboardSortOrder = DashboardSortOrder.Alphabetical;
             Theme = "system";
             SystemTheme = "light";
