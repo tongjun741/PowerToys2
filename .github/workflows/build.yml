@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-2022
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Enable TS
         run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
@@ -75,7 +75,7 @@ jobs:
 
       - name: Upload installer artifacts
         if: ${{ inputs.debug != 'true' && steps.build.outcome == 'success' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PowerToys-Installers
           path: .\artifacts\*.exe
@@ -159,7 +159,7 @@ jobs:
 
       - name: Upload error logs
         if: ${{ inputs.debug != 'true' && (steps.build.outcome == 'failure' || failure()) }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Build-Error-Logs
           path: .\error-logs\*
