@@ -85,7 +85,7 @@ Function Generate-FileComponents() {
             [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'fileList',
             Justification = 'variable is used in another scope')]
 
-            $fileList = $matches[2] -split ';'
+            $fileList = $matches[2] -split ';' | Where-Object { $_ -ne '' }
             return
         }
     }
