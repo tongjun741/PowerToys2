@@ -1,0 +1,1 @@
+     2>D:\PowerToys2\installer\PowerToysSetupVNext\Settings.wxs(72): error WIX0010: The File/@Name attribute was not found; it is required. [D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj]
