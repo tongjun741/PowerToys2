@@ -227,11 +227,10 @@ namespace Microsoft.PowerToys.Settings.UI
                 return 0;
             });
 
-            {
-                settingsWindow = new MainWindow();
-                settingsWindow.Activate();
-                settingsWindow.ExtendsContentIntoTitleBar = true;
-                settingsWindow.NavigateToSection(StartupPage);
+            settingsWindow = new MainWindow();
+            settingsWindow.Activate();
+            settingsWindow.ExtendsContentIntoTitleBar = true;
+            settingsWindow.NavigateToSection(StartupPage);
 
                 // https://github.com/microsoft/microsoft-ui-xaml/issues/7595 - Activate doesn't bring window to the foreground
                 // Need to call SetForegroundWindow to actually gain focus.
@@ -239,8 +238,7 @@ namespace Microsoft.PowerToys.Settings.UI
 
                 // https://github.com/microsoft/microsoft-ui-xaml/issues/8948 - A window's top border incorrectly
                 // renders as black on Windows 10.
-                WindowHelpers.ForceTopBorder1PixelInsetOnWindows10(WindowNative.GetWindowHandle(settingsWindow));
-            }
+            WindowHelpers.ForceTopBorder1PixelInsetOnWindows10(WindowNative.GetWindowHandle(settingsWindow));
         }
 
         /// <summary>

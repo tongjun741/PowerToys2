@@ -88,6 +88,7 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
             ArgumentNullException.ThrowIfNull(settingsRepository);
 
             GeneralSettingsConfig = settingsRepository.SettingsConfig;
+
             // set the callback functions value to handle outgoing IPC message.
             SendConfigMSG = ipcMSGCallBackFunc;
             SendRestartAsAdminConfigMSG = ipcMSGRestartAsAdminMSGCallBackFunc;

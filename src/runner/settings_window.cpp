@@ -651,7 +651,7 @@ void open_settings_window(std::optional<std::wstring> settings_window, bool show
         if (!g_isLaunchInProgress)
         {
             std::thread([settings_window, show_flyout, flyout_position]() {
-                run_settings_window(false, false, settings_window, show_flyout, flyout_position);
+                run_settings_window(settings_window, show_flyout, flyout_position);
             }).detach();
         }
     }

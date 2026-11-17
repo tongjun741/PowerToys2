@@ -18,7 +18,6 @@ namespace Microsoft.PowerToys.Settings.UI.Controls
     {
         private static readonly ResourceLoader ResourceLoader = Helpers.ResourceLoaderInstance.ResourceLoader;
 
-        private static bool _telemetryEventSent;
 
         public static readonly DependencyProperty AllHotkeyConflictsDataProperty =
             DependencyProperty.Register(
@@ -114,12 +113,6 @@ namespace Microsoft.PowerToys.Settings.UI.Controls
                 VisualStateManager.GoToState(this, "NoConflictState", true);
             }
 
-            if (!_telemetryEventSent && HasConflicts)
-            {
-                // Log telemetry event when conflicts are detected
-
-                _telemetryEventSent = true;
-            }
         }
 
         private void OnPropertyChanged(string propertyName)

@@ -177,9 +177,6 @@ int WINAPI WinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPSTR l
         L"(ML;;NX;;;LW)"; // Integrity label on No execute up for Low mandatory level
     initializeCOMSecurity(securityDescriptor);
 
-    int n_cmd_args = 0;
-    LPWSTR* cmd_arg_list = CommandLineToArgvW(GetCommandLineW(), &n_cmd_args);
-
     std::filesystem::path logFilePath(PTSettingsHelper::get_root_save_folder_location());
     logFilePath.append(LogSettings::runnerLogPath);
     Logger::init(LogSettings::runnerLoggerName, logFilePath.wstring(), PTSettingsHelper::get_log_settings_file_location());
