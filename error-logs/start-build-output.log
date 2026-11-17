@@ -1,0 +1,161 @@
+
+╔════════════════════════════════════════════════════════════╗
+║          PowerToys2 自动化构建脚本 v4.1                    ║
+║          修复 NUGET_PACKAGES 路径问题                      ║
+╚════════════════════════════════════════════════════════════╝
+
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 1/10: 准备项目
+╚════════════════════════════════════════════════════════════╝
+Cloning into 'PowerToys2'...
+Submodule 'deps/expected-lite' (https://github.com/martinmoene/expected-lite.git) registered for path 'deps/expected-lite'
+Submodule 'deps/spdlog' (https://github.com/gabime/spdlog.git) registered for path 'deps/spdlog'
+Cloning into 'D:/PowerToys2/deps/expected-lite'...
+Cloning into 'D:/PowerToys2/deps/spdlog'...
+  ✓ 完成
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 2/10: 清理进程
+╚════════════════════════════════════════════════════════════╝
+  • 停止构建进程...
+  ✓ 完成
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 3/10: 安装工具
+╚════════════════════════════════════════════════════════════╝
+  • winget 不可用，跳过 Windows SDK 安装（runner 镜像通常已预装）
+  ✓ 完成
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 4/10: 配置 Heat
+╚════════════════════════════════════════════════════════════╝
+  ✓ 完成
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 5/10: 安装 WiX 依赖
+╚════════════════════════════════════════════════════════════╝
+  • 准备 WiX 包...
+  ✓ WiX 包已复制（小写和大写目录）
+  ✓ wcautil.lib 已验证（两个位置）
+  ✓ 环境变量已配置
+  • NUGET_PACKAGES = D:\PowerToys2\installer\packages
+  • LIB 包含 WiX 路径
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 6/10: 配置环境（重要）
+╚════════════════════════════════════════════════════════════╝
+  ✓ NUGET_PACKAGES = D:\PowerToys2\installer\packages
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 7/10: 恢复依赖
+╚════════════════════════════════════════════════════════════╝
+  ✓ 完成
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 8/10: 优化脚本
+╚════════════════════════════════════════════════════════════╝
+  • 优化构建脚本...
+  ✓ 已添加环境变量设置
+  ✓ 构建脚本已优化
+  ✓ 完成
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 9/10: 验证
+╚════════════════════════════════════════════════════════════╝
+  ✓ wcautil.lib 已就绪（小写路径）
+
+╔════════════════════════════════════════════════════════════╗
+║  步骤 10/10: 构建
+╚════════════════════════════════════════════════════════════╝
+
+════════════════════════════════════════════════════════════
+[INFO] NUGET_PACKAGES = D:\PowerToys2\installer\packages
+[INFO] LIB 路径已设置
+[VS] vswhere found: C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe
+[VS] Checking candidate: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+[VS] Entered Visual Studio DevShell at C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+[AUTO-PLATFORM] Detected platform: x64
+PowerToys repository root detected: D:\PowerToys2
+[PIPELINE] Start | Platform=x64 Configuration=Release PerUser=true
+
+[MSBUILD] PowerToys.sln /p:Platform=x64 /p:Configuration=Release /verbosity:normal /clp:Summary;PerformanceSummary;ErrorsOnly;WarningsOnly /fileLoggerParameters:LogFile=.\build.release.x64.all.log;Verbosity=detailed /fileLoggerParameters1:LogFile=.\build.release.x64.warnings.log;WarningsOnly /fileLoggerParameters2:LogFile=.\build.release.x64.errors.log;ErrorsOnly /bl:.\build.release.x64.trace.binlog /nologo /t:restore /p:RestorePackagesConfig=true /p:CIBuild=true
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:10.56
+[MSBUILD] PowerToys.sln /p:Platform=x64 /p:Configuration=Release /verbosity:normal /clp:Summary;PerformanceSummary;ErrorsOnly;WarningsOnly /fileLoggerParameters:LogFile=.\build.release.x64.all.log;Verbosity=detailed /fileLoggerParameters1:LogFile=.\build.release.x64.warnings.log;WarningsOnly /fileLoggerParameters2:LogFile=.\build.release.x64.errors.log;ErrorsOnly /bl:.\build.release.x64.trace.binlog /nologo /m /p:CIBuild=true
+    22>D:\PowerToys2\src\settings-ui\Settings.UI\SettingsXAML\Controls\Dashboard\ShortcutConflictWindow.xaml(113,37): XamlCompiler warning WMC1506: OneWay bindings require at least one of their steps to support raising notifications when their value changes [D:\PowerToys2\src\settings-ui\Settings.UI\PowerToys.Settings.csproj]
+    22>D:\PowerToys2\src\settings-ui\Settings.UI\SettingsXAML\Controls\Dashboard\ShortcutConflictWindow.xaml(114,37): XamlCompiler warning WMC1506: OneWay bindings require at least one of their steps to support raising notifications when their value changes [D:\PowerToys2\src\settings-ui\Settings.UI\PowerToys.Settings.csproj]
+    22>D:\PowerToys2\src\settings-ui\Settings.UI\SettingsXAML\Controls\Dashboard\ShortcutConflictWindow.xaml(149,37): XamlCompiler warning WMC1506: OneWay bindings require at least one of their steps to support raising notifications when their value changes [D:\PowerToys2\src\settings-ui\Settings.UI\PowerToys.Settings.csproj]
+    22>D:\PowerToys2\src\settings-ui\Settings.UI\SettingsXAML\Controls\Dashboard\ShortcutConflictWindow.xaml(107,41): XamlCompiler warning WMC1506: OneWay bindings require at least one of their steps to support raising notifications when their value changes [D:\PowerToys2\src\settings-ui\Settings.UI\PowerToys.Settings.csproj]
+    27>C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1129,5): warning MSB8027: Two or more files with the name of WindowsAppRuntimeAutoInitializer.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are D:\PowerToys2\packages\Microsoft.WindowsAppSDK.Foundation.1.8.250906002\build\native\..\..\include\WindowsAppRuntimeAutoInitializer.cpp, D:\PowerToys2\packages\Microsoft.WindowsAppSDK.Foundation.1.8.250906002\build\native\..\..\include\WindowsAppRuntimeAutoInitializer.cpp. [D:\PowerToys2\src\runner\runner.vcxproj]
+    27>x64\Release\WindowsAppRuntimeAutoInitializer.obj : warning LNK4042: object specified more than once; extras ignored [D:\PowerToys2\src\runner\runner.vcxproj]
+    25>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification [D:\PowerToys2\src\modules\keyboardmanager\KeyboardManagerEditorLibraryWrapper\KeyboardManagerEditorLibraryWrapper.vcxproj]
+
+Build succeeded.
+    7 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:02:56.95
+[33;1mWARNING: [SIGN] No .msix files found in D:\PowerToys2\x64\Release[0m
+[CLEAN] installer (keep *.exe)
+[MSBUILD] installer\PowerToysSetup.sln /p:Platform=x64 /p:Configuration=Release /verbosity:normal /clp:Summary;PerformanceSummary;ErrorsOnly;WarningsOnly /fileLoggerParameters:LogFile=installer\build.release.x64.all.log;Verbosity=detailed /fileLoggerParameters1:LogFile=installer\build.release.x64.warnings.log;WarningsOnly /fileLoggerParameters2:LogFile=installer\build.release.x64.errors.log;ErrorsOnly /bl:installer\build.release.x64.trace.binlog /nologo /p:CIBuild=true /t:restore /p:RestorePackagesConfig=true
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:04.00
+[MSBUILD] installer\PowerToysSetup.sln /p:Platform=x64 /p:Configuration=Release /verbosity:normal /clp:Summary;PerformanceSummary;ErrorsOnly;WarningsOnly /fileLoggerParameters:LogFile=installer\build.release.x64.all.log;Verbosity=detailed /fileLoggerParameters1:LogFile=installer\build.release.x64.warnings.log;WarningsOnly /fileLoggerParameters2:LogFile=installer\build.release.x64.errors.log;ErrorsOnly /bl:installer\build.release.x64.trace.binlog /nologo /p:CIBuild=true /m /t:PowerToysInstallerVNext /p:PerUser=true
+     3>EXEC : warning : Path not found: [D:\PowerToys2\installer\PowerToysSetupCustomActionsVNext\PowerToysSetupCustomActionsVNext.vcxproj]
+     2>D:\PowerToys2\installer\PowerToysSetupVNext\Settings.wxs(72): error WIX0010: The File/@Name attribute was not found; it is required. [D:\PowerToys2\installer\PowerToysSetupVNext\PowerToysInstallerVNext.wixproj]
+
+Build FAILED.
+    1 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:17.62
+RunMSBuild: D:\PowerToys2\tools\build\build-installer.ps1:147
+Line |
+ 147 |  RunMSBuild 'installer\PowerToysSetup.sln' "$commonArgs /m /t:PowerToy …
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Build failed: installer\PowerToysSetup.sln  /p:CIBuild=true /m /t:PowerToysInstallerVNext /p:PerUser=true See
+     | logs:   All: installer\build.release.x64.all.log   Errors: installer\build.release.x64.errors.log   Binlog:
+     | installer\build.release.x64.trace.binlog
+════════════════════════════════════════════════════════════
+
+╔════════════════════════════════════════════════════════════╗
+║                      ❌ 失败 ❌                            ║
+╚════════════════════════════════════════════════════════════╝
+
+  ✗ 错误: 构建失败: 1
+
+━━━ 自动诊断 ━━━
+
+╔════════════════════════════════════════════════════════════╗
+║  wcautil.lib 诊断
+╚════════════════════════════════════════════════════════════╝
+  • 检查库文件...
+  ✓ 找到: D:\PowerToys2\installer\packages\WixToolset.WcaUtil.5.0.2\build\native\v14\x64\wcautil.lib (1750076 字节)
+  ✓ 找到: C:\Users\runneradmin\.nuget\packages\wixtoolset.wcautil\5.0.2\build\native\v14\x64\wcautil.lib (1750076 字节)
+  • 检查 NUGET_PACKAGES 环境变量...
+  • 当前值: D:\PowerToys2\installer\packages
+  ✓ 该路径下 wcautil.lib 存在
+  • 项目库路径配置:
+  ✓   $(NUGET_PACKAGES)\wixtoolset.wcautil\5.0.2\build\native\v14\$(Platform)
+  ✓   $(NUGET_PACKAGES)\wixtoolset.dutil\5.0.2\build\native\v14\$(Platform)
+    %(AdditionalLibraryDirectories)
+  • 检查 LIB 环境变量...
+  ✓   D:\PowerToys2\installer\packages\WixToolset.WcaUtil.5.0.2\build\native\v14\x64
+  ✓   D:\PowerToys2\installer\packages\WixToolset.Dutil.5.0.2\build\native\v14\x64
+━━━━━━━━━━━━━━━━
+
+  📋 错误日志: D:\PowerToys2\installer\build.release.x64.errors.log
+  📄 完整日志: D:\PowerToys2\installer\build.release.x64.all.log
+
+  💡 诊断: .\start-build.ps1 -DiagnoseOnly
+  🔄 重试: .\start-build.ps1 -CleanBuild
+
