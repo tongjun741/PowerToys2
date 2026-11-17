@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     PowerToys2 自动化构建脚本 - 最终修复版
 .DESCRIPTION
@@ -310,7 +310,7 @@ try {
             }
         }
         if (-not (Test-Path $Config.BaseDir)) {
-            git clone -b tray-menu $Config.RepoUrl
+            git clone -b main $Config.RepoUrl
         }
         Set-Location $Config.BaseDir
         git submodule update --init --recursive | Out-Null
