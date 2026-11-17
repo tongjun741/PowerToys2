@@ -8,7 +8,6 @@
 #include <common/utils/gpo.h>
 #include <keyboardmanager/common/KeyboardManagerConstants.h>
 #include <keyboardmanager/KeyboardManagerEngineLibrary/KeyboardManager.h>
-#include <keyboardmanager/KeyboardManagerEngineLibrary/trace.h>
 #include <common/interop/shared_constants.h>
 
 const std::wstring instanceMutexName = L"Local\\PowerToys_KBMEngine_InstanceMutex";
@@ -20,7 +19,6 @@ int WINAPI wWinMain(_In_ HINSTANCE /*hInstance*/,
 {
     winrt::init_apartment();
     LoggerHelpers::init_logger(KeyboardManagerConstants::ModuleName, L"Engine", LogSettings::keyboardManagerLoggerName);
-
 
     if (powertoys_gpo::getConfiguredKeyboardManagerEnabledValue() == powertoys_gpo::gpo_rule_configured_disabled)
     {
@@ -41,7 +39,6 @@ int WINAPI wWinMain(_In_ HINSTANCE /*hInstance*/,
         Logger::warn(L"KBM engine instance is already running");
         return 0;
     }
-
 
     std::wstring pid = std::wstring(lpCmdLine);
 
@@ -79,7 +76,6 @@ int WINAPI wWinMain(_In_ HINSTANCE /*hInstance*/,
     run_message_loop({}, {}, { { KeyboardManager::StartHookMessageID, StartHookFunc } });
 
     kbm.StopLowlevelKeyboardHook();
-
 
     return 0;
 }

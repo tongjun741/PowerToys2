@@ -110,7 +110,6 @@ namespace Microsoft.PowerToys.Settings.UI
                     }
                 }
             };
-
         }
 
         private void SetAppTitleBar()

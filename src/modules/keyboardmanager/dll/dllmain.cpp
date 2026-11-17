@@ -5,7 +5,6 @@
 #include "Generated Files/resource.h"
 #include <keyboardmanager/common/KeyboardManagerConstants.h>
 #include <common/utils/winapi_error.h>
-#include <keyboardmanager/dll/trace.h>
 #include <shellapi.h>
 #include <common/utils/logger_helper.h>
 #include <common/interop/shared_constants.h>

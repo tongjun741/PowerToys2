@@ -7,7 +7,6 @@
 
 #include <keyboardmanager/common/InputInterface.h>
 #include <keyboardmanager/common/Helpers.h>
-#include <keyboardmanager/KeyboardManagerEngineLibrary/trace.h>
 
 #include <TlHelp32.h>
 #include <thread>

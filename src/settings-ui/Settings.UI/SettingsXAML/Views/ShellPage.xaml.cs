@@ -48,10 +48,6 @@ namespace Microsoft.PowerToys.Settings.UI.Views
         /// </summary>
         public delegate bool UpdatingGeneralSettingsCallback(ModuleType moduleType, bool isEnabled);
 
-
-
-
-
         /// <summary>
         /// Gets or sets a shell handler to be used to update contents of the shell dynamically from page within the frame.
         /// </summary>
@@ -66,7 +62,6 @@ namespace Microsoft.PowerToys.Settings.UI.Views
         /// Gets or sets iPC callback function for restart as admin.
         /// </summary>
         public static IPCMessageCallback SndRestartAsAdminMsgCallback { get; set; }
-
 
         /// <summary>
         /// Gets or sets callback function for opening main window

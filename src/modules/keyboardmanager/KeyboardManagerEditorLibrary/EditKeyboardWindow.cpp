@@ -8,7 +8,6 @@
 #include <common/utils/EventLocker.h>
 #include <common/utils/winapi_error.h>
 
-
 #include <keyboardmanager/common/KeyboardManagerConstants.h>
 #include <keyboardmanager/common/MappingConfiguration.h>
 

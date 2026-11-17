@@ -40,8 +40,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
 
         private GeneralSettings GeneralSettingsConfig { get; set; }
 
-
-
         public Windows.ApplicationModel.Resources.ResourceLoader ResourceLoader { get; set; }
 
         private Action HideBackupAndRestoreMessageAreaAction { get; set; }
@@ -58,18 +56,15 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
 
         public ButtonClickCommand RestartElevatedButtonEventHandler { get; set; }
 
-
         public Func<string, int> SendConfigMSG { get; }
 
         public Func<string, int> SendRestartAsAdminConfigMSG { get; }
-
 
         public string RunningAsUserDefaultText { get; set; }
 
         public string RunningAsAdminDefaultText { get; set; }
 
         private string _settingsConfigFileFolder = string.Empty;
-
 
         private Func<Task<string>> PickSingleFolderDialog { get; }
 
@@ -183,8 +178,6 @@ namespace Microsoft.PowerToys.Settings.UI.ViewModels
         private bool _isAdmin;
         private bool _enableWarningsElevatedApps;
         private int _themeIndex;
-
-
 
         private bool _isBugReportRunning;
 

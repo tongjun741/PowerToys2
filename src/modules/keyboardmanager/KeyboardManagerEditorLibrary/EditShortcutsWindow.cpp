@@ -6,7 +6,6 @@
 #include <common/utils/winapi_error.h>
 #include <keyboardmanager/common/MappingConfiguration.h>
 
-
 #include "KeyboardManagerState.h"
 #include "Dialog.h"
 #include "KeyDropDownControl.h"

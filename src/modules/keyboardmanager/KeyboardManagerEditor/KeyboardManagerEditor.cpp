@@ -10,8 +10,6 @@
 #include <common/utils/UnhandledExceptionHandler.h>
 #include <common/utils/gpo.h>
 
-#include <trace.h>
-
 #include <keyboardmanager/common/KeyboardEventHandlers.h>
 
 #include <EditKeyboardWindow.h>
@@ -93,7 +91,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             action = std::wstring(cmdArgs[4]);
         }
-
 
         std::wstring pid = std::wstring(cmdArgs[2]);
         Logger::trace(L"Editor started from the settings with pid {}", pid);

@@ -7,7 +7,6 @@
 #include <keyboardmanager/common/MappingConfiguration.h>
 
 #include "KeyboardManagerState.h"
-#include "keyboardmanager/KeyboardManagerEditorLibrary/trace.h"
 #include "EditorHelpers.h"
 #include "ShortcutErrorType.h"
 

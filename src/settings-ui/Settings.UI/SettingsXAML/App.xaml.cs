@@ -59,14 +59,11 @@ namespace Microsoft.PowerToys.Settings.UI
 
         public static int PowerToysPID { get; set; }
 
-
         public bool ShowFlyout { get; set; }
-
 
         public Type StartupPage { get; set; } = typeof(Views.GeneralPage);
 
         public static Action<string> IPCMessageReceivedCallback { get; set; }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="App"/> class.

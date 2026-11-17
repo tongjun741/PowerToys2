@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-
 namespace ManagedCommon
 {
     public static class RunnerHelper
